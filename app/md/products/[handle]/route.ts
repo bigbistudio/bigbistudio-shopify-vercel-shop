@@ -1,0 +1,42 @@
+import { shopConfig } from "@/lib/config";
+import { notFoundMarkdown } from "@/lib/markdown/not-found";
+import { productToMarkdown } from "@/lib/markdown/product";
+import { markdownHeaders } from "@/lib/markdown/representation";
+import { getProductWithVariants } from "@/lib/product/server";
+
+export async function GET(request: Request, { params }: { params: Promise<{ handle: string }> }) {
+  const { handle } = await params;
+  const url = new URL(request.url);
+  const pathname = `/products/${handle}`;
+  try {
+    const product = await getProductWithVariants({
+      handle,
+    });
+    if (!product) {
+      return new Response(notFoundMarkdown({ kind: "Product", value: handle }), {
+        status: 404,
+        headers: markdownHeaders({
+          cacheControl: "public, max-age=3600, stale-while-revalidate=604800",
+          pathname,
+        }),
+      });
+    }
+    return new Response(productToMarkdown(product, shopConfig.localization.locale), {
+      headers: markdownHeaders({
+        cacheControl: "public, max-age=86400, stale-while-revalidate=604800",
+        pathname,
+      }),
+    });
+  } catch {
+    return new Response(
+      "# Server Error\n\nAn error occurred while retrieving the product. Please try again later.",
+      {
+        status: 500,
+        headers: markdownHeaders({
+          cacheControl: "no-cache, no-store, must-revalidate",
+          pathname,
+        }),
+      },
+    );
+  }
+}
