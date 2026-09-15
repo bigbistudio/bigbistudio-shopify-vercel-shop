@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang={shopConfig.localization.locale}>
       <head>{shopConfig.botid.isEnabled && <BotIdClient protect={botIdProtectedRoutes} />}</head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh flex-col font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh flex-col font-sans antialiased bigbistyle`}
       >
         <a
           href="#main-content"
