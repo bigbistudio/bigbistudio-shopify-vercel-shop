@@ -20,6 +20,12 @@ import {
   useState,
 } from "react";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -322,23 +328,30 @@ function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
               </div>
             </PreviewCard>
 
-            <PreviewCard title="Choice inputs" token="checkbox / radio">
-              <div className="grid w-full gap-4 sm:grid-cols-2">
-                <Label>
-                  <Input type="checkbox" className="size-4 w-4 p-0" defaultChecked />
-                  Subscribe to updates
-                </Label>
-
-                <Label>
-                  <Input
-                    type="radio"
-                    name="styleguide-choice"
-                    className="size-4 w-4 p-0"
-                    defaultChecked
-                  />
-                  Option one
-                </Label>
-              </div>
+            <PreviewCard title="Accordion" token="Accordion">
+              <Accordion defaultValue={["shipping"]} className="max-w-lg">
+                <AccordionItem value="shipping">
+                  <AccordionTrigger>What are your shipping options?</AccordionTrigger>
+                  <AccordionContent>
+                    We offer standard (5-7 days), express (2-3 days), and overnight shipping. Free
+                    shipping on international orders.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="returns">
+                  <AccordionTrigger>What is your return policy?</AccordionTrigger>
+                  <AccordionContent>
+                    Returns accepted within 30 days. Items must be unused and in original packaging.
+                    Refunds processed within 5-7 business days.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="support">
+                  <AccordionTrigger>How can I contact customer support?</AccordionTrigger>
+                  <AccordionContent>
+                    Reach us via email, live chat, or phone. We respond within 24 hours during
+                    business days.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </PreviewCard>
 
             <PreviewCard title="Textarea" token="Textarea">
