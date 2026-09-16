@@ -1,6 +1,6 @@
 import { BotIdClient } from "botid/client";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
 import { Suspense } from "react";
@@ -19,9 +19,10 @@ import { seedCartData } from "@/lib/cart/server";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates } from "@/lib/seo";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const interSans = Inter({
+  variable: "--font-inter-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang={shopConfig.localization.locale}>
       <head>{shopConfig.botid.isEnabled && <BotIdClient protect={botIdProtectedRoutes} />}</head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh flex-col font-sans antialiased`}
+        className={`${interSans.variable} ${geistMono.variable} flex min-h-dvh flex-col font-sans antialiased`}
       >
         <a
           href="#main-content"
