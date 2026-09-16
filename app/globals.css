@@ -71,7 +71,7 @@
   ); /* 64px = h-16 single nav row + safe area */
   --radius: 0.625rem;
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
   --card: #ffffff;
   --card-foreground: #171717;
   --popover: #ffffff;
@@ -80,8 +80,8 @@
   --primary-foreground: #ffffff;
   --secondary: #e9e9e9;
   --secondary-foreground: #171717;
-  --muted: #e9e9e9;
-  --muted-foreground: #666666;
+  --muted: #e3e3e3;
+  --muted-foreground: #4b5563;
   --accent: #efefef;
   --accent-foreground: #171717;
   --destructive: #cc0001;
