@@ -1,6 +1,16 @@
 "use client";
 
-import { ArrowRight, Grid3X3, Menu, Plus, Settings, Trash2, X } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Delete,
+  Grid3X3,
+  Menu,
+  Plus,
+  Settings,
+  Trash2,
+  X,
+} from "lucide-react";
 import { createContext, type MouseEvent, type ReactNode, useContext, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -216,7 +226,7 @@ function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
 
           <div className="grid gap-6 md:grid-cols-2">
             <PreviewCard title="Button variants" token="variant">
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center xl:grid xl:grid-cols-4 gap-4">
                 <Button>Default</Button>
 
                 <Button variant="destructive">Destructive</Button>
@@ -256,10 +266,15 @@ function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
             </PreviewCard>
 
             <PreviewCard title="Button composition" token="icon + label">
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center xl:grid xl:grid-cols-4 gap-4">
                 <Button>
                   Continue
                   <ArrowRight />
+                </Button>
+
+                <Button variant="destructive">
+                  <Trash2 />
+                  Delete
                 </Button>
 
                 <Button variant="outline">
@@ -270,6 +285,16 @@ function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
                 <Button variant="secondary">
                   <Settings />
                   Settings
+                </Button>
+
+                <Button variant="ghost">
+                  Products
+                  <ChevronDown />
+                </Button>
+
+                <Button variant="link">
+                  View more
+                  <ArrowRight />
                 </Button>
               </div>
             </PreviewCard>
