@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { ArrowRight, Plus, Settings, Trash2 } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -169,15 +171,62 @@ export function StudyGuide() {
           />
 
           <div className="grid gap-6 md:grid-cols-2">
-            <PreviewCard title="Buttons" token="bg-primary">
-              <div className="flex flex-wrap gap-3">
-                <Button>Primary</Button>
+            <PreviewCard title="Button variants" token="variant">
+              <div className="flex flex-wrap items-center gap-3">
+                <Button>Default</Button>
+
+                <Button variant="destructive">Destructive</Button>
+
+                <Button variant="outline">Outline</Button>
 
                 <Button variant="secondary">Secondary</Button>
 
-                <Button variant="outline">Accent</Button>
+                <Button variant="ghost">Ghost</Button>
+
+                <Button variant="link">Link</Button>
 
                 <Button className="bg-shop text-white hover:bg-shop/90">Shop</Button>
+              </div>
+            </PreviewCard>
+
+            <PreviewCard title="Button sizes" token="size">
+              <div className="flex flex-wrap items-center gap-3">
+                <Button size="sm">Small</Button>
+
+                <Button>Default</Button>
+
+                <Button size="lg">Large</Button>
+
+                <Button size="icon-sm" aria-label="Add item">
+                  <Plus />
+                </Button>
+
+                <Button size="icon" aria-label="Open settings">
+                  <Settings />
+                </Button>
+
+                <Button size="icon-lg" aria-label="Delete item" variant="destructive">
+                  <Trash2 />
+                </Button>
+              </div>
+            </PreviewCard>
+
+            <PreviewCard title="Button composition" token="icon + label">
+              <div className="flex flex-wrap items-center gap-3">
+                <Button>
+                  Continue
+                  <ArrowRight />
+                </Button>
+
+                <Button variant="outline">
+                  <Plus />
+                  Add item
+                </Button>
+
+                <Button variant="secondary">
+                  <Settings />
+                  Settings
+                </Button>
               </div>
             </PreviewCard>
 
