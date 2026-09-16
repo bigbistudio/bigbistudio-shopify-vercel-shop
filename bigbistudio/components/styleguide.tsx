@@ -11,7 +11,14 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { createContext, type MouseEvent, type ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  type MouseEvent,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -478,7 +485,37 @@ function useGridClass() {
 
 function FloatingToc({ onToggleGrid }: { onToggleGrid: () => void }) {
   const [open, setOpen] = useState(true);
+  const [activeId, setActiveId] = useState("colors");
   const { gridVisible } = useContext(StyleGuideContext);
+
+  useEffect(() => {
+    const sections = tocItems
+      .map(({ id }) => document.getElementById(id))
+      .filter((element): element is HTMLElement => element !== null);
+
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top));
+
+        if (visibleEntries[0]) {
+          setActiveId(visibleEntries[0].target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "-20% 0px -65% 0px",
+        threshold: 0,
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
 
   function handleNavigate(event: MouseEvent<HTMLAnchorElement>, id: string) {
     event.preventDefault();
@@ -524,7 +561,12 @@ function FloatingToc({ onToggleGrid }: { onToggleGrid: () => void }) {
         {tocItems.map((item) => (
           <a
             key={item.id}
-            className="rounded-md px-2.5 py-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+            aria-current={activeId === item.id ? "location" : undefined}
+            className={`rounded-md px-2.5 py-1.5 text-[13px] transition-colors hover:bg-muted/30 hover:text-foreground border border-transparent ${
+              activeId === item.id
+                ? "bg-muted/60 font-medium text-foreground"
+                : "text-muted-foreground hover:border-border hover:border-dashed"
+            }`}
             href={`#${item.id}`}
             onClick={(event) => handleNavigate(event, item.id)}
           >
