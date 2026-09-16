@@ -2,10 +2,11 @@ import { PredictiveSearchProvider } from "@shopify/hydrogen/react";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { Logo } from "@/bigbistudio/components/Logo";
 import { Container } from "@/components/ui/container";
 import { shopConfig } from "@/lib/config";
+import { getMenu } from "@/lib/menu/server";
 import type { MenuItem } from "@/lib/shopify/transforms/menu/types";
-import { Logo } from "@/bigbistudio/components/Logo";
 
 import { NavAccount, NavAccountFallback } from "./account";
 import { CartIcon, CartIconFallback } from "./cart";
@@ -13,8 +14,9 @@ import { MobileMenu } from "./mobile-menu";
 import { QuickLinks } from "./quick-links";
 import { SearchModal } from "./search-modal";
 
-export function Nav() {
-  const items: MenuItem[] = [
+export async function Nav() {
+  const menu = await getMenu({ handle: "main-menu" });
+  const items: MenuItem[] = menu?.items ?? [
     { id: "default-nav-shop", title: "Shop", url: "/collections/all", type: "HTTP", items: [] },
   ];
   return (
@@ -23,7 +25,7 @@ export function Nav() {
       id="nav-outer"
     >
       <Container className="flex justify-center py-2">
-        <div className="flex h-12 items-center justify-between gap-2.5 md:gap-5 px-2 py-2 bg-background border border-border/40 rounded-md w-full max-w-6xl">
+        <div className="flex max-h-16 items-center justify-between gap-2.5 md:gap-5 px-3 py-2 bg-background border border-border/40 rounded-md w-full max-w-6xl">
           <MobileMenu items={items} />
 
           <Link className="flex items-center shrink-0" href="/">
