@@ -1,5 +1,7 @@
-import { ArrowRight, Plus, Settings, Trash2 } from "lucide-react";
-import type { ReactNode } from "react";
+"use client";
+
+import { ArrowRight, Grid3X3, Menu, Plus, Settings, Trash2, X } from "lucide-react";
+import { createContext, type MouseEvent, type ReactNode, useContext, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,10 +60,42 @@ const typeScale = [
   { name: "7xl", className: "text-7xl", sample: "Heading 7XL" },
 ];
 
+const tocItems = [
+  { id: "colors", label: "Colors" },
+  { id: "text-colors", label: "Text colors" },
+  { id: "typography", label: "Typography" },
+  { id: "headings", label: "Headings" },
+  { id: "radius", label: "Radius" },
+  { id: "components", label: "Components" },
+  { id: "layout-tokens", label: "Layout tokens" },
+  { id: "breakpoints", label: "Breakpoints" },
+  { id: "utilities", label: "Utilities" },
+];
+
+interface StyleGuideContextValue {
+  gridVisible: boolean;
+}
+
+const StyleGuideContext = createContext<StyleGuideContextValue>({ gridVisible: true });
+
 export function StudyGuide() {
+  const [gridVisible, setGridVisible] = useState(true);
+
+  return (
+    <StyleGuideContext.Provider value={{ gridVisible }}>
+      <StudyGuideContent onToggleGrid={() => setGridVisible((visible) => !visible)} />
+    </StyleGuideContext.Provider>
+  );
+}
+
+function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
+  const gridClass = useGridClass();
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-6xl space-y-20 lg:px-6 py-16">
+        <FloatingToc onToggleGrid={onToggleGrid} />
+
         {/* Header */}
         <header className="space-y-4">
           <p className="text-sm font-medium text-muted-foreground">BIGBI STUDIO</p>
@@ -75,7 +109,7 @@ export function StudyGuide() {
         </header>
 
         {/* Colors */}
-        <section className="space-y-8">
+        <section id="colors" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Colors"
             description="Semantic color tokens exposed through Tailwind utilities."
@@ -91,7 +125,7 @@ export function StudyGuide() {
         </section>
 
         {/* Text colors */}
-        <section className="space-y-8">
+        <section id="text-colors" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Text colors"
             description="Foreground tokens for semantic text usage."
@@ -107,7 +141,7 @@ export function StudyGuide() {
         </section>
 
         {/* Typography */}
-        <section className="space-y-8">
+        <section id="typography" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Typography"
             description="Geist typography scale with tighter tracking on larger sizes."
@@ -117,7 +151,7 @@ export function StudyGuide() {
             {typeScale.map((type, index) => (
               <div
                 key={type.name}
-                className={`grid gap-4 md:grid-cols-[100px_1fr] ${
+                className={`grid gap-4 md:grid-cols-[110px_1fr] ${
                   index !== typeScale.length - 1 ? "border-b border-dashed" : ""
                 }`}
               >
@@ -125,7 +159,7 @@ export function StudyGuide() {
                   <code className="text-xs text-muted-foreground">{type.className}</code>
                 </div>
 
-                <div className={`${previewGrid} flex min-h-20 items-center px-6`}>
+                <div className={`${gridClass} flex min-h-20 items-center px-6`}>
                   <span className={type.className}>{type.sample}</span>
                 </div>
               </div>
@@ -134,7 +168,7 @@ export function StudyGuide() {
         </section>
 
         {/* Headings */}
-        <section className="space-y-8">
+        <section id="headings" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Headings"
             description="Heading scale inherits the tracking values defined in @theme."
@@ -151,7 +185,7 @@ export function StudyGuide() {
         </section>
 
         {/* Radius */}
-        <section className="space-y-8">
+        <section id="radius" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Radius"
             description="Radius utilities are derived from the base --radius token."
@@ -167,7 +201,7 @@ export function StudyGuide() {
         </section>
 
         {/* Components */}
-        <section className="space-y-8">
+        <section id="components" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Component patterns"
             description="Basic combinations using the semantic tokens."
@@ -321,7 +355,7 @@ export function StudyGuide() {
         </section>
 
         {/* Layout tokens */}
-        <section className="space-y-8">
+        <section id="layout-tokens" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Layout tokens"
             description="Important CSS variables that are not directly color tokens."
@@ -355,7 +389,7 @@ export function StudyGuide() {
         </section>
 
         {/* Breakpoints */}
-        <section className="space-y-8">
+        <section id="breakpoints" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Breakpoints"
             description="Additional responsive breakpoints defined by Vercel Shop."
@@ -380,7 +414,7 @@ export function StudyGuide() {
         </section>
 
         {/* Utilities */}
-        <section className="space-y-8">
+        <section id="utilities" className="scroll-mt-8 space-y-8">
           <SectionHeading
             title="Utilities"
             description="Custom utilities provided by global.css."
@@ -405,6 +439,80 @@ export function StudyGuide() {
   );
 }
 
+function useGridClass() {
+  const { gridVisible } = useContext(StyleGuideContext);
+  return gridVisible ? previewGrid : "";
+}
+
+function FloatingToc({ onToggleGrid }: { onToggleGrid: () => void }) {
+  const [open, setOpen] = useState(true);
+  const { gridVisible } = useContext(StyleGuideContext);
+
+  function handleNavigate(event: MouseEvent<HTMLAnchorElement>, id: string) {
+    event.preventDefault();
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const top = target.getBoundingClientRect().top + window.scrollY - 100;
+    window.history.pushState(null, "", `#${id}`);
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+
+  if (!open) {
+    return (
+      <Button
+        aria-label="Open table of contents"
+        aria-haspopup
+        className="fixed right-4 top-1/2 z-40 -translate-y-1/2 shadow-line p-4 border-border/40 rounded-full hover:scale-110 hover:bg-muted/40"
+        onClick={() => setOpen(true)}
+        size="icon-lg"
+        variant="outline"
+      >
+        <Menu />
+      </Button>
+    );
+  }
+
+  return (
+    <aside className="hidden lg:inline-block fixed right-4 top-1/2 z-40 w-40 -translate-y-1/2 rounded-xl border border-border/60 bg-card shadow-line max-sm:right-3 max-sm:w-[calc(100vw-1.5rem)]">
+      <div className="flex items-center justify-between gap-3 border-b border-border/40 p-4 py-2">
+        <p className="text-sm font-medium">Navigation</p>
+
+        <Button
+          aria-label="Close table of contents"
+          onClick={() => setOpen(false)}
+          size="icon-sm"
+          variant="ghost"
+        >
+          <X />
+        </Button>
+      </div>
+
+      <nav aria-label="Style guide sections" className="grid gap-0.5 px-2 py-2">
+        {tocItems.map((item) => (
+          <a
+            key={item.id}
+            className="rounded-md px-2.5 py-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+            href={`#${item.id}`}
+            onClick={(event) => handleNavigate(event, item.id)}
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <div className="flex items-center justify-between gap-3 border-t border-border/40 p-4 py-2">
+        <Label className="text-sm" htmlFor="styleguide-grid-toggle">
+          <Grid3X3 className="size-4 text-muted-foreground" />
+          Grid
+        </Label>
+
+        <Switch checked={gridVisible} id="styleguide-grid-toggle" onCheckedChange={onToggleGrid} />
+      </div>
+    </aside>
+  );
+}
+
 function SectionHeading({ title, description }: { title: string; description: string }) {
   return (
     <div className="space-y-2">
@@ -425,16 +533,14 @@ function PreviewCard({
   children: ReactNode;
 }) {
   return (
-    <div className={`${previewGrid} overflow-hidden rounded-lg border border-dashed bg-card`}>
+    <div className={`${useGridClass()} overflow-hidden rounded-lg border border-dashed bg-card`}>
       <div className="flex items-center justify-between gap-4 border-b border-dashed px-5 py-3 bg-card">
         <h3 className="font-medium">{title}</h3>
 
         <code className="text-right text-xs text-muted-foreground">{token}</code>
       </div>
 
-      <div className="flex min-h-40 items-center justify-center p-6">
-        {children}
-      </div>
+      <div className="flex min-h-40 items-center justify-center p-6">{children}</div>
     </div>
   );
 }
