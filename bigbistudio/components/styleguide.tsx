@@ -56,14 +56,14 @@ const typeScale = [
 export function StudyGuide() {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-6xl space-y-20 px-6 py-16">
+      <div className="mx-auto max-w-6xl space-y-20 lg:px-6 py-16">
         {/* Header */}
         <header className="space-y-4">
           <p className="text-sm font-medium text-muted-foreground">BIGBI STUDIO</p>
 
-          <h1 className="text-5xl font-normal tracking-tight">Design Token Study Guide</h1>
+          <h1 className="text-4xl font-normal tracking-tight">Design Token Study Guide</h1>
 
-          <p className="max-w-2xl text-lg text-muted-foreground">
+          <p className="max-w-2xl text-base text-muted-foreground">
             A visual reference for the design tokens defined in{" "}
             <code className="rounded-sm bg-muted px-1.5 py-0.5 text-sm">global.css</code>.
           </p>
@@ -155,7 +155,7 @@ export function StudyGuide() {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {radii.map((radius) => (
               <PreviewCard key={radius.name} title={radius.name} token={radius.className}>
-                <div className={`aspect-square w-full border-2 bg-muted ${radius.className}`} />
+                <div className={`aspect-square w-full border-2 bg-muted/60 ${radius.className}`} />
               </PreviewCard>
             ))}
           </div>
