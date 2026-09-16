@@ -13,6 +13,7 @@
   --font-sans: var(--font-inter-sans);
   --font-mono: var(--font-geist-mono);
   --text-xxs: 0.625rem;
+  --text-base: 1rem;
   /* Headings track tighter as they grow (Inter behavior); attaches to every text-* utility. */
   --text-lg--letter-spacing: -0.01em;
   --text-xl--letter-spacing: -0.015em;
