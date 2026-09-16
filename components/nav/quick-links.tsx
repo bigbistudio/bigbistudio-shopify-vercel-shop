@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { buttonVariants } from "@/components/ui/button";
 import type { MenuItem } from "@/lib/shopify/transforms/menu/types";
 
 const MAX_COLUMNS = 5;
@@ -16,13 +17,18 @@ interface MenuLinkProps {
 function MenuLink({ url, children, className }: MenuLinkProps) {
   if (url.startsWith("http")) {
     return (
-      <a href={url} target="_blank" rel="noopener noreferrer" className={className}>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(className, buttonVariants({ variant: "ghost", size: "sm" }))}
+      >
         {children}
       </a>
     );
   }
   return (
-    <Link href={url} className={className}>
+    <Link href={url} className={cn(className, buttonVariants({ variant: "ghost", size: "sm" }))}>
       {children}
     </Link>
   );
@@ -30,7 +36,7 @@ function MenuLink({ url, children, className }: MenuLinkProps) {
 
 export function QuickLinks({ items }: { items: MenuItem[] }) {
   return (
-    <ul className="hidden md:flex items-center gap-5">
+    <ul className="hidden md:flex items-center justify-center gap-5 flex-1">
       {items.map((item) => (
         <NavItem key={item.id} item={item} />
       ))}
@@ -43,7 +49,7 @@ const TRIGGER_CLASS = "flex items-center gap-1 text-sm hover:opacity-70 transiti
 function NavItem({ item }: { item: MenuItem }) {
   if (item.items.length === 0) {
     return (
-      <li className="flex items-center h-16">
+      <li className="flex items-center">
         <MenuLink url={item.url} className={TRIGGER_CLASS}>
           {item.title}
         </MenuLink>
