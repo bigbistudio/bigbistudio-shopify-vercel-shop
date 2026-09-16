@@ -36,7 +36,7 @@ function MenuLink({ url, children, className }: MenuLinkProps) {
 
 export function QuickLinks({ items }: { items: MenuItem[] }) {
   return (
-    <ul className="hidden md:flex items-center justify-center gap-1 flex-1">
+    <ul className="hidden lg:flex items-center justify-center flex-1">
       {items.map((item) => (
         <NavItem key={item.id} item={item} />
       ))}

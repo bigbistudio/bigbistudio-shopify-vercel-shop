@@ -48,7 +48,7 @@ export function MobileMenu({ items }: { items: MenuItem[] }) {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         render={
-          <button type="button" className="md:hidden -ml-2 p-2" aria-label="Menu">
+          <button type="button" className="lg:hidden -ml-2 p-2" aria-label="Menu">
             <Menu className="size-5" />
           </button>
         }
