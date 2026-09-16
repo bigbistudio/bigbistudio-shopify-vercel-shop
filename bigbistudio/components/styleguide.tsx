@@ -1,13 +1,16 @@
-import type { ReactNode } from "react";
-
 import { ArrowRight, Plus, Settings, Trash2 } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 const previewGrid =
-  "bg-[linear-gradient(to_right,rgb(from_var(--color-border)_r_g_b/20%)_1px,transparent_1px),linear-gradient(to_bottom,rgb(from_var(--color-border)_r_g_b/20%)_1px,transparent_1px)] bg-size-[12px_12px]";
+  "bg-[linear-gradient(to_right,rgb(from_var(--color-border)_r_g_b/10%)_1px,transparent_1px),linear-gradient(to_bottom,rgb(from_var(--color-border)_r_g_b/10%)_1px,transparent_1px)] bg-size-[12px_12px]";
 
 const colors = [
   { name: "background", className: "bg-background" },
@@ -230,8 +233,61 @@ export function StudyGuide() {
               </div>
             </PreviewCard>
 
-            <PreviewCard title="Input" token="border-input">
-              <Input type="text" placeholder="Enter something..." />
+            <PreviewCard title="Input types" token="Input type">
+              <div className="grid w-full gap-3 sm:grid-cols-2">
+                <Input type="text" placeholder="Text" />
+                <Input type="email" placeholder="Email" />
+                <Input type="password" placeholder="Password" />
+                <Input type="number" placeholder="Number" />
+                <Input type="search" placeholder="Search" />
+                <Input type="tel" placeholder="Telephone" />
+                <Input type="url" placeholder="Website URL" />
+                <Input type="date" aria-label="Date" />
+                <Input type="time" aria-label="Time" />
+                <Input type="color" aria-label="Color" className="p-1" />
+                <Input type="file" aria-label="Upload file" className="h-auto p-1.5" />
+              </div>
+            </PreviewCard>
+
+            <PreviewCard title="Choice inputs" token="checkbox / radio">
+              <div className="grid w-full gap-4 sm:grid-cols-2">
+                <Label>
+                  <Input type="checkbox" className="size-4 w-4 p-0" defaultChecked />
+                  Subscribe to updates
+                </Label>
+
+                <Label>
+                  <Input
+                    type="radio"
+                    name="styleguide-choice"
+                    className="size-4 w-4 p-0"
+                    defaultChecked
+                  />
+                  Option one
+                </Label>
+              </div>
+            </PreviewCard>
+
+            <PreviewCard title="Textarea" token="Textarea">
+              <Textarea placeholder="Write a message..." />
+            </PreviewCard>
+
+            <PreviewCard title="Select" token="Select">
+              <Select defaultValue="studio">
+                <SelectTrigger className="w-full">Choose a studio</SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="studio">Bigbi Studio</SelectItem>
+                  <SelectItem value="commerce">Commerce</SelectItem>
+                  <SelectItem value="design">Design systems</SelectItem>
+                </SelectContent>
+              </Select>
+            </PreviewCard>
+
+            <PreviewCard title="Switch" token="Switch">
+              <div className="flex w-full items-center justify-between gap-4">
+                <Label htmlFor="styleguide-notifications">Email notifications</Label>
+                <Switch id="styleguide-notifications" defaultChecked />
+              </div>
             </PreviewCard>
 
             <PreviewCard title="Card" token="bg-card">
@@ -369,14 +425,14 @@ function PreviewCard({
   children: ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-dashed bg-card">
-      <div className="flex items-center justify-between gap-4 border-b border-dashed px-5 py-3">
+    <div className={`${previewGrid} overflow-hidden rounded-lg border border-dashed bg-card`}>
+      <div className="flex items-center justify-between gap-4 border-b border-dashed px-5 py-3 bg-card">
         <h3 className="font-medium">{title}</h3>
 
         <code className="text-right text-xs text-muted-foreground">{token}</code>
       </div>
 
-      <div className={`${previewGrid} flex min-h-40 items-center justify-center p-6`}>
+      <div className="flex min-h-40 items-center justify-center p-6">
         {children}
       </div>
     </div>
