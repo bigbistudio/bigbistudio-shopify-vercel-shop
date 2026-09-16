@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
 const previewGrid =
   "bg-[linear-gradient(to_right,rgb(from_var(--color-border)_r_g_b/20%)_1px,transparent_1px),linear-gradient(to_bottom,rgb(from_var(--color-border)_r_g_b/20%)_1px,transparent_1px)] bg-size-[12px_12px]";
 
@@ -167,34 +171,22 @@ export function StudyGuide() {
           <div className="grid gap-6 md:grid-cols-2">
             <PreviewCard title="Buttons" token="bg-primary">
               <div className="flex flex-wrap gap-3">
-                <button className="rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
-                  Primary
-                </button>
+                <Button>Primary</Button>
 
-                <button className="rounded-sm bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground">
-                  Secondary
-                </button>
+                <Button variant="secondary">Secondary</Button>
 
-                <button className="rounded-sm bg-accent px-4 py-2 text-sm font-medium text-accent-foreground">
-                  Accent
-                </button>
+                <Button variant="outline">Accent</Button>
 
-                <button className="rounded-sm bg-shop px-4 py-2 text-sm font-medium text-white">
-                  Shop
-                </button>
+                <Button className="bg-shop text-white hover:bg-shop/90">Shop</Button>
               </div>
             </PreviewCard>
 
             <PreviewCard title="Input" token="border-input">
-              <input
-                type="text"
-                placeholder="Enter something..."
-                className="h-10 w-full rounded-sm border border-input bg-background px-3 text-base outline-none ring-ring/50 placeholder:text-muted-foreground focus:ring-2"
-              />
+              <Input type="text" placeholder="Enter something..." />
             </PreviewCard>
 
             <PreviewCard title="Card" token="bg-card">
-              <div className="w-full rounded-lg border border-dashed bg-card p-6">
+              <div className="w-full rounded-lg border bg-card p-6">
                 <div className="space-y-3">
                   <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Card
@@ -211,13 +203,13 @@ export function StudyGuide() {
 
             <PreviewCard title="Status" token="positive / destructive">
               <div className="flex flex-wrap gap-3">
-                <span className="rounded-sm bg-positive px-3 py-1.5 text-sm text-positive-foreground">
+                <Badge className="rounded-sm bg-positive text-positive-foreground hover:bg-positive/90">
                   Positive
-                </span>
+                </Badge>
 
-                <span className="rounded-sm bg-destructive px-3 py-1.5 text-sm text-destructive-foreground">
+                <Badge variant="destructive" className="rounded-sm">
                   Destructive
-                </span>
+                </Badge>
               </div>
             </PreviewCard>
           </div>
