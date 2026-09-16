@@ -103,6 +103,8 @@
   --sidebar-accent-foreground: #171717;
   --sidebar-border: #c8c8c8;
   --sidebar-ring: #5a5a5a;
+
+  --text-7xl--line-height: 1.2;
 }
 
 @layer components {
