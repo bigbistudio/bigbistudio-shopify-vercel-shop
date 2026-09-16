@@ -40,10 +40,13 @@ const textColors = [
 ];
 
 const radii = [
-  { name: "sm", className: "rounded-sm" },
-  { name: "md", className: "rounded-sm" },
-  { name: "lg", className: "rounded-lg" },
-  { name: "xl", className: "rounded-xl" },
+  { name: "none", className: "rounded-none", value: "0px" },
+  { name: "sm", className: "rounded-sm", value: "6px" },
+  { name: "md", className: "rounded-md", value: "8px" },
+  { name: "lg", className: "rounded-lg", value: "10px" },
+  { name: "xl", className: "rounded-xl", value: "14px" },
+  { name: "2xl", className: "rounded-2xl", value: "16px" },
+  { name: "full", className: "rounded-full", value: "9999px" },
 ];
 
 const typeScale = [
@@ -191,10 +194,14 @@ function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
             description="Radius utilities are derived from the base --radius token."
           />
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
             {radii.map((radius) => (
               <PreviewCard key={radius.name} title={radius.name} token={radius.className}>
-                <div className={`aspect-square w-full border-2 bg-muted/60 ${radius.className}`} />
+                <div
+                  className={`flex aspect-square w-full items-center justify-center border-2 bg-muted/60 ${radius.className}`}
+                >
+                  <span className="text-sm font-medium text-muted-foreground">{radius.value}</span>
+                </div>
               </PreviewCard>
             ))}
           </div>
