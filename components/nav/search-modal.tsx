@@ -16,6 +16,7 @@ import {
 } from "react";
 
 import { Price } from "@/components/product/price";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { usePredictiveSearch } from "@/lib/search/client";
 import type { PredictiveSearchProduct, SearchSuggestion } from "@/lib/search/types";
@@ -50,7 +51,9 @@ function SearchTrigger() {
           type="button"
           className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
         >
-          <Search className="size-5" />
+          <Button variant="ghost" size="icon-sm">
+            <Search className="size-4.5" strokeWidth={1.6} />
+          </Button>
           <span className="sr-only">Search</span>
         </button>
       }

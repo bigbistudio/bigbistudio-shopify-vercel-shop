@@ -38,7 +38,7 @@ export async function Nav() {
 
           <QuickLinks items={items} />
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2">
             {shopConfig.search.isEnabled && (
               <PredictiveSearchProvider
                 debounceInMs={300}
