@@ -32,13 +32,13 @@ export function OverlayContent() {
       <div className="flex h-full flex-col gap-5 px-2.5">
         <CartWarnings />
         <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <h3 className="mb-6 text-2xl">Your cart is empty</h3>
+          <h3 className="mb-6 text-xl font-medium">Your cart is empty</h3>
           <Button
             onClick={() => {
               setOverlayOpen(false);
               router.push("/");
             }}
-            className="h-12 px-8"
+            variant="default"
           >
             Continue Shopping
           </Button>

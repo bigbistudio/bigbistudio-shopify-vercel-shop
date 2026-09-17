@@ -35,9 +35,9 @@ export function CartOverlay({ description, title }: CartOverlayProps) {
   return (
     <Sheet open={isOverlayOpen} onOpenChange={setOverlayOpen}>
       <SheetContent closeButton={false} overlay={false} side="right" className="gap-0 p-0">
-        <div className="flex h-16 shrink-0 items-center justify-between gap-2 px-2.5">
+        <div className="flex h-16 shrink-0 items-center justify-between gap-2 px-2.5 border-b border-border/60">
           <div className="flex items-center gap-1.5">
-            <SheetTitle className="font-normal text-xl leading-4">{title}</SheetTitle>
+            <SheetTitle className="text-lg font-semibold">{title}</SheetTitle>
             <CartCountBadge />
           </div>
           <SheetClose

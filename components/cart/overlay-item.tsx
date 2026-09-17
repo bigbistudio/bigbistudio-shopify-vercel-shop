@@ -69,7 +69,7 @@ export function OverlayItem({ item }: OverlayItemProps) {
       {href ? (
         <Link
           href={href}
-          className="relative size-18 shrink-0 cursor-pointer self-start overflow-hidden transition-opacity hover:opacity-80"
+          className="relative size-18 shrink-0 cursor-pointer self-start overflow-hidden transition-opacity hover:opacity-80 mt-2"
         >
           {imageContent}
         </Link>
@@ -81,10 +81,10 @@ export function OverlayItem({ item }: OverlayItemProps) {
           <div className="grid gap-1">
             {href ? (
               <Link href={href} className="cursor-pointer transition-opacity hover:opacity-70">
-                <h3 className="line-clamp-1 text-sm font-medium text-foreground">{title}</h3>
+                <h3 className="line-clamp-1 text-base font-medium text-foreground">{title}</h3>
               </Link>
             ) : (
-              <h3 className="line-clamp-1 text-sm font-medium text-foreground">{title}</h3>
+              <h3 className="line-clamp-1 text-base font-medium text-foreground">{title}</h3>
             )}
             {merchandise?.selectedOptions?.length ? (
               <p className="text-xs text-muted-foreground">
@@ -125,7 +125,7 @@ export function OverlayItem({ item }: OverlayItemProps) {
             <>
               <div
                 aria-label="Item quantity"
-                className="grid h-6 grid-cols-[1.75rem_1.5rem_1.75rem] rounded-full ring-1 ring-border ring-inset"
+                className="grid h-6 grid-cols-[1.75rem_1.5rem_1.75rem] rounded-full ring-1 ring-border/60 ring-inset"
                 role="group"
               >
                 <button
