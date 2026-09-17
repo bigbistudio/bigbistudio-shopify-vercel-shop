@@ -21,14 +21,14 @@ function MenuLink({ url, children, className }: MenuLinkProps) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className={cn(className, buttonVariants({ variant: "ghost", size: "sm" }))}
+        className={cn(buttonVariants({ variant: "ghost", size: "sm" }), className)}
       >
         {children}
       </a>
     );
   }
   return (
-    <Link href={url} className={cn(className, buttonVariants({ variant: "ghost", size: "sm" }))}>
+    <Link href={url} className={cn(buttonVariants({ variant: "ghost", size: "sm" }), className)}>
       {children}
     </Link>
   );
@@ -44,7 +44,8 @@ export function QuickLinks({ items }: { items: MenuItem[] }) {
   );
 }
 
-const TRIGGER_CLASS = "flex items-center gap-1 text-sm font-medium hover:opacity-70 transition-opacity";
+const TRIGGER_CLASS =
+  "flex items-center gap-1 text-sm font-medium hover:opacity-70 transition-opacity";
 
 function NavItem({ item }: { item: MenuItem }) {
   if (item.items.length === 0) {

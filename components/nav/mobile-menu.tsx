@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "cn";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
@@ -11,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { buttonVariants } from "@/components/ui/button";
 import type { MenuItem } from "@/lib/shopify/transforms/menu/types";
 
 interface MenuLinkProps {
@@ -27,7 +29,7 @@ function MenuLink({ url, children, className, onClick }: MenuLinkProps) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className={className}
+        className={cn(buttonVariants({ variant: "link", size: "default" }), className)}
         onClick={onClick}
       >
         {children}
@@ -35,7 +37,11 @@ function MenuLink({ url, children, className, onClick }: MenuLinkProps) {
     );
   }
   return (
-    <Link href={url} className={className} onClick={onClick}>
+    <Link
+      href={url}
+      className={cn(buttonVariants({ variant: "link", size: "default" }), className)}
+      onClick={onClick}
+    >
       {children}
     </Link>
   );
@@ -53,11 +59,11 @@ export function MobileMenu({ items }: { items: MenuItem[] }) {
           </button>
         }
       />
-      <SheetContent side="left" className="gap-0">
-        <div className="flex h-16 items-center px-5">
+      <SheetContent side="left" className="gap-4">
+        <div className="flex h-16 items-center px-5 border-b border-border/60">
           <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
         </div>
-        <nav className="px-5">
+        <nav className="px-1 py-2">
           <MobileMenuList items={items} onLinkClick={close} />
         </nav>
       </SheetContent>
@@ -76,7 +82,7 @@ function MobileMenuList({ items, onLinkClick }: { items: MenuItem[]; onLinkClick
             <MenuLink
               url={item.url}
               onClick={onLinkClick}
-              className="text-base transition-colors hover:text-muted-foreground"
+              className="text-base flex justify-start transition-colors hover:text-muted-foreground w-full"
             >
               {item.title}
             </MenuLink>
