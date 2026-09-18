@@ -2,6 +2,7 @@ import { cn } from "cn";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { Logo } from "@/bigbistudio/components/Logo";
 import { PaymentMethods } from "@/bigbistudio/components/PaymentMethods";
 import { Container } from "@/components/ui/container";
 import { Sections } from "@/components/ui/sections";
@@ -39,16 +40,26 @@ export async function Footer() {
     <footer>
       {/* pb-22 clears the fixed agent ActionBar pill when it renders */}
       <Container className={cn("pt-20 pb-10", shopConfig.agent.isEnabled && "pb-22")}>
-        <Sections className="gap-10">
-          <div className="grid gap-10 lg:grid-cols-[minmax(12rem,1fr)_minmax(0,2fr)]">
-            <div className="max-w-56 space-y-4">
-              <h2 className="text-lg font-semibold">{shopConfig.site.name}</h2>
-              <p className="text-sm leading-6 text-muted-foreground">
-                High quality commerce data for your storefront.
-              </p>
-              <p className="text-sm leading-6 text-muted-foreground">
-                Made in small runs. Buy less. Keep it longer.
-              </p>
+        <Sections className="gap-20">
+          <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
+            <div className="max-w-80 space-y-6">
+              <Link className="flex items-center shrink-0 flex-1 lg:flex-none" href="/">
+                <Logo
+                  src="/logo.svg"
+                  alt={shopConfig.site.name}
+                  width={180}
+                  height={36}
+                  className="active:scale-[0.99] transition-transform duration-150"
+                />
+              </Link>
+              <div className="flex flex-col gap-0.5">
+                <p className="text-sm leading-6 text-muted-foreground">
+                  High quality commerce data for your storefront.
+                </p>
+                <p className="text-sm leading-6 text-muted-foreground">
+                  Made in small runs. Buy less. Keep it longer.
+                </p>
+              </div>
             </div>
             <FooterMenu menus={menus} />
           </div>
@@ -111,10 +122,10 @@ function FooterMenu({ menus }: { menus: { menu: { items: MenuItem[] } | null; ti
   return (
     <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
       {menus.map(({ menu, title }) => (
-        <div key={title} className="space-y-3">
+        <div key={title} className="space-y-6 lg:min-w-40">
           <h3 className="text-sm font-semibold">{title}</h3>
           {menu && menu.items.length > 0 && (
-            <ul className="space-y-2">
+            <ul className="space-y-6">
               {menu.items.map((item) => (
                 <li key={item.id}>
                   <MenuLink
@@ -132,4 +143,3 @@ function FooterMenu({ menus }: { menus: { menu: { items: MenuItem[] } | null; ti
     </div>
   );
 }
-
