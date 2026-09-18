@@ -14,6 +14,7 @@ import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { SiteSchema } from "@/components/schema/site-schema";
 import { Toaster } from "@/components/ui/sonner";
+import { TrustStrip } from "@/bigbistudio/components/TrustStrip";
 import { botIdProtectedRoutes } from "@/lib/botid";
 import { seedCartData } from "@/lib/cart/server";
 import { shopConfig } from "@/lib/config";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main id="main-content" className="flex flex-1 flex-col min-w-0">
             {children}
           </main>
+          <TrustStrip />
           <Footer />
           <CartUI />
           <Suspense>
