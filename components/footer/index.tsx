@@ -24,11 +24,17 @@ export async function Footer() {
     { platform: "x", url: "https://x.com/" },
     { platform: "youtube", url: "https://www.youtube.com/" },
   ];
-  const [menu, policies] = await Promise.all([
-    getMenu({ handle: "footer" }),
+  const [shopMenu, exploreMenu, helpMenu, policies] = await Promise.all([
+    getMenu({ handle: "footer-shop" }),
+    getMenu({ handle: "footer-explore" }),
+    getMenu({ handle: "footer-help" }),
     getShopPolicies({}).catch(() => []),
   ]);
-  const items: MenuItem[] = menu?.items ?? [];
+  const menus = [
+    { menu: shopMenu, title: "Shop" },
+    { menu: exploreMenu, title: "Explore" },
+    { menu: helpMenu, title: "Help" },
+  ];
   return (
     <footer>
       {/* pb-22 clears the fixed agent ActionBar pill when it renders */}
@@ -44,12 +50,12 @@ export async function Footer() {
                 Made in small runs. Buy less. Keep it longer.
               </p>
             </div>
-            {items.length > 0 && <FooterMenu items={items} />}
+            <FooterMenu menus={menus} />
           </div>
           <div className="grid gap-8 border-t border-border/60 pt-8 lg:grid-cols-[1fr_auto] lg:items-start">
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start">
               <p className="text-sm leading-5 text-muted-foreground">
-                {`© ${new Date().getFullYear()} ${shopConfig.site.name}`}
+                {`© 2026 ${shopConfig.site.name}`}
               </p>
               {policies.map((policy) => (
                 <Link
@@ -95,32 +101,21 @@ function MenuLink({ url, children, className }: MenuLinkProps) {
   );
 }
 
-function FooterMenu({ items }: { items: MenuItem[] }) {
-  const columns = items.slice(0, 5);
-
+function FooterMenu({ menus }: { menus: { menu: { items: MenuItem[] } | null; title: string }[] }) {
   return (
     <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
-      {columns.map((column) => (
-        <div key={column.id} className="space-y-3">
-          {column.url ? (
-            <MenuLink
-              url={column.url}
-              className="block text-sm font-semibold hover:opacity-70 transition-opacity"
-            >
-              {column.title}
-            </MenuLink>
-          ) : (
-            <h3 className="text-sm font-semibold">{column.title}</h3>
-          )}
-          {column.items.length > 0 && (
+      {menus.map(({ menu, title }) => (
+        <div key={title} className="space-y-3">
+          <h3 className="text-sm font-semibold">{title}</h3>
+          {menu && menu.items.length > 0 && (
             <ul className="space-y-2">
-              {column.items.map((leaf) => (
-                <li key={leaf.id}>
+              {menu.items.map((item) => (
+                <li key={item.id}>
                   <MenuLink
-                    url={leaf.url}
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    url={item.url}
+                    className="block text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    {leaf.title}
+                    {item.title}
                   </MenuLink>
                 </li>
               ))}
