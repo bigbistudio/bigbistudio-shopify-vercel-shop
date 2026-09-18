@@ -58,7 +58,7 @@ export const shopConfig = {
     isEnabled: true,
   },
   site: {
-    name: "Vercel Shop",
+    name: "bigbistudio.com",
     url: defaultUrl,
   },
 } satisfies ShopConfig;

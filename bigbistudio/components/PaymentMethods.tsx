@@ -13,7 +13,6 @@ const PAYMENT_LABELS: Record<PaymentMethod, string> = {
 export function PaymentMethods() {
   return (
     <div className="space-y-4">
-      <p className="text-sm font-medium">Accepted payments</p>
       <div className="flex flex-wrap gap-2">
         {PAYMENT_METHODS.map((method) => (
           <span

@@ -52,28 +52,34 @@ export async function Footer() {
             </div>
             <FooterMenu menus={menus} />
           </div>
-          <div className="grid gap-8 border-t border-border/60 pt-8 lg:grid-cols-[1fr_auto] lg:items-start">
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start">
-              <p className="text-sm leading-5 text-muted-foreground">
+          <div className="grid gap-10 border-t border-border/60 pt-8">
+            <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
+              {socialLinks.length > 0 && (
+                <div className="flex justify-center lg:justify-start">
+                  <SocialLinks links={socialLinks} />
+                </div>
+              )}
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-end">
+                {policies.map((policy) => (
+                  <Link
+                    key={policy.handle}
+                    href={`/policies/${policy.handle}`}
+                    className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {policy.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
+              <p className="text-center text-sm leading-5 text-muted-foreground lg:text-left">
                 {`© 2026 ${shopConfig.site.name}`}
               </p>
-              {policies.map((policy) => (
-                <Link
-                  key={policy.handle}
-                  href={`/policies/${policy.handle}`}
-                  className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {policy.title}
-                </Link>
-              ))}
-            </div>
-            {socialLinks.length > 0 && (
-              <div className="flex flex-col items-center gap-3 lg:items-end">
-                <SocialLinks links={socialLinks} />
+              <div className="lg:justify-self-end">
+                <PaymentMethods />
               </div>
-            )}
+            </div>
           </div>
-          <PaymentMethods />
         </Sections>
       </Container>
     </footer>
