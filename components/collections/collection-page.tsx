@@ -38,7 +38,7 @@ export function CollectionDetailPage({
       ) : null}
       <Page className="pt-2.5 md:pt-10">
         <Container>
-          <Sections className="gap-5">
+          <Sections className="gap-5 pb-20">
             <CollectionHeader collection={collection} handle={handle} homeLabel="Home" />
 
             <Suspense fallback={<BrowseFallback />}>
@@ -85,6 +85,19 @@ function CollectionHeader({
       <BreadcrumbSchema items={breadcrumbItems} />
       <CollectionSchema collection={{ handle, title, description, updatedAt }} />
       <div>
+        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link className="transition-colors hover:text-foreground" href="/">
+                {homeLabel}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="text-foreground">
+              {title}
+            </li>
+          </ol>
+        </nav>
         <h1 className="text-3xl sm:text-4xl md:text-5xl">
           <Link href={`/collections/${handle}`}>{title}</Link>
         </h1>
