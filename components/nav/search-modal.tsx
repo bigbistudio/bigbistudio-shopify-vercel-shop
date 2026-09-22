@@ -51,9 +51,7 @@ function SearchTrigger() {
           type="button"
           className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
         >
-          <Button variant="ghost" size="icon-sm">
-            <Search className="size-4.5" strokeWidth={1.6} />
-          </Button>
+          <Search className="size-5" />
           <span className="sr-only">Search</span>
         </button>
       }
