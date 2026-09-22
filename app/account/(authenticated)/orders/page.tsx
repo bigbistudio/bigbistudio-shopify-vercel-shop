@@ -74,20 +74,28 @@ async function OrdersContent({
       {pageInfo.hasNextPage || pageInfo.hasPreviousPage ? (
         <div className="flex items-center justify-between">
           {pageInfo.hasPreviousPage && pageInfo.startCursor ? (
-            <Button asChild variant="outline" size="sm">
-              <Link href={`/account/orders?before=${encodeURIComponent(pageInfo.startCursor)}`}>
-                Newer
-              </Link>
-            </Button>
+            <Button
+              render={
+                <Link href={`/account/orders?before=${encodeURIComponent(pageInfo.startCursor)}`}>
+                  Newer
+                </Link>
+              }
+              variant="outline"
+              size="sm"
+            />
           ) : (
             <span />
           )}
           {pageInfo.hasNextPage && pageInfo.endCursor ? (
-            <Button asChild variant="outline" size="sm">
-              <Link href={`/account/orders?after=${encodeURIComponent(pageInfo.endCursor)}`}>
-                Older
-              </Link>
-            </Button>
+            <Button
+              render={
+                <Link href={`/account/orders?after=${encodeURIComponent(pageInfo.endCursor)}`}>
+                  Older
+                </Link>
+              }
+              variant="outline"
+              size="sm"
+            />
           ) : (
             <span />
           )}

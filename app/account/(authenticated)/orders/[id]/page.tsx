@@ -77,11 +77,15 @@ async function OrderDetailContent({ params }: { params: Promise<{ id: string }> 
       ) : null}
 
       <div className="flex gap-2">
-        <Button asChild variant="outline" size="sm">
-          <a href={order.statusPageUrl} target="_blank" rel="noopener noreferrer">
-            View order status
-          </a>
-        </Button>
+        <Button
+          render={
+            <a href={order.statusPageUrl} target="_blank" rel="noopener noreferrer">
+              View order status
+            </a>
+          }
+          variant="outline"
+          size="sm"
+        />
       </div>
     </>
   );

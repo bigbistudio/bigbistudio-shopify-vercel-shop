@@ -19,9 +19,7 @@ export function ErrorBoundaryContent({ reset }: { reset: () => void }) {
       </p>
       <div className="flex flex-col gap-2.5 sm:flex-row">
         <Button onClick={reset}>Try again</Button>
-        <Button variant="outline" asChild>
-          <Link href="/">Go back to the home page</Link>
-        </Button>
+        <Button variant="outline" render={<Link href="/">Go back to the home page</Link>} />
       </div>
     </div>
   );
