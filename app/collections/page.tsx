@@ -35,13 +35,13 @@ export default async function CollectionsPage() {
   const collections = await getCollectionsListing({});
   const viewCollectionLabel = "View this collection";
   return (
-    <Page className="pt-2.5 md:pt-10">
+    <Page className="py-10 lg:py-20">
       <Container>
         <Sections className="gap-5">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl">Collections</h1>
+          <h1 className="text-xl lg:text-3xl font-medium">Collections</h1>
 
           {collections.length > 0 ? (
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid sm:grid-cols-2 gap-2 lg:grid-cols-3 lg:py-10">
               {collections.map((collection) => (
                 <CollectionCard
                   key={collection.handle}
