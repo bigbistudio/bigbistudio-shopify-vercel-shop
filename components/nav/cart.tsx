@@ -15,7 +15,7 @@ export function CartIconFallback() {
   return (
     <span className="flex items-center justify-center gap-1.5 text-foreground">
       <Button variant="ghost" size="icon-sm">
-        <HandbagIcon className="size-4.5" />
+        <HandbagIcon className="size-4.5" strokeWidth={1.6} />
       </Button>
       <span className="sr-only">Cart</span>
     </span>
