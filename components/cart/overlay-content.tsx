@@ -48,7 +48,7 @@ export function OverlayContent() {
   }
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto px-2.5 py-5 space-y-5">
+      <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-4">
         <CartWarnings />
         <ul className="space-y-5" aria-label="Cart items">
           {displayCart.lines.nodes.map((item) => (
@@ -57,7 +57,7 @@ export function OverlayContent() {
         </ul>
       </div>
 
-      <footer className="px-2.5 pt-5 pb-2.5 space-y-5">
+      <footer className="p-2 sm:p-4 space-y-4">
         <div className="grid gap-2.5">
           <DiscountForm cart={displayCart} />
           <CartTotal cart={displayCart} />
