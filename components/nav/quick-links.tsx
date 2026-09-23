@@ -45,7 +45,7 @@ export function QuickLinks({ items }: { items: MenuItem[] }) {
 }
 
 const TRIGGER_CLASS =
-  "flex items-center gap-1 text-sm font-medium hover:opacity-70 transition-opacity";
+  "flex items-center gap-1 text-[13px] font-medium hover:opacity-70 transition-opacity";
 
 function NavItem({ item }: { item: MenuItem }) {
   if (item.items.length === 0) {
