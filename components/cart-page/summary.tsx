@@ -57,7 +57,7 @@ export function Summary() {
         <div className="flex items-baseline justify-between">
           <span className="text-base text-muted-foreground">Estimated total</span>
           <span
-            className="font-mono text-xl font-medium text-foreground tabular-nums tracking-tight data-[pending=true]:text-muted-foreground"
+            className="text-xl font-medium text-foreground tabular-nums tracking-tight data-[pending=true]:text-muted-foreground"
             data-pending={isCostPending || !currencyCode}
           >
             {isCostPending || !currencyCode

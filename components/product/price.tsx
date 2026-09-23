@@ -18,7 +18,7 @@ export function Price({ amount, currencyCode, className, ...props }: PriceProps)
   ).localizedString;
   return (
     <span
-      className={cn("font-mono text-xl text-foreground tabular-nums tracking-tight", className)}
+      className={cn("text-base text-foreground tabular-nums tracking-tight", className)}
       {...props}
     >
       {price}
