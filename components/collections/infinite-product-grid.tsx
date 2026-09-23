@@ -73,7 +73,7 @@ export function InfiniteProductGrid<TParams>({
   }, [endCursor, hasNextPage]);
   return (
     <>
-      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="grid sm:grid-cols-2 gap-4 lg:grid-cols-3">
         {children}
         {additionalProducts.map((product) => (
           <ProductCard key={product.id} product={product} outOfStockText={outOfStockText} />
