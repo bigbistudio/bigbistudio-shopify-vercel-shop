@@ -47,13 +47,9 @@ function SearchTrigger() {
   return (
     <DialogTrigger
       render={
-        <button
-          type="button"
-          className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
-        >
-          <Search className="size-5" />
-          <span className="sr-only">Search</span>
-        </button>
+        <Button variant="ghost" size="icon-sm">
+          <Search className="size-4.5" strokeWidth={1.6} />
+        </Button>
       }
     />
   );

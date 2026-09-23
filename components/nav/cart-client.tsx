@@ -20,13 +20,9 @@ export function CartIconClient({ cartLabel, initialCart }: CartIconClientProps) 
   const { openOverlay } = useCartDrawer();
 
   return (
-    <button
-      onClick={openOverlay}
-      className="flex cursor-pointer items-center justify-center gap-1.5 text-foreground hover:text-foreground/80 transition-colors"
-      type="button"
-    >
+    <Button variant="ghost" size="icon-sm" onClick={openOverlay}>
       <span className="relative">
-        <HandbagIcon className="size-5" />
+        <HandbagIcon className="size-4.5" strokeWidth={1.6} />
         {quantity > 0 && (
           <span className="absolute -top-2 -right-1 flex size-4 items-center justify-center rounded-full bg-foreground text-xxs leading-none text-background">
             {quantity}
@@ -34,6 +30,6 @@ export function CartIconClient({ cartLabel, initialCart }: CartIconClientProps) 
         )}
       </span>
       <span className="sr-only">{cartLabel}</span>
-    </button>
+    </Button>
   );
 }
