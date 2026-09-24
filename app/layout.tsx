@@ -82,5 +82,16 @@ export const generateMetadata = async (): Promise<Metadata> => {
       default: shopConfig.site.name,
       template: `%s | ${shopConfig.site.name}`,
     },
+    // Only for development
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: {
+        index: false,
+        follow: false,
+        "noimageindex": true,
+      },
+    },
   };
 };
