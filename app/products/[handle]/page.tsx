@@ -120,7 +120,7 @@ export default async function ProductPage({
           variantPromise={variantPromise}
         />
       </Suspense>
-      <Page className="pt-0">
+      <Page className="py-10 lg:py-20">
         <Container className="bg-background">
           <Sections>
             <ProductDetailSection

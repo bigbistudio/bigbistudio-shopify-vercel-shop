@@ -176,7 +176,7 @@ function ProductInfoArea({
         data-uniform-price={product.hasUniformPricing}
       >
         <div data-slot="product-info-header">
-          <h1 className="text-foreground text-3xl">{product.title}</h1>
+          <h1 className="text-xl lg:text-3xl font-medium mb-2">{product.title}</h1>
           {product.hasUniformPricing ? (
             <ProductPrice
               amount={product.priceRange.minVariantPrice.amount}
