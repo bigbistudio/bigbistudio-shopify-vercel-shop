@@ -86,6 +86,7 @@ export async function Footer() {
                       href={href}
                       target={id === "address" ? "_blank" : undefined}
                       rel={id === "address" ? "noopener noreferrer" : undefined}
+                      className="relative transition-colors hover:text-foreground after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
                     >
                       {label}
                     </a>
@@ -107,7 +108,7 @@ export async function Footer() {
                   <Link
                     key={policy.handle}
                     href={`/policies/${policy.handle}`}
-                    className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="relative cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
                   >
                     {policy.title}
                   </Link>
@@ -159,10 +160,10 @@ function FooterMenu({ menus }: { menus: { menu: { items: MenuItem[] } | null; ti
           {menu && menu.items.length > 0 && (
             <ul className="space-y-6">
               {menu.items.map((item) => (
-                <li key={item.id}>
+                <li key={item.id} className="block">
                   <MenuLink
                     url={item.url}
-                    className="block text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="group relative text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
                   >
                     {item.title}
                   </MenuLink>
