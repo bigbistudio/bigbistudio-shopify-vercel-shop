@@ -250,7 +250,7 @@ function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
 
                 <Button variant="ghost">Ghost</Button>
 
-                <Button variant="link">Link</Button>
+                <Button variant="link" size="inline-link">Link</Button>
 
                 <Button className="bg-shop text-white hover:bg-shop/90">Shop</Button>
               </div>
@@ -305,7 +305,7 @@ function StudyGuideContent({ onToggleGrid }: { onToggleGrid: () => void }) {
                   <ChevronDown />
                 </Button>
 
-                <Button variant="link">
+                <Button variant="link" size="inline-link">
                   View more
                   <ArrowRight />
                 </Button>
