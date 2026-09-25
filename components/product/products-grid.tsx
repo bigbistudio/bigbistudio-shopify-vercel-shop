@@ -12,7 +12,7 @@ interface ProductsGridSkeletonProps {
 
 export function ProductsGridSkeleton({ count, className }: ProductsGridSkeletonProps) {
   return (
-    <div className={cn("grid grid-cols-2 gap-5 lg:grid-cols-4", className)}>
+    <div className={cn("grid gap-2 md:grid-cols-2 lg:grid-cols-3", className)}>
       {Array.from({ length: count }, (_, index) => (
         <ProductCardSkeleton key={index} />
       ))}

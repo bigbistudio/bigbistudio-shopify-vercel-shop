@@ -10,13 +10,13 @@ function ImagePlaceholder({ className, iconClassName, ...props }: ImagePlacehold
   return (
     <div
       data-slot="image-placeholder"
-      className={cn("flex items-center justify-center bg-white", className)}
+      className={cn("flex items-center justify-center bg-secondary/40", className)}
       {...props}
     >
       <ImageIcon
         aria-hidden
         strokeWidth={1.5}
-        className={cn("h-auto w-1/3 max-w-40 text-accent", iconClassName)}
+        className={cn("h-auto w-1/3 max-w-40 text-transparent", iconClassName)}
       />
     </div>
   );
