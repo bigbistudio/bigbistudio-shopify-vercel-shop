@@ -40,10 +40,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        <Container>
-          <ProductsGrid title="Products" limit={8} collectionUrl="/collections/all" />
-        </Container>
       </Sections>
     </Page>
   );
