@@ -15,11 +15,11 @@ const trustItems = [
   },
   {
     title: "Easy Returns",
-    description: "Simple returns within 30 days",
+    description: "Flexible returns within 30 days",
     icon: RotateCcw,
   },
   {
-    title: "Secure Checkout",
+    title: "Safe Checkout",
     description: "Safe and secure payment",
     icon: Lock,
   },
@@ -28,13 +28,13 @@ const trustItems = [
 export function TrustStrip() {
   return (
     <section aria-label="Shopping assurances" className="w-full bg-secondary/40">
-      <Container className="grid grid-cols-1 gap-2 py-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Container className="grid grid-cols-2 gap-2 sm:grid-cols-4 py-4">
         {trustItems.map(({ description, icon: Icon, title }) => (
-          <div key={title} className="flex flex-col items-center gap-4 p-4">
+          <div key={title} className="flex flex-col items-center gap-4 p-4 lg:p-4">
             <Icon aria-hidden="true" className="size-10 text-foreground" strokeWidth={1} />
             <div className="space-y-1 text-center">
-              <h2 className="text-base font-medium">{title}</h2>
-              <p className="text-sm leading-6 text-muted-foreground">{description}</p>
+              <h2 className="text-sm sm:text-base font-medium">{title}</h2>
+              <p className="text-xs sm:text-sm lg:leading-6 text-muted-foreground max-w-28 xl:max-w-none">{description}</p>
             </div>
           </div>
         ))}
