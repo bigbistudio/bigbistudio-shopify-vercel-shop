@@ -25,14 +25,14 @@ export async function Nav() {
       id="nav-outer"
     >
       <Container className="flex justify-center py-2">
-        <div className="flex max-h-16 items-center justify-between gap-0.5 lg:gap-4 px-3 py-2 bg-background border border-border/40 rounded-md w-full lg:w-fit lg:min-w-3xl lg:max-w-full overflow-hidden">
+        <div className="flex max-h-16 items-center justify-between gap-0.5 lg:gap-4 px-3 py-2 bg-background border border-border/40 rounded-lg w-full lg:w-fit lg:min-w-3xl lg:max-w-full overflow-hidden">
           <MobileMenu items={items} />
 
           <Link className="flex items-center shrink-0 flex-1 lg:flex-none" href="/">
             <Logo
               src="/logo.svg"
               alt={shopConfig.site.name}
-              className="active:scale-[0.99] transition-transform duration-150"
+              className="active:scale-[1.02] transition-transform duration-150"
             />
           </Link>
 
