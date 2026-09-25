@@ -86,7 +86,7 @@ export async function Footer() {
                       href={href}
                       target={id === "address" ? "_blank" : undefined}
                       rel={id === "address" ? "noopener noreferrer" : undefined}
-                      className="relative transition-colors hover:text-foreground after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
+                      className="relative transition-colors hover:text-foreground after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-1000 hover:after:scale-x-100"
                     >
                       {label}
                     </a>
