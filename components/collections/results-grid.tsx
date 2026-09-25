@@ -14,7 +14,7 @@ function Fallback() {
   return (
     <ProductsGridSkeleton
       count={PRODUCTS_PER_PAGE}
-      className="sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+      className="grid gap-2 md:grid-cols-2 lg:grid-cols-3"
     />
   );
 }
