@@ -27,18 +27,8 @@ export default function HomePage() {
   return (
     <Page className="pt-0">
       <Sections>
-        <section className="grid">
-          <div className="col-start-1 row-start-1 hidden md:block md:aspect-4/1" />
-          <div className="relative col-start-1 row-start-1 flex items-center justify-center px-5 py-10 lg:px-10">
-            <div className="flex flex-col items-center text-center gap-2.5">
-              <h1 className="text-3xl md:text-5xl max-w-3xl text-foreground">
-                A Storefront Built on Vercel Shop
-              </h1>
-              <p className="text-sm md:text-base max-w-xl text-foreground">
-                Agent-ready commerce, powered by Shopify, Next, and Eve.
-              </p>
-            </div>
-          </div>
+        <section className="grid py-20 h-[40vh]">
+         
         </section>
       </Sections>
     </Page>
