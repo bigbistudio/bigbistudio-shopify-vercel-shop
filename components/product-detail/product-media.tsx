@@ -257,7 +257,7 @@ function Grid({
   }
 
   const grid = (
-    <div className="grid grid-cols-2 gap-2.5">
+    <div className="grid grid-cols-1 gap-2.5">
       {children}
       {mediaItems.map((item, idx) => (
         <GridItem
