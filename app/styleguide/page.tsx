@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
 
-import { StudyGuide } from "@/bigbistudio/components/DesignSystem";
+import { StudyGuide } from "@/bigbistudio/components";
 
 export default function StyleGuidePage() {
   return (

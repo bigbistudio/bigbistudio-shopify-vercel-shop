@@ -16,7 +16,7 @@ const PAYMENT_LABELS: Record<PaymentMethod, string> = {
   visa: "Visa",
 };
 
-export function PaymentMethods() {
+export function PaymentBadges() {
   return (
     <div className="space-y-4">
       <div className="flex justify-center lg:justify-start flex-wrap gap-2">

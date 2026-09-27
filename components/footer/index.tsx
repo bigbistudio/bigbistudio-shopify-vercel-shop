@@ -3,8 +3,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { Logo } from "@/bigbistudio/components/Logo";
-import { PaymentMethods } from "@/bigbistudio/components/PaymentMethods";
+import { BrandLogo, PaymentBadges } from "@/bigbistudio/components";
 import { Container } from "@/components/ui/container";
 import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
@@ -63,7 +62,7 @@ export async function Footer() {
             <div className="max-w-100 space-y-5 lg:space-y-8">
               <div className="flex flex-col gap-2">
                 <Link className="flex items-center shrink-0 flex-1 lg:flex-none" href="/">
-                  <Logo
+                  <BrandLogo
                     src="/logo.svg"
                     alt={shopConfig.site.name}
                     width={180}
@@ -120,7 +119,7 @@ export async function Footer() {
                 {`© 2026 ${shopConfig.site.name}`}
               </p>
               <div className="lg:justify-self-end">
-                <PaymentMethods />
+                <PaymentBadges />
               </div>
             </div>
           </div>

@@ -25,7 +25,7 @@ const trustItems = [
   },
 ];
 
-export function TrustStrip() {
+export function TrustStripSection() {
   return (
     <section aria-label="Shopping assurances" className="w-full bg-secondary/40">
       <Container className="grid grid-cols-2 gap-2 sm:grid-cols-4 py-4">

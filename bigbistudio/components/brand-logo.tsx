@@ -9,7 +9,7 @@ type LogoProps = {
   priority?: boolean;
 };
 
-export function Logo({
+export function BrandLogo({
   src,
   alt,
   width = 140,

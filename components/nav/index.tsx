@@ -2,7 +2,7 @@ import { PredictiveSearchProvider } from "@shopify/hydrogen/react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { Logo } from "@/bigbistudio/components/Logo";
+import { BrandLogo } from "@/bigbistudio/components";
 import { Container } from "@/components/ui/container";
 import { shopConfig } from "@/lib/config";
 import { getMenu } from "@/lib/menu/server";
@@ -29,7 +29,7 @@ export async function Nav() {
           <MobileMenu items={items} />
 
           <Link className="flex items-center shrink-0 flex-1 lg:flex-none" href="/">
-            <Logo
+            <BrandLogo
               src="/logo.svg"
               alt={shopConfig.site.name}
               className="active:scale-[1.02] transition-transform duration-150"
