@@ -104,9 +104,9 @@ export function HeroBannerSection() {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="left-6 border-white/50 bg-black/10 text-white backdrop-blur-sm hover:bg-white hover:text-black md:left-10" />
+        <CarouselPrevious className="left-6 border-white/50 text-white hover:bg-muted/40 md:left-10 focus-within:scale-110 transition-all" />
 
-        <CarouselNext className="right-6 border-white/50 bg-black/10 text-white backdrop-blur-sm hover:bg-white hover:text-black md:right-10" />
+        <CarouselNext className="right-6 border-white/50 text-white hover:bg-muted/40 md:right-10 focus-within:scale-110 transition-all" />
       </Carousel>
     </section>
   );
