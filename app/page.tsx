@@ -7,6 +7,8 @@ import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
+import { HeroBannerSection } from "@/bigbistudio/sections";
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Home";
   const description = "Explore featured products, curated collections, and seasonal campaigns.";
@@ -27,9 +29,7 @@ export default function HomePage() {
   return (
     <Page className="pt-0">
       <Sections>
-        <section className="grid py-20 h-[40vh]">
-         
-        </section>
+        <HeroBannerSection />
       </Sections>
     </Page>
   );
