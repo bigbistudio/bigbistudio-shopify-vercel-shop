@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
+import Fade from "embla-carousel-fade";
 import { cn } from "cn";
 
 import { Container } from "@/components/ui/container";
@@ -18,7 +19,8 @@ import { buttonVariants } from "@/components/ui/button";
 const slides = [
   {
     title: "Modern Tweed",
-    description: "A refined take on classic tweed, combining timeless texture with a modern silhouette for effortless elegance.",
+    description:
+      "A refined take on classic tweed, combining timeless texture with a modern silhouette for effortless elegance.",
     href: "/products/tweed-collared-short-sleeve-dress",
     cta: "Shop the Dress",
     image: "/images/modern-tweed-dress-banner.jpg",
@@ -26,7 +28,8 @@ const slides = [
   },
   {
     title: "Layers to Love",
-    description: "Soft textures and timeless silhouettes designed for effortless layering, comfort, and understated elegance.",
+    description:
+      "Soft textures and timeless silhouettes designed for effortless layering, comfort, and understated elegance.",
     href: "/collections/cardigans",
     cta: "Shop Cardigans",
     image: "/images/cardigans-collection-banner.jpg",
@@ -34,7 +37,8 @@ const slides = [
   },
   {
     title: "The Midi Edit",
-    description: "Elegant lengths and fluid silhouettes designed to move with you, bringing effortless versatility to every occasion.",
+    description:
+      "Elegant lengths and fluid silhouettes designed to move with you, bringing effortless versatility to every occasion.",
     href: "/collections/midi-skirts",
     cta: "Shop Midi Skirts",
     image: "/images/skirts-collection-banner.jpg",
@@ -51,8 +55,9 @@ export function HeroBannerSection() {
           loop: true,
         }}
         plugins={[
+          Fade(),
           Autoplay({
-            delay: 60000,
+            delay: 6000,
             stopOnInteraction: false,
           }),
         ]}
@@ -60,7 +65,7 @@ export function HeroBannerSection() {
         <CarouselContent className="ml-0">
           {slides.map((slide) => (
             <CarouselItem key={slide.title} className="pl-0">
-              <div className="relative w-full aspect-12/5 overflow-hidden">
+              <div className="relative aspect-12/5 w-full overflow-hidden">
                 <Image
                   src={slide.image}
                   alt={slide.alt}
@@ -70,10 +75,8 @@ export function HeroBannerSection() {
                   className="object-cover"
                 />
 
-                {/* Overlay */}
                 <div className="pointer-events-none absolute inset-0 bg-black/30" />
 
-                {/* Content */}
                 <div className="absolute inset-0 flex items-end">
                   <Container>
                     <div className="p-6 pb-16 text-white md:p-10 md:pb-14 lg:p-14">
@@ -101,7 +104,6 @@ export function HeroBannerSection() {
           ))}
         </CarouselContent>
 
-        {/* Navigation */}
         <CarouselPrevious className="left-6 border-white/50 bg-black/10 text-white backdrop-blur-sm hover:bg-white hover:text-black md:left-10" />
 
         <CarouselNext className="right-6 border-white/50 bg-black/10 text-white backdrop-blur-sm hover:bg-white hover:text-black md:right-10" />
