@@ -24,7 +24,7 @@ export function CollectionCarousel({ collections }: CollectionCarouselProps) {
   }, []);
 
   return (
-    <div className="group/carousel relative -mx-6 md:mx-0">
+    <div className="group/carousel relative -mx-5 md:mx-0">
       <Carousel
         className="w-full"
         opts={{
@@ -32,7 +32,7 @@ export function CollectionCarousel({ collections }: CollectionCarouselProps) {
           loop: false,
         }}
       >
-        <CarouselContent className="mx-4 md:-ml-2 md:mr-0">
+        <CarouselContent className="mx-3 md:-ml-2 md:mr-0">
           {collections.map((collection) => (
             <CarouselItem
               key={collection.handle}
