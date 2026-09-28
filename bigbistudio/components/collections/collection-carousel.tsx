@@ -94,12 +94,12 @@ function CarouselUI({ count, selectedIndex, setSelectedIndex }: CarouselUIProps)
   return (
     <>
       {/* Desktop arrows */}
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+18px)] items-center justify-between px-2 opacity-0 transition-opacity duration-300 group-hover/carousel:pointer-events-auto group-hover/carousel:opacity-100 md:flex">
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+18px)] items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover/carousel:pointer-events-auto group-hover/carousel:opacity-100 md:flex">
         <Button
           type="button"
           variant="outline"
           size="icon"
-          className="size-8 rounded-full border-white/40 bg-background/70 shadow-sm backdrop-blur-md"
+          className="size-10 rounded-full border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110"
           onClick={scrollPrev}
           aria-label="Previous collection"
         >
@@ -110,7 +110,7 @@ function CarouselUI({ count, selectedIndex, setSelectedIndex }: CarouselUIProps)
           type="button"
           variant="outline"
           size="icon"
-          className="size-8 rounded-full border-white/40 bg-background/70 shadow-sm backdrop-blur-md"
+          className="size-10 rounded-full border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110"
           onClick={scrollNext}
           aria-label="Next collection"
         >
