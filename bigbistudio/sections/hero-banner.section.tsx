@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
-import { Pause, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { cn } from "cn";
 
 import { Container } from "@/components/ui/container";
@@ -187,14 +187,16 @@ export function HeroBannerSection() {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="left-6 border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110 md:left-10" />
+        {/* Desktop Arrows */}
+        <CarouselPrevious className="left-6 hidden border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110 md:flex md:left-10" />
 
-        <CarouselNext className="right-6 border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110 md:right-10" />
+        <CarouselNext className="right-6 hidden border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110 md:flex md:right-10" />
 
         {/* Slide Controls */}
         <div className="absolute inset-x-0 bottom-6 z-10 md:bottom-8">
           <Container>
-            <div className="flex md:justify-end md:px-10 lg:px-14">
+            <div className="flex items-center justify-between md:justify-end md:px-10 lg:px-14">
+              {/* Pause + Progress */}
               <div className="flex items-center gap-2">
                 {/* Pause / Play */}
                 <button
@@ -237,6 +239,27 @@ export function HeroBannerSection() {
                     );
                   })}
                 </div>
+              </div>
+
+              {/* Mobile Arrows */}
+              <div className="flex items-center gap-1 md:hidden">
+                <button
+                  type="button"
+                  onClick={() => api?.scrollPrev()}
+                  aria-label="Previous slide"
+                  className="flex size-6 items-center justify-center border-0 bg-transparent p-0 text-white shadow-none transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <ChevronLeft className="size-3" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => api?.scrollNext()}
+                  aria-label="Next slide"
+                  className="flex size-6 items-center justify-center border-0 bg-transparent p-0 text-white shadow-none transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <ChevronRight className="size-3" />
+                </button>
               </div>
             </div>
           </Container>
