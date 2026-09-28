@@ -163,7 +163,7 @@ export function HeroBannerSection() {
                 <div className="absolute inset-0 flex items-end">
                   <Container>
                     <div className="pb-20 text-white md:p-10 md:pb-14 lg:p-14">
-                      <div className="max-w-sm space-y-6">
+                      <div className="max-w-sm space-y-4 md:space-y-6">
                         <div className="space-y-3">
                           <h1 className="text-3xl font-medium tracking-tight lg:text-4xl">
                             {slide.title}
@@ -174,7 +174,17 @@ export function HeroBannerSection() {
 
                         <Link
                           href={slide.href}
-                          className={cn(buttonVariants({ variant: "outline" }), "text-white")}
+                          className="text-xs font-normal text-white underline decoration-[0.5px] underline-offset-4 md:hidden"
+                        >
+                          {slide.cta}
+                        </Link>
+
+                        <Link
+                          href={slide.href}
+                          className={cn(
+                            buttonVariants({ variant: "outline" }),
+                            "hidden text-white md:inline-flex",
+                          )}
                         >
                           {slide.cta}
                         </Link>
@@ -206,9 +216,9 @@ export function HeroBannerSection() {
                   className="flex size-4 shrink-0 items-center justify-center rounded-full text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-black"
                 >
                   {isPaused ? (
-                    <Play className="size-2.5 fill-current" />
+                    <Play className="size-1.5 md:size-2.5 fill-current" />
                   ) : (
-                    <Pause className="size-2.5 fill-current" />
+                    <Pause className="size-1.5 md:size-2.5 fill-current" />
                   )}
                 </button>
 
@@ -223,7 +233,7 @@ export function HeroBannerSection() {
                         type="button"
                         onClick={() => goToSlide(index)}
                         aria-label={`Go to slide ${index + 1}`}
-                        className="relative h-1 w-10 overflow-hidden rounded-full bg-white/40"
+                        className="relative h-0.5 md:h-1 w-8 md:w-10 overflow-hidden rounded-full bg-white/40"
                       >
                         {isActive && (
                           <span
