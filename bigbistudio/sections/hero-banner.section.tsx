@@ -235,12 +235,12 @@ export function HeroBannerSection() {
                         aria-label={`Go to slide ${index + 1}`}
                         className="relative flex h-4 w-8 items-center overflow-hidden rounded-full md:h-1 md:w-10"
                       >
-                        <span className="absolute inset-x-0 h-0.5 rounded-full bg-white/40" />
+                        <span className="absolute inset-x-0 h-0.5 md:h-1 rounded-full bg-white/40" />
 
                         {isActive && (
                           <span
                             key={progressKey}
-                            className="absolute inset-y-0 left-0 my-auto h-0.5 w-0 rounded-full bg-white"
+                            className="absolute inset-y-0 left-0 my-auto h-0.5 md:h-1 w-0 rounded-full bg-white"
                             style={{
                               animation: `hero-progress ${SLIDE_DURATION}ms linear forwards`,
                               animationPlayState: isPaused ? "paused" : "running",
