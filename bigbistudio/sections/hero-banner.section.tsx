@@ -30,6 +30,7 @@ const slides = [
     href: "/products/tweed-collared-short-sleeve-dress",
     cta: "Shop the Dress",
     image: "/images/modern-tweed-dress-banner.jpg",
+    mobileImage: "/images/modern-tweed-dress-banner-mobile.jpg",
     alt: "Woman wearing a tweed collared dress by the Mediterranean coast",
   },
   {
@@ -39,6 +40,7 @@ const slides = [
     href: "/collections/cardigans",
     cta: "Shop Cardigans",
     image: "/images/cardigans-collection-banner.jpg",
+    mobileImage: "/images/cardigans-collection-banner-mobile.jpg",
     alt: "Cardigans collection",
   },
   {
@@ -48,6 +50,7 @@ const slides = [
     href: "/collections/midi-skirts",
     cta: "Shop Midi Skirts",
     image: "/images/skirts-collection-banner.jpg",
+    mobileImage: "/images/skirts-collection-banner-mobile.jpg",
     alt: "Midi skirts collection",
   },
 ];
@@ -113,7 +116,7 @@ export function HeroBannerSection() {
   };
 
   return (
-    <section className="relative -mt-20">
+    <section className="relative -mt-18">
       <style>{`
         @keyframes hero-progress {
           from {
@@ -138,24 +141,28 @@ export function HeroBannerSection() {
           {slides.map((slide, index) => (
             <CarouselItem key={slide.title} className="pl-0">
               <div
-                className="relative aspect-12/5 w-full cursor-pointer overflow-hidden"
+                className="relative aspect-4/5 w-full cursor-pointer overflow-hidden lg:aspect-12/5"
                 onClick={(event) => handleSlideClick(event, slide.href)}
               >
-                <Image
-                  src={slide.image}
-                  alt={slide.alt}
-                  fill
-                  priority={index === 0}
-                  sizes="100vw"
-                  className="object-cover"
-                />
+                <picture>
+                  <source media="(max-width: 1023px)" srcSet={slide.mobileImage} />
+
+                  <Image
+                    src={slide.image}
+                    alt={slide.alt}
+                    fill
+                    priority={index === 0}
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </picture>
 
                 <div className="pointer-events-none absolute inset-0 bg-black/30" />
 
                 {/* Hero Content */}
                 <div className="absolute inset-0 flex items-end">
                   <Container>
-                    <div className="p-6 pb-16 text-white md:p-10 md:pb-14 lg:p-14">
+                    <div className="pb-20 text-white md:p-10 md:pb-14 lg:p-14">
                       <div className="max-w-sm space-y-6">
                         <div className="space-y-3">
                           <h1 className="text-3xl font-medium tracking-tight lg:text-4xl">
@@ -187,7 +194,7 @@ export function HeroBannerSection() {
         {/* Slide Controls */}
         <div className="absolute inset-x-0 bottom-6 z-10 md:bottom-8">
           <Container>
-            <div className="flex justify-end px-6 md:px-10 lg:px-14">
+            <div className="flex md:justify-end md:px-10 lg:px-14">
               <div className="flex items-center gap-2">
                 {/* Pause / Play */}
                 <button
