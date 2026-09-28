@@ -17,14 +17,17 @@ type CollectionCardProps = {
 
 export function CollectionCard({ collection }: CollectionCardProps) {
   return (
-    <Link href={`/collections/${collection.handle}`} className="group/card block">
+    <Link
+      href={`/collections/${collection.handle}`}
+      className="group/card block transition-[filter] duration-150 active:brightness-90"
+    >
       <div className="relative aspect-square overflow-hidden rounded-sm border border-white/25 bg-muted">
         <Image
           src={collection.image}
           alt={collection.alt}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 75vw"
-          className="object-cover transition-transform duration-600 group-hover/card:scale-[1.02] group-focus/card:scale-[1.04]"
+          className="object-cover transition-transform duration-600 group-hover/card:scale-[1.02]"
         />
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent" />

@@ -164,7 +164,7 @@ export function HeroBannerSection() {
           {slides.map((slide, index) => (
             <CarouselItem key={slide.title} className="pl-0">
               <div
-                className="relative aspect-4/5 w-full cursor-pointer overflow-hidden lg:aspect-12/5"
+                className="relative aspect-4/5 w-full cursor-pointer overflow-hidden transition-[filter] duration-150 active:brightness-95 lg:aspect-12/5"
                 onClick={(event) => handleSlideClick(event, slide.href)}
               >
                 <picture>
