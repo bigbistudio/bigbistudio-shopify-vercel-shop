@@ -1,7 +1,9 @@
-import { cn } from "cn";
+"use client";
+
+import { useState } from "react";
+import { Plus } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
-import { buttonVariants } from "@/components/ui/button";
 import { CollectionCarousel } from "@/bigbistudio/components/collections/collection-carousel";
 
 const collections = [
@@ -56,18 +58,44 @@ const collections = [
 ];
 
 export function CollectionSection() {
+  const [showViewAll, setShowViewAll] = useState(false);
+
+  const handleViewAllClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    // Desktop: navigate immediately.
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      return;
+    }
+
+    // Mobile/tablet: first click only reveals the label.
+    if (!showViewAll) {
+      event.preventDefault();
+      setShowViewAll(true);
+    }
+  };
+
   return (
     <Container className="py-12 md:py-16 lg:py-20">
-      <div className="mb-6 flex items-end justify-between md:mb-8">
+      <div className="mb-6 flex items-center justify-between md:mb-8">
         <h2 className="text-xl font-medium tracking-tighter md:text-2xl">Shop Collections</h2>
 
         <a
           href="/collections"
-          className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-2")}
+          aria-label="View all collections"
+          onClick={handleViewAllClick}
+          className="group/view-all inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
         >
-          View all
-          <span className="relative h-px w-3 bg-current">
-            <span className="absolute right-0 top-1/2 size-1.5 -translate-y-1/2 rotate-45 border-r border-t border-current" />
+          <span
+            className={`overflow-hidden whitespace-nowrap text-[13px] md:text-sm underline md:no-underline transition-all duration-300 ease-out ${
+              showViewAll
+                ? "mr-2 max-w-20 opacity-100"
+                : "max-w-0 opacity-0 md:mr-2 md:max-w-20 md:opacity-100"
+            }`}
+          >
+            View all
+          </span>
+
+          <span className="flex size-3.5 shrink-0 items-center justify-center rounded-full border border-current md:size-4.5">
+            <Plus className="size-2.5" />
           </span>
         </a>
       </div>

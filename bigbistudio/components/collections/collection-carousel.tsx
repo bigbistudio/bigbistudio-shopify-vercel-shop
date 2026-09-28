@@ -32,7 +32,7 @@ export function CollectionCarousel({ collections }: CollectionCarouselProps) {
           loop: false,
         }}
       >
-        <CarouselContent className="ml-0 md:-ml-2">
+        <CarouselContent className="mx-4 md:-ml-2 md:mr-0">
           {collections.map((collection) => (
             <CarouselItem
               key={collection.handle}
@@ -131,12 +131,12 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
   return (
     <>
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+18px)] items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover/carousel:opacity-100 md:flex">
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+24px)] items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover/carousel:opacity-100 md:flex">
         <Button
           type="button"
           variant="outline"
           size="icon"
-          className="pointer-events-auto size-10 rounded-full border-white text-white transition-all hover:bg-muted/40 disabled:pointer-events-none disabled:opacity-0"
+          className="pointer-events-auto size-10 rounded-full border-white text-foreground bg-background/60 backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
           onClick={scrollPrev}
           disabled={!canScrollPrev}
           aria-label="Previous collections"
@@ -148,7 +148,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
           type="button"
           variant="outline"
           size="icon"
-          className="pointer-events-auto size-10 rounded-full border-white text-white transition-all hover:bg-muted/40 disabled:pointer-events-none disabled:opacity-0"
+          className="pointer-events-auto size-10 rounded-full border-white text-foreground bg-background/60 backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
           onClick={scrollNext}
           disabled={!canScrollNext}
           aria-label="Next collections"
