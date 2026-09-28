@@ -21,6 +21,7 @@ import { buttonVariants } from "@/components/ui/button";
 import type { CarouselApi } from "@/components/ui/carousel";
 
 const SLIDE_DURATION = 6000;
+const PAUSE_STORAGE_KEY = "hero-banner-paused";
 
 const slides = [
   {
@@ -74,6 +75,28 @@ export function HeroBannerSection() {
 
   const fade = useMemo(() => Fade(), []);
 
+  // Restore pause state after hydration.
+  useEffect(() => {
+    const savedPaused = sessionStorage.getItem(PAUSE_STORAGE_KEY) === "true";
+
+    setIsPaused(savedPaused);
+  }, []);
+
+  // Keep autoplay synchronized with the pause state.
+  useEffect(() => {
+    if (!api) return;
+
+    if (isPaused) {
+      autoplay.stop();
+    } else {
+      autoplay.play();
+    }
+
+    return () => {
+      autoplay.stop();
+    };
+  }, [api, autoplay, isPaused]);
+
   useEffect(() => {
     if (!api) return;
 
@@ -92,13 +115,13 @@ export function HeroBannerSection() {
   }, [api]);
 
   const togglePause = () => {
-    if (isPaused) {
-      autoplay.play();
-      setIsPaused(false);
-    } else {
-      autoplay.stop();
-      setIsPaused(true);
-    }
+    setIsPaused((paused) => {
+      const nextPaused = !paused;
+
+      sessionStorage.setItem(PAUSE_STORAGE_KEY, String(nextPaused));
+
+      return nextPaused;
+    });
   };
 
   const goToSlide = (index: number) => {
@@ -172,6 +195,7 @@ export function HeroBannerSection() {
                           <p className="text-sm leading-5">{slide.description}</p>
                         </div>
 
+                        {/* Mobile CTA */}
                         <Link
                           href={slide.href}
                           className="text-xs font-normal text-white underline decoration-[0.5px] underline-offset-4 md:hidden"
@@ -179,10 +203,13 @@ export function HeroBannerSection() {
                           {slide.cta}
                         </Link>
 
+                        {/* Desktop CTA */}
                         <Link
                           href={slide.href}
                           className={cn(
-                            buttonVariants({ variant: "outline" }),
+                            buttonVariants({
+                              variant: "outline",
+                            }),
                             "hidden text-white md:inline-flex",
                           )}
                         >
@@ -207,13 +234,13 @@ export function HeroBannerSection() {
           <Container>
             <div className="flex items-center justify-between md:justify-end md:px-10 lg:px-14">
               {/* Pause + Progress */}
-              <div className="flex items-center gap-4 md:gap-2 ml-2 md:ml-0">
+              <div className="ml-2 flex items-center gap-4 md:ml-0 md:gap-2">
                 {/* Pause / Play */}
                 <button
                   type="button"
                   onClick={togglePause}
                   aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
-                  className="flex -m-2 size-4 shrink-0 items-center justify-center rounded-full text-white backdrop-blur-xs md:backdrop-blur-sm transition-colors hover:bg-white hover:text-black md:m-0 md:size-4"
+                  className="flex -m-2 size-4 shrink-0 items-center justify-center rounded-full text-white backdrop-blur-xs transition-colors hover:bg-white hover:text-black md:m-0 md:backdrop-blur-sm"
                 >
                   {isPaused ? (
                     <Play className="size-1.5 fill-current md:size-2.5" />
@@ -235,12 +262,12 @@ export function HeroBannerSection() {
                         aria-label={`Go to slide ${index + 1}`}
                         className="relative flex h-4 w-8 items-center overflow-hidden rounded-full md:h-1 md:w-10"
                       >
-                        <span className="absolute inset-x-0 h-0.5 md:h-1 rounded-full bg-white/40" />
+                        <span className="absolute inset-x-0 h-0.5 rounded-full bg-white/40 md:h-1" />
 
                         {isActive && (
                           <span
                             key={progressKey}
-                            className="absolute inset-y-0 left-0 my-auto h-0.5 md:h-1 w-0 rounded-full bg-white"
+                            className="absolute inset-y-0 left-0 my-auto h-0.5 w-0 rounded-full bg-white md:h-1"
                             style={{
                               animation: `hero-progress ${SLIDE_DURATION}ms linear forwards`,
                               animationPlayState: isPaused ? "paused" : "running",
