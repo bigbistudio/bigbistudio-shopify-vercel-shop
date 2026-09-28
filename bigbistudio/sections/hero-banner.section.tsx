@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
 import { Pause, Play } from "lucide-react";
@@ -52,6 +53,8 @@ const slides = [
 ];
 
 export function HeroBannerSection() {
+  const router = useRouter();
+
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -99,6 +102,16 @@ export function HeroBannerSection() {
     api?.scrollTo(index);
   };
 
+  const handleSlideClick = (event: React.MouseEvent<HTMLDivElement>, href: string) => {
+    const target = event.target as HTMLElement;
+
+    if (target.closest("a, button")) {
+      return;
+    }
+
+    router.push(href);
+  };
+
   return (
     <section className="relative -mt-20">
       <style>{`
@@ -124,7 +137,10 @@ export function HeroBannerSection() {
         <CarouselContent className="ml-0">
           {slides.map((slide, index) => (
             <CarouselItem key={slide.title} className="pl-0">
-              <div className="relative aspect-12/5 w-full overflow-hidden">
+              <div
+                className="relative aspect-12/5 w-full cursor-pointer overflow-hidden"
+                onClick={(event) => handleSlideClick(event, slide.href)}
+              >
                 <Image
                   src={slide.image}
                   alt={slide.alt}
@@ -168,7 +184,7 @@ export function HeroBannerSection() {
 
         <CarouselNext className="right-6 border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110 md:right-10" />
 
-        {/* Slide Controls — rendered once */}
+        {/* Slide Controls */}
         <div className="absolute inset-x-0 bottom-6 z-10 md:bottom-8">
           <Container>
             <div className="flex justify-end px-6 md:px-10 lg:px-14">
