@@ -157,13 +157,23 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
         </Button>
       </div>
 
-      <div className="relative mx-auto mt-4 h-0.5 w-[28%] overflow-hidden rounded-full bg-muted-foreground/20 md:w-[12%]">
+      <div className="relative mx-auto mt-2 h-8 w-[28%] md:w-[12%]">
+        <div className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 overflow-hidden rounded-full bg-muted-foreground/20">
+          <span
+            className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-foreground transition-transform duration-500 ease-out"
+            style={{
+              width: `${100 / pageCount}%`,
+              transform: `translateX(${currentPage * 100}%)`,
+            }}
+          />
+        </div>
+
         {Array.from({ length: pageCount }).map((_, index) => (
           <button
             key={index}
             type="button"
             onClick={() => scrollToPage(index)}
-            className="absolute inset-y-0 cursor-pointer"
+            className="absolute top-1/2 h-8 -translate-y-1/2 cursor-pointer"
             style={{
               left: `${(index / pageCount) * 100}%`,
               width: `${100 / pageCount}%`,
@@ -172,14 +182,6 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
             aria-current={index === currentPage ? "true" : undefined}
           />
         ))}
-
-        <span
-          className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-foreground transition-transform duration-500 ease-out"
-          style={{
-            width: `${100 / pageCount}%`,
-            transform: `translateX(${currentPage * 100}%)`,
-          }}
-        />
       </div>
     </>
   );
