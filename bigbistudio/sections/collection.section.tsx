@@ -57,24 +57,24 @@ const collections = [
 
 export function CollectionSection() {
   return (
-    <section className="py-12 md:py-16 lg:py-20">
-      <Container>
-        <div className="mb-6 flex items-center justify-between md:mb-8">
-          <h2 className="text-xl font-medium tracking-tighter md:text-2xl">Shop Collections</h2>
+    <Container className="py-12 md:py-16 lg:py-20">
+      <div className="mb-6 flex items-end justify-between md:mb-8">
+        <h2 className="text-xl font-medium tracking-tighter md:text-2xl">Shop Collections</h2>
 
-          <a
-            href="/collections"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-2 px-2 text-[13px]")}
-          >
-            View all
-            <span className="relative h-px w-3 bg-current">
-              <span className="absolute right-0 top-1/2 size-1.5 -translate-y-1/2 rotate-45 border-r border-t border-current" />
-            </span>
-          </a>
-        </div>
+        <a
+          href="/collections"
+          className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-2")}
+        >
+          View all
+          <span className="relative h-px w-3 bg-current">
+            <span className="absolute right-0 top-1/2 size-1.5 -translate-y-1/2 rotate-45 border-r border-t border-current" />
+          </span>
+        </a>
+      </div>
 
+      <div className="relative">
         <CollectionCarousel collections={collections} />
-      </Container>
-    </section>
+      </div>
+    </Container>
   );
 }

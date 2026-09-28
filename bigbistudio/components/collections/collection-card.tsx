@@ -27,13 +27,16 @@ export function CollectionCard({ collection }: CollectionCardProps) {
           className="object-cover transition-transform duration-700 group-hover/card:scale-[1.02]"
         />
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent" />
 
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+        <div className="absolute inset-x-0 bottom-0 p-4">
           <span
             className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "pointer-events-none border-white/40 bg-black/10 text-white backdrop-blur-md transition-colors duration-300 group-hover/card:bg-black/30 group-hover/card:text-white",
+              buttonVariants({
+                variant: "link",
+                size: "inline-link",
+              }),
+              "text-white",
             )}
           >
             {collection.title}

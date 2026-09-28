@@ -13,29 +13,26 @@ type CollectionCarouselProps = {
 };
 
 type CarouselUIProps = {
-  count: number;
-  selectedIndex: number;
-  setSelectedIndex: (index: number) => void;
+  totalItems: number;
 };
 
 export function CollectionCarousel({ collections }: CollectionCarouselProps) {
   const [mounted, setMounted] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   return (
-    <div className="group/carousel relative">
+    <div className="group/carousel relative -mx-6 md:mx-0">
       <Carousel
         className="w-full"
         opts={{
           align: "start",
-          loop: true,
+          loop: false,
         }}
       >
-        <CarouselContent className="-ml-2 md:-ml-2">
+        <CarouselContent className="ml-0 md:-ml-2">
           {collections.map((collection) => (
             <CarouselItem
               key={collection.handle}
@@ -46,62 +43,103 @@ export function CollectionCarousel({ collections }: CollectionCarouselProps) {
           ))}
         </CarouselContent>
 
-        {mounted && (
-          <CarouselUI
-            count={collections.length}
-            selectedIndex={selectedIndex}
-            setSelectedIndex={setSelectedIndex}
-          />
-        )}
+        {mounted && <CarouselUI totalItems={collections.length} />}
       </Carousel>
     </div>
   );
 }
 
-function CarouselUI({ count, selectedIndex, setSelectedIndex }: CarouselUIProps) {
+function CarouselUI({ totalItems }: CarouselUIProps) {
   const { api } = useCarousel();
+
+  const [step, setStep] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const updateStep = () => {
+      if (window.innerWidth >= 1024) {
+        setStep(4);
+      } else if (window.innerWidth >= 768) {
+        setStep(2);
+      } else {
+        setStep(1);
+      }
+    };
+
+    updateStep();
+
+    window.addEventListener("resize", updateStep);
+
+    return () => {
+      window.removeEventListener("resize", updateStep);
+    };
+  }, []);
 
   useEffect(() => {
     if (!api) return;
 
-    const onSelect = () => {
-      setSelectedIndex(api.selectedScrollSnap());
+    const update = () => {
+      setCurrentIndex(api.selectedScrollSnap());
     };
 
-    onSelect();
-    api.on("select", onSelect);
+    update();
+
+    api.on("select", update);
+    api.on("reInit", update);
 
     return () => {
-      api.off("select", onSelect);
+      api.off("select", update);
+      api.off("reInit", update);
     };
-  }, [api, setSelectedIndex]);
+  }, [api]);
 
-  const scrollTo = useCallback(
-    (index: number) => {
-      api?.scrollTo(index);
-    },
-    [api],
-  );
+  const pageCount = Math.ceil(totalItems / step);
+
+  const currentPage = Math.min(Math.floor(currentIndex / step), pageCount - 1);
+
+  const canScrollPrev = currentPage > 0;
+  const canScrollNext = currentPage < pageCount - 1;
 
   const scrollPrev = useCallback(() => {
-    api?.scrollPrev();
-  }, [api]);
+    if (!api || !canScrollPrev) return;
+
+    const target = Math.max(0, currentPage * step - step);
+
+    api.scrollTo(target);
+  }, [api, canScrollPrev, currentPage, step]);
 
   const scrollNext = useCallback(() => {
-    api?.scrollNext();
-  }, [api]);
+    if (!api || !canScrollNext) return;
+
+    const target = Math.min(totalItems - 1, (currentPage + 1) * step);
+
+    api.scrollTo(target);
+  }, [api, canScrollNext, currentPage, step, totalItems]);
+
+  const scrollToPage = useCallback(
+    (page: number) => {
+      if (!api) return;
+
+      const target = Math.min(totalItems - 1, page * step);
+
+      api.scrollTo(target);
+    },
+    [api, step, totalItems],
+  );
+
+  if (!api || pageCount <= 0) return null;
 
   return (
     <>
-      {/* Desktop arrows */}
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+18px)] items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover/carousel:pointer-events-auto group-hover/carousel:opacity-100 md:flex">
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+18px)] items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover/carousel:opacity-100 md:flex">
         <Button
           type="button"
           variant="outline"
           size="icon"
-          className="size-10 rounded-full border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110"
+          className="pointer-events-auto size-10 rounded-full border-white text-white transition-all hover:bg-muted/40 disabled:pointer-events-none disabled:opacity-0"
           onClick={scrollPrev}
-          aria-label="Previous collection"
+          disabled={!canScrollPrev}
+          aria-label="Previous collections"
         >
           <ChevronLeft className="size-4" />
         </Button>
@@ -110,36 +148,36 @@ function CarouselUI({ count, selectedIndex, setSelectedIndex }: CarouselUIProps)
           type="button"
           variant="outline"
           size="icon"
-          className="size-10 rounded-full border-white/50 text-white transition-all hover:bg-muted/40 focus-within:scale-110"
+          className="pointer-events-auto size-10 rounded-full border-white text-white transition-all hover:bg-muted/40 disabled:pointer-events-none disabled:opacity-0"
           onClick={scrollNext}
-          aria-label="Next collection"
+          disabled={!canScrollNext}
+          aria-label="Next collections"
         >
           <ChevronRight className="size-4" />
         </Button>
       </div>
 
-      {/* Collection progress */}
-      <div className="relative mx-auto mt-4 h-0.5 w-[40%] overflow-hidden rounded-full bg-muted-foreground/20 md:w-1/5">
-        {Array.from({ length: count }).map((_, index) => (
+      <div className="relative mx-auto mt-4 h-0.5 w-[28%] overflow-hidden rounded-full bg-muted-foreground/20 md:w-[12%]">
+        {Array.from({ length: pageCount }).map((_, index) => (
           <button
             key={index}
             type="button"
-            onClick={() => scrollTo(index)}
+            onClick={() => scrollToPage(index)}
             className="absolute inset-y-0 cursor-pointer"
             style={{
-              left: `${(index / count) * 100}%`,
-              width: `${100 / count}%`,
+              left: `${(index / pageCount) * 100}%`,
+              width: `${100 / pageCount}%`,
             }}
-            aria-label={`Go to collection ${index + 1}`}
-            aria-current={index === selectedIndex ? "true" : undefined}
+            aria-label={`Go to collection group ${index + 1}`}
+            aria-current={index === currentPage ? "true" : undefined}
           />
         ))}
 
         <span
           className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-foreground transition-transform duration-500 ease-out"
           style={{
-            width: `${100 / count}%`,
-            transform: `translateX(${selectedIndex * 100}%)`,
+            width: `${100 / pageCount}%`,
+            transform: `translateX(${currentPage * 100}%)`,
           }}
         />
       </div>
