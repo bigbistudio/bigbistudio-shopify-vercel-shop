@@ -207,18 +207,18 @@ export function HeroBannerSection() {
           <Container>
             <div className="flex items-center justify-between md:justify-end md:px-10 lg:px-14">
               {/* Pause + Progress */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4 md:gap-2 ml-2 md:ml-0">
                 {/* Pause / Play */}
                 <button
                   type="button"
                   onClick={togglePause}
                   aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
-                  className="flex size-4 shrink-0 items-center justify-center rounded-full text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-black"
+                  className="flex -m-2 size-4 shrink-0 items-center justify-center rounded-full text-white backdrop-blur-xs md:backdrop-blur-sm transition-colors hover:bg-white hover:text-black md:m-0 md:size-4"
                 >
                   {isPaused ? (
-                    <Play className="size-1.5 md:size-2.5 fill-current" />
+                    <Play className="size-1.5 fill-current md:size-2.5" />
                   ) : (
-                    <Pause className="size-1.5 md:size-2.5 fill-current" />
+                    <Pause className="size-1.5 fill-current md:size-2.5" />
                   )}
                 </button>
 
@@ -233,12 +233,14 @@ export function HeroBannerSection() {
                         type="button"
                         onClick={() => goToSlide(index)}
                         aria-label={`Go to slide ${index + 1}`}
-                        className="relative h-0.5 md:h-1 w-8 md:w-10 overflow-hidden rounded-full bg-white/40"
+                        className="relative flex h-4 w-8 items-center overflow-hidden rounded-full md:h-1 md:w-10"
                       >
+                        <span className="absolute inset-x-0 h-0.5 rounded-full bg-white/40" />
+
                         {isActive && (
                           <span
                             key={progressKey}
-                            className="absolute inset-y-0 left-0 w-0 rounded-full bg-white"
+                            className="absolute inset-y-0 left-0 my-auto h-0.5 w-0 rounded-full bg-white"
                             style={{
                               animation: `hero-progress ${SLIDE_DURATION}ms linear forwards`,
                               animationPlayState: isPaused ? "paused" : "running",
@@ -257,7 +259,7 @@ export function HeroBannerSection() {
                   type="button"
                   onClick={() => api?.scrollPrev()}
                   aria-label="Previous slide"
-                  className="flex size-6 items-center justify-center border-0 bg-transparent p-0 text-white shadow-none transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex -m-2 size-10 items-center justify-center border-0 bg-transparent p-2 text-white shadow-none transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <ChevronLeft className="size-3" />
                 </button>
@@ -266,7 +268,7 @@ export function HeroBannerSection() {
                   type="button"
                   onClick={() => api?.scrollNext()}
                   aria-label="Next slide"
-                  className="flex size-6 items-center justify-center border-0 bg-transparent p-0 text-white shadow-none transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex -m-2 size-10 items-center justify-center border-0 bg-transparent p-2 text-white shadow-none transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <ChevronRight className="size-3" />
                 </button>
