@@ -7,7 +7,7 @@ import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
-import { HeroBannerSection } from "@/bigbistudio/sections";
+import { HeroBannerSection, CollectionSection } from "@/bigbistudio/sections";
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Home";
@@ -30,6 +30,7 @@ export default function HomePage() {
     <Page className="pt-0">
       <Sections>
         <HeroBannerSection />
+        <CollectionSection />
       </Sections>
     </Page>
   );
