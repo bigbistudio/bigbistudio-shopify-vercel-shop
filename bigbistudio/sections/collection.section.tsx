@@ -60,44 +60,34 @@ const collections = [
 export function CollectionSection() {
   const [showViewAll, setShowViewAll] = useState(false);
 
-  const handleViewAllClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    // Desktop: navigate immediately.
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      return;
-    }
-
-    // Mobile/tablet: first click only reveals the label.
-    if (!showViewAll) {
-      event.preventDefault();
-      setShowViewAll(true);
-    }
-  };
-
   return (
     <Container className="py-12 md:py-16 lg:py-20">
       <div className="mb-6 flex items-center justify-between md:mb-8">
         <h2 className="text-xl font-medium tracking-tighter md:text-2xl">Shop Collections</h2>
 
-        <a
-          href="/collections"
-          aria-label="View all collections"
-          onClick={handleViewAllClick}
-          className="group/view-all inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <span
-            className={`overflow-hidden whitespace-nowrap text-[13px] md:text-sm underline md:no-underline transition-all duration-300 ease-out ${
-              showViewAll
-                ? "mr-2 max-w-20 opacity-100"
-                : "max-w-0 opacity-0 md:mr-2 md:max-w-20 md:opacity-100"
+        <div className="inline-flex items-center text-muted-foreground">
+          <a
+            href="/collections"
+            className={`overflow-hidden whitespace-nowrap text-[13px] underline decoration-1 underline-offset-2 transition-all duration-300 ease-out md:text-sm ${
+              showViewAll ? "mr-2 max-w-20 opacity-100" : "max-w-0 opacity-0"
             }`}
           >
             View all
-          </span>
+          </a>
 
-          <span className="flex size-3.5 shrink-0 items-center justify-center rounded-full border border-current md:size-4.5">
-            <Plus className="size-2.5" />
-          </span>
-        </a>
+          <button
+            type="button"
+            aria-label={showViewAll ? "Hide View all" : "Show View all"}
+            onClick={() => setShowViewAll((value) => !value)}
+            className="flex size-3.5 shrink-0 items-center justify-center rounded-full border border-current md:size-4.5"
+          >
+            <Plus
+              className={`size-2.5 transition-transform duration-300 ${
+                showViewAll ? "rotate-45" : "rotate-0"
+              }`}
+            />
+          </button>
+        </div>
       </div>
 
       <div className="relative">
