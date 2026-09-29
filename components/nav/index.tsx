@@ -28,12 +28,11 @@ export async function Nav() {
         <div className="flex max-h-16 items-center justify-between gap-0.5 lg:gap-4 px-3 py-2 bg-background/45 hover:bg-background/90 duration-600 transition-colors backdrop-blur-lg lg:backdrop-blur-sm border border-border/40 rounded-lg w-full lg:w-fit lg:min-w-3xl lg:max-w-full overflow-hidden">
           <MobileMenu items={items} />
 
-          <Link className="flex items-center shrink-0 flex-1 lg:flex-none cursor-pointer" href="/">
-            <BrandLogo
-              src="/logo.svg"
-              alt={shopConfig.site.name}
-              className="active:scale-[1.02] transition-transform duration-150"
-            />
+          <Link
+            className="flex shrink-0 flex-1 cursor-pointer touch-manipulation items-center transition-transform duration-150 active:scale-[1.02] lg:flex-none"
+            href="/"
+          >
+            <BrandLogo src="/logo.svg" alt={shopConfig.site.name} />
           </Link>
 
           <QuickLinks items={items} />
