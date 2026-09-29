@@ -1,5 +1,5 @@
 import { parseCollectionParams, serializeCollectionParams } from "@shopify/hydrogen";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife, cacheTag, io } from "next/cache";
 
 import { getBrowseSort, PRODUCTS_PER_PAGE } from "@/lib/collections";
 import type { Collection, CollectionWithThumbnail } from "@/lib/collections/types";
@@ -103,16 +103,18 @@ function recordToSearchParams(
 // Browse pages and facets stay uncached: cached cursor pages drift apart and duplicate boundary products, and Search & Discovery changes must appear immediately.
 export async function getCollectionResultsData({
   handle,
+  limit = PRODUCTS_PER_PAGE,
   searchStatePromise,
 }: {
   handle: string;
+  limit?: number;
   searchStatePromise: Promise<CollectionSearchState>;
 }): Promise<CollectionResultsData> {
   const { dataSearch, filters, sort } = await searchStatePromise;
   const result = await fetchCollectionProducts({
     collection: handle,
     sortKey: sort,
-    limit: PRODUCTS_PER_PAGE,
+    limit,
     filters,
   });
   return {
@@ -144,6 +146,8 @@ export async function getAllProductsResultsData({
 }: {
   searchStatePromise: Promise<CollectionSearchState>;
 }): Promise<CollectionResultsData> {
+  await io();
+
   const { dataSearch, filters, sort } = await searchStatePromise;
   const [products, facets] = await Promise.all([
     fetchSearchIndexProducts({
