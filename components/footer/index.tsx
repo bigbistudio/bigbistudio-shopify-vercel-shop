@@ -1,7 +1,8 @@
-import { cn } from "cn";
 import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+
+import { cn } from "cn";
 
 import { BrandLogo, PaymentBadges } from "@/bigbistudio/components";
 import { Container } from "@/components/ui/container";
@@ -42,17 +43,20 @@ export async function Footer() {
     { platform: "tiktok", url: "https://www.tiktok.com/" },
     { platform: "youtube", url: "https://www.youtube.com/" },
   ];
+
   const [shopMenu, exploreMenu, helpMenu, policies] = await Promise.all([
     getMenu({ handle: "footer-shop" }),
     getMenu({ handle: "footer-explore" }),
     getMenu({ handle: "footer-help" }),
     getShopPolicies({}).catch(() => []),
   ]);
+
   const menus = [
     { menu: shopMenu, title: "Shop" },
     { menu: exploreMenu, title: "Explore" },
     { menu: helpMenu, title: "Help" },
   ];
+
   return (
     <footer>
       {/* pb-22 clears the fixed agent ActionBar pill when it renders */}
@@ -61,19 +65,24 @@ export async function Footer() {
           <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
             <div className="max-w-100 space-y-5 lg:space-y-8">
               <div className="flex flex-col gap-2">
-                <Link className="flex items-center shrink-0 flex-1 lg:flex-none" href="/">
+                <Link
+                  className="flex shrink-0 flex-1 items-center transition-opacity active:opacity-70 lg:flex-none"
+                  href="/"
+                >
                   <BrandLogo
                     src="/logo.svg"
                     alt={shopConfig.site.name}
                     width={180}
                     height={36}
-                    className="active:scale-[0.99] transition-transform duration-150"
+                    className="transition-transform duration-150 active:scale-[0.99]"
                   />
                 </Link>
+
                 <p className="text-sm leading-6 text-muted-foreground">
                   High quality commerce data for your storefront.
                 </p>
               </div>
+
               <ul className="flex flex-col gap-4">
                 {companyContacts.map(({ href, icon: Icon, id, label }) => (
                   <li
@@ -81,11 +90,12 @@ export async function Footer() {
                     className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <Icon aria-hidden="true" className="size-4 shrink-0" />
+
                     <a
                       href={href}
                       target={id === "address" ? "_blank" : undefined}
                       rel={id === "address" ? "noopener noreferrer" : undefined}
-                      className="relative transition-colors hover:text-foreground after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-1000 hover:after:scale-x-100"
+                      className="relative transition-[color,opacity] duration-200 hover:text-foreground active:opacity-50 after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-1000 hover:after:scale-x-100"
                     >
                       {label}
                     </a>
@@ -93,8 +103,10 @@ export async function Footer() {
                 ))}
               </ul>
             </div>
+
             <FooterMenu menus={menus} />
           </div>
+
           <div className="grid gap-8 border-t border-border/60 pt-8">
             <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
               {socialLinks.length > 0 && (
@@ -102,22 +114,25 @@ export async function Footer() {
                   <SocialLinks links={socialLinks} />
                 </div>
               )}
+
               <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 lg:justify-end">
                 {policies.map((policy) => (
                   <Link
                     key={policy.handle}
                     href={`/policies/${policy.handle}`}
-                    className="relative cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
+                    className="relative cursor-pointer text-sm text-muted-foreground transition-[color,opacity] duration-200 hover:text-foreground active:opacity-50 after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
                   >
                     {policy.title}
                   </Link>
                 ))}
               </div>
             </div>
-            <div className="flex flex-col-reverse lg:flex-row lg:justify-between gap-6">
+
+            <div className="flex flex-col-reverse gap-6 lg:flex-row lg:justify-between">
               <p className="text-center text-sm font-medium leading-5 text-muted-foreground lg:text-left">
                 {`© 2026 ${shopConfig.site.name}`}
               </p>
+
               <div className="lg:justify-self-end">
                 <PaymentBadges />
               </div>
@@ -143,6 +158,7 @@ function MenuLink({ url, children, className }: MenuLinkProps) {
       </a>
     );
   }
+
   return (
     <Link href={url} className={className}>
       {children}
@@ -152,17 +168,18 @@ function MenuLink({ url, children, className }: MenuLinkProps) {
 
 function FooterMenu({ menus }: { menus: { menu: { items: MenuItem[] } | null; title: string }[] }) {
   return (
-    <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 py-2">
+    <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-2 sm:grid-cols-3">
       {menus.map(({ menu, title }) => (
         <div key={title} className="space-y-6 lg:min-w-40">
           <h3 className="text-sm font-semibold">{title}</h3>
+
           {menu && menu.items.length > 0 && (
             <ul className="space-y-6">
               {menu.items.map((item) => (
                 <li key={item.id} className="block">
                   <MenuLink
                     url={item.url}
-                    className="group relative text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
+                    className="group relative text-sm text-muted-foreground transition-[color,opacity] duration-200 hover:text-foreground active:opacity-50 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:scale-x-100"
                   >
                     {item.title}
                   </MenuLink>
