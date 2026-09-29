@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 
-import { ProductsGrid } from "@/components/product/products-grid";
-import { Container } from "@/components/ui/container";
+import {
+  CollectionSection,
+  FeaturedProductsSection,
+  HeroBannerSection,
+} from "@/bigbistudio/sections";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
+import { getSearchIndexProducts } from "@/lib/product/server";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
-
-import { HeroBannerSection, CollectionSection } from "@/bigbistudio/sections";
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Home";
@@ -25,12 +27,15 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { products } = await getSearchIndexProducts({ limit: 8 });
+
   return (
     <Page className="pt-0">
       <Sections>
         <HeroBannerSection />
         <CollectionSection />
+        <FeaturedProductsSection products={products} />
       </Sections>
     </Page>
   );
