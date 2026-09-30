@@ -67,7 +67,7 @@ function ProductCardImage({
   return (
     <div
       data-slot="product-card-image"
-      className={cn("relative aspect-square overflow-hidden", className)}
+      className={cn("relative aspect-square rounded-sm overflow-hidden", className)}
     >
       {src ? (
         <Image src={src} alt={alt} fill className="object-cover" sizes="100vw" />

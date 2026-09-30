@@ -36,7 +36,7 @@ export function CollectionCarousel({ collections }: CollectionCarouselProps) {
           {collections.map((collection) => (
             <CarouselItem
               key={collection.handle}
-              className="basis-[72%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 lg:basis-1/4"
+              className="basis-[82%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 lg:basis-[21.1%]"
             >
               <CollectionCard collection={collection} />
             </CarouselItem>

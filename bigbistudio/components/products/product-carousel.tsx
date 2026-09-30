@@ -27,7 +27,7 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
             {products.map((product) => (
               <CarouselItem
                 key={product.id}
-                className="basis-[82%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 lg:basis-[24%]"
+                className="basis-[82%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 lg:basis-[21.1%]"
               >
                 <ProductCard product={product} outOfStockText="Out of Stock" />
               </CarouselItem>
