@@ -58,7 +58,7 @@ export function FeaturedProductsSection({
 
       <div className="w-full overflow-hidden">
         <Container>
-          <div className="[&_[data-slot=carousel-content]]:overflow-visible">
+          <div className="**:data-[slot=carousel-content]:overflow-visible">
             <ProductCarousel products={products} />
           </div>
         </Container>

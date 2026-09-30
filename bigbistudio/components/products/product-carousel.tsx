@@ -1,13 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { ProductCard } from "@/components/product-card/product-card";
-
-import { Carousel, CarouselContent, CarouselItem, useCarousel } from "@/components/ui/carousel";
-
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  useCarousel,
+} from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 
 import type { ProductCard as Product } from "@/lib/product/types";
@@ -28,7 +31,7 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
   }, []);
 
   return (
-    <div className="group/carousel relative -mx-5 md:mx-0">
+    <div className="group/carousel relative">
       <Carousel
         className="w-full"
         opts={{
@@ -40,7 +43,7 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
           {products.map((product) => (
             <CarouselItem
               key={product.id}
-              className="basis-[82%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 lg:basis-[21.1%]"
+              className="basis-[82%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 xl:basis-[23%]"
             >
               <ProductCard product={product} outOfStockText="Out of Stock" />
             </CarouselItem>
@@ -58,6 +61,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
   const [step, setStep] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [snapCount, setSnapCount] = useState(0);
 
   useEffect(() => {
     const updateStep = () => {
@@ -84,6 +88,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
     const update = () => {
       setCurrentIndex(api.selectedScrollSnap());
+      setSnapCount(api.scrollSnapList().length);
     };
 
     update();
@@ -97,9 +102,55 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
     };
   }, [api]);
 
-  const pageCount = Math.ceil(totalItems / step);
+  // Recalculate Embla after async product data or responsive layout changes.
+  useEffect(() => {
+    if (!api) return;
 
-  const currentPage = Math.min(Math.floor(currentIndex / step), pageCount - 1);
+    const frame = requestAnimationFrame(() => {
+      api.reInit();
+    });
+
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, [api, totalItems]);
+
+  const pageTargets = useMemo(() => {
+    if (!snapCount) return [];
+
+    const targets: number[] = [];
+
+    for (let index = 0; index < snapCount; index += step) {
+      targets.push(index);
+    }
+
+    const lastSnap = snapCount - 1;
+
+    if (targets[targets.length - 1] !== lastSnap) {
+      targets.push(lastSnap);
+    }
+
+    return targets;
+  }, [snapCount, step]);
+
+  const pageCount = pageTargets.length;
+
+  const currentPage = useMemo(() => {
+    if (!pageTargets.length) return 0;
+
+    let closestPage = 0;
+
+    pageTargets.forEach((target, index) => {
+      if (
+        Math.abs(target - currentIndex) <
+        Math.abs(pageTargets[closestPage] - currentIndex)
+      ) {
+        closestPage = index;
+      }
+    });
+
+    return closestPage;
+  }, [currentIndex, pageTargets]);
 
   const canScrollPrev = currentPage > 0;
   const canScrollNext = currentPage < pageCount - 1;
@@ -107,31 +158,25 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
   const scrollPrev = useCallback(() => {
     if (!api || !canScrollPrev) return;
 
-    const target = Math.max(0, currentPage * step - step);
-
-    api.scrollTo(target);
-  }, [api, canScrollPrev, currentPage, step]);
+    api.scrollTo(pageTargets[currentPage - 1]);
+  }, [api, canScrollPrev, currentPage, pageTargets]);
 
   const scrollNext = useCallback(() => {
     if (!api || !canScrollNext) return;
 
-    const target = Math.min(totalItems - 1, (currentPage + 1) * step);
-
-    api.scrollTo(target);
-  }, [api, canScrollNext, currentPage, step, totalItems]);
+    api.scrollTo(pageTargets[currentPage + 1]);
+  }, [api, canScrollNext, currentPage, pageTargets]);
 
   const scrollToPage = useCallback(
     (page: number) => {
-      if (!api) return;
+      if (!api || page < 0 || page >= pageTargets.length) return;
 
-      const target = Math.min(totalItems - 1, page * step);
-
-      api.scrollTo(target);
+      api.scrollTo(pageTargets[page]);
     },
-    [api, step, totalItems],
+    [api, pageTargets],
   );
 
-  if (!api || pageCount <= 0) return null;
+  if (!api || !totalItems || !pageCount) return null;
 
   return (
     <>
