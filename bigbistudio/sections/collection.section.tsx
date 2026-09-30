@@ -61,38 +61,47 @@ export function CollectionSection() {
   const [showViewAll, setShowViewAll] = useState(false);
 
   return (
-    <Container className="py-12 md:py-16 lg:py-20">
-      <div className="mb-6 flex items-center justify-between md:mb-8">
-        <h2 className="text-xl font-medium tracking-tighter md:text-2xl">Shop Collections</h2>
+    <section className="py-12 md:py-16 lg:py-20">
+      <Container>
+        <div className="mb-6 flex items-center justify-between md:mb-8">
+          <h2 className="text-xl font-medium tracking-tighter md:text-2xl">
+            Shop Collections
+          </h2>
 
-        <div className="inline-flex items-center text-muted-foreground">
-          <a
-            href="/collections"
-            className={`overflow-hidden whitespace-nowrap text-[13px] underline decoration-1 underline-offset-2 transition-all duration-300 ease-out md:text-sm ${
-              showViewAll ? "mr-2 max-w-20 opacity-100" : "max-w-0 opacity-0"
-            }`}
-          >
-            View all
-          </a>
-
-          <button
-            type="button"
-            aria-label={showViewAll ? "Hide View all" : "Show View all"}
-            onClick={() => setShowViewAll((value) => !value)}
-            className="flex size-3.5 shrink-0 items-center justify-center rounded-full border border-current md:size-4.5"
-          >
-            <Plus
-              className={`size-2.5 transition-transform duration-300 ${
-                showViewAll ? "rotate-45" : "rotate-0"
+          <div className="inline-flex items-center text-muted-foreground">
+            <a
+              href="/collections"
+              className={`overflow-hidden whitespace-nowrap text-[13px] underline decoration-1 underline-offset-2 transition-all duration-300 ease-out md:text-sm ${
+                showViewAll ? "mr-2 max-w-20 opacity-100" : "max-w-0 opacity-0"
               }`}
-            />
-          </button>
-        </div>
-      </div>
+            >
+              View all
+            </a>
 
-      <div className="relative">
-        <CollectionCarousel collections={collections} />
+            <button
+              type="button"
+              aria-label={showViewAll ? "Hide View all" : "Show View all"}
+              onClick={() => setShowViewAll((value) => !value)}
+              className="flex size-3.5 shrink-0 items-center justify-center rounded-full border border-current md:size-4.5"
+            >
+              <Plus
+                className={`size-2.5 transition-transform duration-300 ${
+                  showViewAll ? "rotate-45" : "rotate-0"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+      </Container>
+
+      {/* Full-width clipping boundary */}
+      <div className="w-full overflow-hidden">
+        <Container>
+          <div className="[&_[data-slot=carousel-content]]:overflow-visible">
+            <CollectionCarousel collections={collections} />
+          </div>
+        </Container>
       </div>
-    </Container>
+    </section>
   );
 }

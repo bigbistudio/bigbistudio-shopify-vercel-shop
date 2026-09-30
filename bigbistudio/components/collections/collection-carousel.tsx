@@ -131,7 +131,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
   return (
     <>
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+24px)] items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover/carousel:opacity-100 md:flex">
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+24px)] items-center justify-between px-4 transition-opacity duration-300 md:flex">
         <Button
           type="button"
           variant="outline"
