@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cn } from "cn";
 
 import { buildProductUrl } from "@/lib/product";
 import type { ProductCard as ProductCardType } from "@/lib/product/types";
@@ -29,7 +30,10 @@ export function ProductCard({
   const isFeatured = variant === "featured";
   const href = buildProductUrl(product.handle, product.defaultVariantSelectedOptions ?? []);
   return (
-    <Link href={href} className={className}>
+    <Link
+      href={href}
+      className={cn(className, "group/card transition-[filter] duration-150 active:brightness-90")}
+    >
       <ProductCardRoot variant={variant}>
         {isFeatured && (
           <div data-slot="product-card-badge">

@@ -70,7 +70,7 @@ function ProductCardImage({
       className={cn("relative aspect-square rounded-sm overflow-hidden", className)}
     >
       {src ? (
-        <Image src={src} alt={alt} fill className="object-cover" sizes="100vw" />
+        <Image src={src} alt={alt} fill className="object-cover transition-transform duration-600 group-hover/card:scale-[1.02]" sizes="100vw" />
       ) : (
         <ImagePlaceholder className="size-full" />
       )}
