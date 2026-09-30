@@ -97,7 +97,7 @@ export function CollectionSection() {
       {/* Full-width clipping boundary */}
       <div className="w-full overflow-hidden">
         <Container>
-          <div className="[&_[data-slot=carousel-content]]:overflow-visible">
+          <div className="**:data-[slot=carousel-content]:overflow-visible">
             <CollectionCarousel collections={collections} />
           </div>
         </Container>

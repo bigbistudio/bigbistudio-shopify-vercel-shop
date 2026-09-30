@@ -1,9 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { Carousel, CarouselContent, CarouselItem, useCarousel } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  useCarousel,
+} from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 
 import { CollectionCard, type Collection } from "./collection-card";
@@ -36,7 +41,7 @@ export function CollectionCarousel({ collections }: CollectionCarouselProps) {
           {collections.map((collection) => (
             <CarouselItem
               key={collection.handle}
-              className="basis-[82%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 lg:basis-[21.1%]"
+              className="basis-[82%] pl-2 sm:basis-[45%] md:basis-1/3 md:pl-2 xl:basis-[23%]"
             >
               <CollectionCard collection={collection} />
             </CarouselItem>
@@ -54,6 +59,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
   const [step, setStep] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [snapCount, setSnapCount] = useState(0);
 
   useEffect(() => {
     const updateStep = () => {
@@ -80,6 +86,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
     const update = () => {
       setCurrentIndex(api.selectedScrollSnap());
+      setSnapCount(api.scrollSnapList().length);
     };
 
     update();
@@ -93,9 +100,42 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
     };
   }, [api]);
 
-  const pageCount = Math.ceil(totalItems / step);
+  const pageTargets = useMemo(() => {
+    if (!snapCount) return [];
 
-  const currentPage = Math.min(Math.floor(currentIndex / step), pageCount - 1);
+    const targets: number[] = [];
+
+    for (let index = 0; index < snapCount; index += step) {
+      targets.push(index);
+    }
+
+    const lastSnap = snapCount - 1;
+
+    if (targets[targets.length - 1] !== lastSnap) {
+      targets.push(lastSnap);
+    }
+
+    return targets;
+  }, [snapCount, step]);
+
+  const pageCount = pageTargets.length;
+
+  const currentPage = useMemo(() => {
+    if (!pageTargets.length) return 0;
+
+    let closestPage = 0;
+
+    pageTargets.forEach((target, index) => {
+      if (
+        Math.abs(target - currentIndex) <
+        Math.abs(pageTargets[closestPage] - currentIndex)
+      ) {
+        closestPage = index;
+      }
+    });
+
+    return closestPage;
+  }, [currentIndex, pageTargets]);
 
   const canScrollPrev = currentPage > 0;
   const canScrollNext = currentPage < pageCount - 1;
@@ -103,31 +143,25 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
   const scrollPrev = useCallback(() => {
     if (!api || !canScrollPrev) return;
 
-    const target = Math.max(0, currentPage * step - step);
-
-    api.scrollTo(target);
-  }, [api, canScrollPrev, currentPage, step]);
+    api.scrollTo(pageTargets[currentPage - 1]);
+  }, [api, canScrollPrev, currentPage, pageTargets]);
 
   const scrollNext = useCallback(() => {
     if (!api || !canScrollNext) return;
 
-    const target = Math.min(totalItems - 1, (currentPage + 1) * step);
-
-    api.scrollTo(target);
-  }, [api, canScrollNext, currentPage, step, totalItems]);
+    api.scrollTo(pageTargets[currentPage + 1]);
+  }, [api, canScrollNext, currentPage, pageTargets]);
 
   const scrollToPage = useCallback(
     (page: number) => {
-      if (!api) return;
+      if (!api || !pageTargets[page]) return;
 
-      const target = Math.min(totalItems - 1, page * step);
-
-      api.scrollTo(target);
+      api.scrollTo(pageTargets[page]);
     },
-    [api, step, totalItems],
+    [api, pageTargets],
   );
 
-  if (!api || pageCount <= 0) return null;
+  if (!api || !pageCount) return null;
 
   return (
     <>
@@ -136,7 +170,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
           type="button"
           variant="outline"
           size="icon"
-          className="pointer-events-auto size-10 rounded-full border-white text-foreground bg-background/60 backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
+          className="pointer-events-auto size-10 rounded-full border-white bg-background/60 text-foreground backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
           onClick={scrollPrev}
           disabled={!canScrollPrev}
           aria-label="Previous collections"
@@ -148,7 +182,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
           type="button"
           variant="outline"
           size="icon"
-          className="pointer-events-auto size-10 rounded-full border-white text-foreground bg-background/60 backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
+          className="pointer-events-auto size-10 rounded-full border-white bg-background/60 text-foreground backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
           onClick={scrollNext}
           disabled={!canScrollNext}
           aria-label="Next collections"
@@ -168,7 +202,7 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
           />
         </div>
 
-        {Array.from({ length: pageCount }).map((_, index) => (
+        {pageTargets.map((_, index) => (
           <button
             key={index}
             type="button"
