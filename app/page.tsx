@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function HomePage() {
   return (
     <Page className="pt-0">
-      <Sections>
+      <Sections className="gap-0">
         <HeroBannerSection />
         <CollectionSection />
         <Suspense fallback={null}>
