@@ -39,7 +39,7 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
           loop: false,
         }}
       >
-        <CarouselContent className="mx-3 md:-ml-2 md:mr-0">
+        <CarouselContent className="-ml-2">
           {products.map((product) => (
             <CarouselItem
               key={product.id}
