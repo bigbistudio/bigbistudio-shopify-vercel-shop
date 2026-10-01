@@ -22,12 +22,6 @@ type CarouselUIProps = {
 };
 
 export function CollectionCarousel({ collections }: CollectionCarouselProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <div className="group/carousel relative">
       <Carousel
@@ -48,7 +42,7 @@ export function CollectionCarousel({ collections }: CollectionCarouselProps) {
           ))}
         </CarouselContent>
 
-        {mounted && <CarouselUI totalItems={collections.length} />}
+        <CarouselUI totalItems={collections.length} />
       </Carousel>
     </div>
   );
@@ -63,9 +57,11 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
   useEffect(() => {
     const updateStep = () => {
-      if (window.innerWidth >= 1024) {
+      if (window.innerWidth >= 1280) {
         setStep(4);
       } else if (window.innerWidth >= 768) {
+        setStep(3);
+      } else if (window.innerWidth >= 640) {
         setStep(2);
       } else {
         setStep(1);
@@ -161,61 +157,67 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
     [api, pageTargets],
   );
 
-  if (!api || !totalItems || !pageCount) return null;
+  const isReady = Boolean(api && totalItems && pageCount);
 
   return (
     <>
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+24px)] items-center justify-between px-4 transition-opacity duration-300 md:flex">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="pointer-events-auto size-10 rounded-full border-white bg-background/60 text-foreground backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
-          onClick={scrollPrev}
-          disabled={!canScrollPrev}
-          aria-label="Previous collections"
-        >
-          <ChevronLeft className="size-4" />
-        </Button>
+      {isReady && (
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-[calc(50%+24px)] items-center justify-between px-4 transition-opacity duration-300 md:flex">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="pointer-events-auto size-10 rounded-full border-white bg-background/60 text-foreground backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
+            onClick={scrollPrev}
+            disabled={!canScrollPrev}
+            aria-label="Previous collections"
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
 
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="pointer-events-auto size-10 rounded-full border-white bg-background/60 text-foreground backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
-          onClick={scrollNext}
-          disabled={!canScrollNext}
-          aria-label="Next collections"
-        >
-          <ChevronRight className="size-4" />
-        </Button>
-      </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="pointer-events-auto size-10 rounded-full border-white bg-background/60 text-foreground backdrop-blur-sm transition-all hover:bg-background disabled:pointer-events-none disabled:opacity-0"
+            onClick={scrollNext}
+            disabled={!canScrollNext}
+            aria-label="Next collections"
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      )}
 
       <div className="relative mx-auto mt-2 h-8 w-[28%] md:w-[12%]">
-        <div className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 overflow-hidden rounded-full bg-muted-foreground/20">
-          <span
-            className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-foreground transition-transform duration-500 ease-out"
-            style={{
-              width: `${100 / pageCount}%`,
-              transform: `translateX(${currentPage * 100}%)`,
-            }}
-          />
-        </div>
+        {isReady && (
+          <>
+            <div className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 overflow-hidden rounded-full bg-muted-foreground/20">
+              <span
+                className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-foreground transition-transform duration-500 ease-out"
+                style={{
+                  width: `${100 / pageCount}%`,
+                  transform: `translateX(${currentPage * 100}%)`,
+                }}
+              />
+            </div>
 
-        {pageTargets.map((_, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => scrollToPage(index)}
-            className="absolute top-1/2 h-8 -translate-y-1/2 cursor-pointer"
-            style={{
-              left: `${(index / pageCount) * 100}%`,
-              width: `${100 / pageCount}%`,
-            }}
-            aria-label={`Go to collection group ${index + 1}`}
-            aria-current={index === currentPage ? "true" : undefined}
-          />
-        ))}
+            {pageTargets.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => scrollToPage(index)}
+                className="absolute top-1/2 h-8 -translate-y-1/2 cursor-pointer"
+                style={{
+                  left: `${(index / pageCount) * 100}%`,
+                  width: `${100 / pageCount}%`,
+                }}
+                aria-label={`Go to collection group ${index + 1}`}
+                aria-current={index === currentPage ? "true" : undefined}
+              />
+            ))}
+          </>
+        )}
       </div>
     </>
   );
