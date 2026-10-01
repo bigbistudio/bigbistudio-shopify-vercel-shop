@@ -28,7 +28,7 @@ const trustItems = [
 export function TrustStripSection() {
   return (
     <section aria-label="Shopping assurances" className="w-full bg-secondary/40">
-      <Container className="grid grid-cols-2 gap-2 sm:grid-cols-4 py-4">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 py-4 mx-auto w-full max-w-384 px-5 lg:px-10">
         {trustItems.map(({ description, icon: Icon, title }) => (
           <div key={title} className="flex flex-col items-center gap-4 p-4 lg:p-4">
             <Icon aria-hidden="true" className="size-10 text-foreground" strokeWidth={1} />
@@ -38,7 +38,7 @@ export function TrustStripSection() {
             </div>
           </div>
         ))}
-      </Container>
+      </div>
     </section>
   );
 }
