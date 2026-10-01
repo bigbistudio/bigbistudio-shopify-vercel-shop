@@ -4,6 +4,7 @@ import { cacheLife, cacheTag, io } from "next/cache";
 import { getBrowseSort, PRODUCTS_PER_PAGE } from "@/lib/collections";
 import type { Collection, CollectionWithThumbnail } from "@/lib/collections/types";
 import type { CommerceLocale } from "@/lib/config/types";
+import type { ProductCard } from "@/lib/product/types";
 import { tagProducts } from "@/lib/product/server";
 import {
   fetchCollection,
@@ -67,6 +68,22 @@ export async function getCollectionsListing(
     ),
   );
   return collections;
+}
+
+export async function getCollectionProductCards({
+  collection,
+  limit,
+}: {
+  collection: string;
+  limit: number;
+}): Promise<ProductCard[]> {
+  "use cache: remote";
+  cacheLife("max");
+  cacheTag("products-index", `collection-${collection}`);
+
+  const result = await fetchCollectionProducts({ collection, limit });
+  tagProducts(result.products);
+  return result.products;
 }
 
 export function resolveBrowseParams(search: string | URLSearchParams): CollectionSearchState {

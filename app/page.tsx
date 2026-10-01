@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { io } from "next/cache";
-import { Suspense } from "react";
 
 import {
   CollectionSection,
@@ -9,7 +7,7 @@ import {
 } from "@/bigbistudio/sections";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
-import { getCollectionResultsData, getCollectionSearchState } from "@/lib/collections/server";
+import { getCollectionProductCards } from "@/lib/collections/server";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
@@ -29,30 +27,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const products = await getCollectionProductCards({
+    collection: "best-sellers-women",
+    limit: 8,
+  });
+
   return (
     <Page className="pt-0">
       <Sections className="gap-0">
         <HeroBannerSection />
         <CollectionSection />
-        <Suspense fallback={null}>
-          <FeaturedProductsData />
-        </Suspense>
+        <FeaturedProductsSection products={products} />
       </Sections>
     </Page>
   );
-}
-
-async function FeaturedProductsData() {
-  await io();
-
-  const {
-    result: { products },
-  } = await getCollectionResultsData({
-    handle: "best-sellers-women",
-    limit: 8,
-    searchStatePromise: getCollectionSearchState(Promise.resolve({})),
-  });
-
-  return <FeaturedProductsSection products={products} />;
 }
