@@ -17,6 +17,7 @@
     "typecheck": "next typegen && tsc --noEmit && pnpm codegen"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.86",
     "@base-ui/react": "1.8.0",
     "@graphql-codegen/cli": "7.4.1",
     "@shopify/api-codegen-preset": "3.0.0",
@@ -28,7 +29,7 @@
     "@types/react-dom": "19.3.0",
     "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "2.0.0",
-    "ai": "7.0.97",
+    "ai": "7.0.123",
     "babel-plugin-react-compiler": "1.0.0",
     "botid": "1.5.11",
     "class-variance-authority": "0.7.1",
