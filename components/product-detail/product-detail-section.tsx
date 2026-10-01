@@ -24,6 +24,7 @@ import {
 } from "@/components/product-detail/product-media";
 import { ProductPrice } from "@/components/product-detail/product-price";
 import { ProductSchema } from "@/components/product-detail/schema";
+import { AiProductAssistant } from "@/components/product/ai-product-assistant";
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,6 +80,23 @@ export function ProductDetailSection({
         <ProductMediaArea product={product} selectedOptionsPromise={selectedOptionsPromise} />
         <ProductInfoArea product={product} variantPromise={variantPromise} />
       </div>
+      <AiProductAssistant
+        product={{
+          availableForSale: product.availableForSale,
+          description: product.description,
+          options: product.options.map((option) => ({
+            name: option.name,
+            values: option.values.map((value) => value.name),
+          })),
+          price: {
+            currencyCode: product.currencyCode,
+            max: product.priceRange.maxVariantPrice.amount,
+            min: product.priceRange.minVariantPrice.amount,
+          },
+          title: product.title,
+          vendor: product.vendor,
+        }}
+      />
     </>
   );
 }
