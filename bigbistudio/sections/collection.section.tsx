@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import { Container } from "@/components/ui/container";
 import { CollectionCarousel } from "@/bigbistudio/components/collections/collection-carousel";
 
 const collections = [
@@ -61,8 +60,8 @@ export function CollectionSection() {
   const [showViewAll, setShowViewAll] = useState(false);
 
   return (
-    <section className="py-12 md:py-16 lg:py-20">
-      <Container>
+    <section className="w-full py-12 md:py-16 lg:py-20 overflow-hidden">
+      <div className="mx-auto w-full max-w-384 px-5 lg:px-10">
         <div className="mb-6 flex items-center justify-between md:mb-8">
           <h2 className="text-xl font-medium tracking-tighter md:text-2xl">
             Shop Collections
@@ -92,15 +91,9 @@ export function CollectionSection() {
             </button>
           </div>
         </div>
-      </Container>
-
-      {/* Full-width clipping boundary */}
-      <div className="w-full overflow-hidden">
-        <Container>
-          <div className="**:data-[slot=carousel-content]:overflow-visible">
-            <CollectionCarousel collections={collections} />
-          </div>
-        </Container>
+        <div className="**:data-[slot=carousel-content]:overflow-visible">
+          <CollectionCarousel collections={collections} />
+        </div>
       </div>
     </section>
   );

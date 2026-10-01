@@ -9,7 +9,6 @@ import Fade from "embla-carousel-fade";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { cn } from "cn";
 
-import { Container } from "@/components/ui/container";
 import {
   Carousel,
   CarouselContent,
@@ -128,7 +127,10 @@ export function HeroBannerSection() {
     api?.scrollTo(index);
   };
 
-  const handleSlideClick = (event: React.MouseEvent<HTMLDivElement>, href: string) => {
+  const handleSlideClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    href: string,
+  ) => {
     const target = event.target as HTMLElement;
 
     if (target.closest("a, button")) {
@@ -168,7 +170,10 @@ export function HeroBannerSection() {
                 onClick={(event) => handleSlideClick(event, slide.href)}
               >
                 <picture>
-                  <source media="(max-width: 1023px)" srcSet={slide.mobileImage} />
+                  <source
+                    media="(max-width: 1023px)"
+                    srcSet={slide.mobileImage}
+                  />
 
                   <Image
                     src={slide.image}
@@ -184,7 +189,7 @@ export function HeroBannerSection() {
 
                 {/* Hero Content */}
                 <div className="absolute inset-0 flex items-end">
-                  <Container>
+                  <div className="mx-auto w-full max-w-384 px-5 lg:px-10">
                     <div className="pb-20 text-white md:p-10 md:pb-14 lg:p-14">
                       <div className="max-w-sm space-y-4 md:space-y-6">
                         <div className="space-y-3">
@@ -192,7 +197,9 @@ export function HeroBannerSection() {
                             {slide.title}
                           </h1>
 
-                          <p className="text-sm leading-5">{slide.description}</p>
+                          <p className="text-sm leading-5">
+                            {slide.description}
+                          </p>
                         </div>
 
                         {/* Mobile CTA */}
@@ -217,7 +224,7 @@ export function HeroBannerSection() {
                         </Link>
                       </div>
                     </div>
-                  </Container>
+                  </div>
                 </div>
               </div>
             </CarouselItem>
@@ -231,7 +238,7 @@ export function HeroBannerSection() {
 
         {/* Slide Controls */}
         <div className="absolute inset-x-0 bottom-6 z-10 md:bottom-8">
-          <Container>
+          <div className="mx-auto w-full max-w-384 px-5 lg:px-10">
             <div className="flex items-center justify-between md:justify-end md:px-10 lg:px-14">
               {/* Pause + Progress */}
               <div className="ml-2 flex items-center gap-4 md:ml-0 md:gap-2">
@@ -270,7 +277,9 @@ export function HeroBannerSection() {
                             className="absolute inset-y-0 left-0 my-auto h-0.5 w-0 rounded-full bg-white md:h-1"
                             style={{
                               animation: `hero-progress ${SLIDE_DURATION}ms linear forwards`,
-                              animationPlayState: isPaused ? "paused" : "running",
+                              animationPlayState: isPaused
+                                ? "paused"
+                                : "running",
                             }}
                           />
                         )}
@@ -301,7 +310,7 @@ export function HeroBannerSection() {
                 </button>
               </div>
             </div>
-          </Container>
+          </div>
         </div>
       </Carousel>
     </section>

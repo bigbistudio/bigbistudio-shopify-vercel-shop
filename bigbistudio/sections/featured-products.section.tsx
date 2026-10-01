@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { ProductCarousel } from "@/bigbistudio/components/products/product-carousel";
-import { Container } from "@/components/ui/container";
 import type { ProductCard as Product } from "@/lib/product/types";
 
 interface FeaturedProductsSectionProps {
