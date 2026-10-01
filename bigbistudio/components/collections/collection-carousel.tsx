@@ -154,14 +154,14 @@ function CarouselUI({ totalItems }: CarouselUIProps) {
 
   const scrollToPage = useCallback(
     (page: number) => {
-      if (!api || !pageTargets[page]) return;
+      if (!api || page < 0 || page >= pageTargets.length) return;
 
       api.scrollTo(pageTargets[page]);
     },
     [api, pageTargets],
   );
 
-  if (!api || !pageCount) return null;
+  if (!api || !totalItems || !pageCount) return null;
 
   return (
     <>
