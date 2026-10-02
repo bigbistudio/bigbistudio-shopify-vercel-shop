@@ -6,6 +6,7 @@ export const catalogMiddleware = {
       ...params,
       prompt: params.prompt.map((message) => {
         if (message.role !== "tool") return message;
+
         return {
           ...message,
           content: message.content.map((part) => {
@@ -13,36 +14,69 @@ export const catalogMiddleware = {
               part.type !== "tool-result" ||
               part.toolName !== "shopify__search_catalog" ||
               part.output.type !== "json"
-            )
+            ) {
               return part;
+            }
+
             const output = part.output.value;
-            if (!output || typeof output !== "object" || Array.isArray(output) || output.isError)
+
+            if (
+              !output ||
+              typeof output !== "object" ||
+              Array.isArray(output) ||
+              !("isError" in output) ||
+              !("structuredContent" in output) ||
+              output.isError
+            ) {
               return part;
+            }
+
             const catalog = output.structuredContent;
+
             if (
               !catalog ||
               typeof catalog !== "object" ||
               Array.isArray(catalog) ||
+              !("products" in catalog) ||
               !Array.isArray(catalog.products)
-            )
+            ) {
               return part;
+            }
+
             return {
               ...part,
               output: {
                 ...part.output,
                 value: {
-                  messages: catalog.messages ?? [],
-                  pagination: catalog.pagination ?? null,
+                  messages:
+                    "messages" in catalog && Array.isArray(catalog.messages)
+                      ? catalog.messages
+                      : [],
+                  pagination:
+                    "pagination" in catalog ? catalog.pagination : null,
                   products: catalog.products.map((product) => {
-                    if (!product || typeof product !== "object" || Array.isArray(product))
+                    if (
+                      !product ||
+                      typeof product !== "object" ||
+                      Array.isArray(product)
+                    ) {
                       return product;
+                    }
+
                     return {
-                      categories: product.categories ?? [],
-                      handle: product.handle ?? null,
-                      id: product.id ?? null,
-                      options: product.options ?? [],
-                      price_range: product.price_range ?? null,
-                      title: product.title ?? null,
+                      categories:
+                        "categories" in product ? product.categories : [],
+                      handle:
+                        "handle" in product ? product.handle : null,
+                      id: "id" in product ? product.id : null,
+                      options:
+                        "options" in product ? product.options : [],
+                      price_range:
+                        "price_range" in product
+                          ? product.price_range
+                          : null,
+                      title:
+                        "title" in product ? product.title : null,
                     };
                   }),
                 },
