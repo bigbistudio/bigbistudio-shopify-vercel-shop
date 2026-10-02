@@ -55,6 +55,209 @@ const DISTANT_POSITIONS: Position[] = [
 const GREETING = "Hey, I'm bigbi";
 const MESSAGE = "How can I help you?";
 
+function Sparkle({
+  size,
+  orbit,
+  duration,
+  delay,
+  startAngle,
+}: {
+  size: number;
+  orbit: number;
+  duration: number;
+  delay: number;
+  startAngle: number;
+}) {
+  const angle = (startAngle * Math.PI) / 180;
+
+  const startX = Math.cos(angle) * orbit;
+  const startY = Math.sin(angle) * orbit;
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute left-1/2 top-1/2"
+      style={{
+        width: size,
+        height: size,
+        marginLeft: -size / 2,
+        marginTop: -size / 2,
+      }}
+      initial={{
+        opacity: 0,
+        scale: 0.3,
+        rotate: startAngle,
+      }}
+      animate={{
+        opacity: [0, 1, 1, 0],
+        scale: [0.3, 1, 1, 0.3],
+        rotate: startAngle + 360,
+      }}
+      transition={{
+        duration,
+        delay,
+        ease: "easeInOut",
+        opacity: {
+          duration,
+          times: [0, 0.18, 0.72, 1],
+          ease: "easeInOut",
+        },
+        scale: {
+          duration,
+          times: [0, 0.18, 0.72, 1],
+          ease: "easeInOut",
+        },
+      }}
+    >
+      <motion.div
+        animate={{
+          x: [startX, -startX, startX],
+          y: [startY, -startY, startY],
+        }}
+        transition={{
+          duration,
+          delay,
+          ease: "linear",
+        }}
+        className="h-full w-full"
+      >
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="overflow-visible"
+        >
+          <defs>
+            <linearGradient
+              id={`bigbi-star-${size}-${startAngle}`}
+              x1="4"
+              y1="4"
+              x2="20"
+              y2="20"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0%" stopColor="#17A3F2" />
+              <stop offset="45%" stopColor="#4DBAF5" />
+              <stop offset="100%" stopColor="#A7E2FF" />
+            </linearGradient>
+
+            <filter
+              id={`bigbi-star-glow-${size}-${startAngle}`}
+              x="-100%"
+              y="-100%"
+              width="300%"
+              height="300%"
+            >
+              <feGaussianBlur stdDeviation="1.2" />
+            </filter>
+          </defs>
+
+          <path
+            d="M12 1.5L14.4 9.6L22.5 12L14.4 14.4L12 22.5L9.6 14.4L1.5 12L9.6 9.6L12 1.5Z"
+            fill="#17A3F2"
+            fillOpacity="0.3"
+            filter={`url(#bigbi-star-glow-${size}-${startAngle})`}
+          />
+
+          <path
+            d="M12 1.5L14.4 9.6L22.5 12L14.4 14.4L12 22.5L9.6 14.4L1.5 12L9.6 9.6L12 1.5Z"
+            fill={`url(#bigbi-star-${size}-${startAngle})`}
+          />
+        </svg>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function HoverSparkle({
+  size,
+  x,
+  y,
+  delay,
+}: {
+  size: number;
+  x: number;
+  y: number;
+  delay: number;
+}) {
+  return (
+    <motion.div
+      className="pointer-events-none absolute left-1/2 top-1/2"
+      style={{
+        width: size,
+        height: size,
+        marginLeft: -size / 2,
+        marginTop: -size / 2,
+      }}
+      initial={{
+        opacity: 0,
+        scale: 0.2,
+        x: 0,
+        y: 8,
+      }}
+      animate={{
+        opacity: [0, 1, 0.9, 0],
+        scale: [0.2, 1.2, 0.9, 0.3],
+        x: [0, x * 0.45, x],
+        y: [8, y * 0.45, y],
+      }}
+      transition={{
+        duration: 1.4,
+        delay,
+        ease: "easeOut",
+        times: [0, 0.18, 0.55, 1],
+      }}
+    >
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="overflow-visible"
+      >
+        <defs>
+          <linearGradient
+            id={`bigbi-hover-star-${size}-${x}-${y}`}
+            x1="4"
+            y1="4"
+            x2="20"
+            y2="20"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="#17A3F2" />
+            <stop offset="45%" stopColor="#4DBAF5" />
+            <stop offset="100%" stopColor="#A7E2FF" />
+          </linearGradient>
+
+          <filter
+            id={`bigbi-hover-glow-${size}-${x}-${y}`}
+            x="-100%"
+            y="-100%"
+            width="300%"
+            height="300%"
+          >
+            <feGaussianBlur stdDeviation="1.2" />
+          </filter>
+        </defs>
+
+        <path
+          d="M12 1.5L14.4 9.6L22.5 12L14.4 14.4L12 22.5L9.6 14.4L1.5 12L9.6 9.6L12 1.5Z"
+          fill="#17A3F2"
+          fillOpacity="0.3"
+          filter={`url(#bigbi-hover-glow-${size}-${x}-${y})`}
+        />
+
+        <path
+          d="M12 1.5L14.4 9.6L22.5 12L14.4 14.4L12 22.5L9.6 14.4L1.5 12L9.6 9.6L12 1.5Z"
+          fill={`url(#bigbi-hover-star-${size}-${x}-${y})`}
+        />
+      </svg>
+    </motion.div>
+  );
+}
+
 export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
   const [eye, setEye] = useState<Position>({
     x: 0,
@@ -64,6 +267,7 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
   const [hovered, setHovered] = useState(false);
   const [typedMessage, setTypedMessage] = useState("");
   const [visible, setVisible] = useState(false);
+  const [showSparkles, setShowSparkles] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -110,6 +314,30 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
   }, [animate, hovered, visible]);
 
   useEffect(() => {
+    if (!animate || hovered || !visible) return;
+
+    let showTimeout: ReturnType<typeof setTimeout>;
+    let hideTimeout: ReturnType<typeof setTimeout>;
+
+    const triggerSparkles = () => {
+      setShowSparkles(true);
+
+      hideTimeout = setTimeout(() => {
+        setShowSparkles(false);
+      }, 2800);
+
+      showTimeout = setTimeout(triggerSparkles, 7000 + Math.random() * 7000);
+    };
+
+    showTimeout = setTimeout(triggerSparkles, 3500 + Math.random() * 5000);
+
+    return () => {
+      clearTimeout(showTimeout);
+      clearTimeout(hideTimeout);
+    };
+  }, [animate, hovered, visible]);
+
+  useEffect(() => {
     if (!hovered) {
       setTypedMessage("");
       return;
@@ -141,16 +369,13 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
     <motion.div
       initial={{
         opacity: 0,
-        scale: 0.7,
       }}
       animate={{
         opacity: visible ? 1 : 0,
-        scale: visible ? [0.7, 1.18, 1] : 0.7,
       }}
       transition={{
-        duration: 1.1,
-        times: [0, 0.55, 1],
-        ease: "easeInOut",
+        duration: 0.8,
+        ease: "easeOut",
       }}
       style={{
         width: size,
@@ -159,12 +384,35 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
       onMouseEnter={() => {
         setHovered(true);
         setEye({ x: 0, y: 0 });
+        setShowSparkles(false);
       }}
       onMouseLeave={() => {
         setHovered(false);
       }}
       className="fixed right-4 bottom-4 z-50 sm:right-[5%] sm:bottom-[8%]"
     >
+      <div className="pointer-events-none absolute inset-0 overflow-visible">
+        {showSparkles && (
+          <>
+            <Sparkle size={18} orbit={132} duration={2.8} delay={0} startAngle={-35} />
+
+            <Sparkle size={11} orbit={120} duration={2.4} delay={0.15} startAngle={105} />
+
+            <Sparkle size={10} orbit={144} duration={2.6} delay={0.3} startAngle={215} />
+          </>
+        )}
+
+        {hovered && (
+          <>
+            <HoverSparkle size={18} x={-18} y={-58} delay={0} />
+
+            <HoverSparkle size={11} x={8} y={-50} delay={0.18} />
+
+            <HoverSparkle size={10} x={24} y={-62} delay={0.36} />
+          </>
+        )}
+      </div>
+
       <motion.div
         initial={false}
         animate={{
@@ -223,7 +471,7 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
           aria-label="Bigbi AI"
         >
           <defs>
-            <radialGradient id="bigbi-sphere" cx="28%" cy="20%" r="90%">
+            <radialGradient id="bigbi-sphere" cx="28%" cy="20%" r="99%">
               <stop offset="0%" stopColor="#FFFFFF" />
               <stop offset="35%" stopColor="#FAFAFA" />
               <stop offset="58%" stopColor="#F0F0F0" />
