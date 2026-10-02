@@ -404,11 +404,11 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
 
         {hovered && (
           <>
-            <HoverSparkle size={18} x={-18} y={-58} delay={0} />
+            <HoverSparkle size={18} x={-22} y={-60} delay={0} />
 
-            <HoverSparkle size={11} x={8} y={-50} delay={0.18} />
+            <HoverSparkle size={11} x={10} y={-40} delay={0.18} />
 
-            <HoverSparkle size={10} x={24} y={-62} delay={0.36} />
+            <HoverSparkle size={10} x={24} y={-64} delay={0.36} />
           </>
         )}
       </div>
@@ -531,11 +531,11 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
               />
 
               <motion.circle
-                cx="63"
-                cy="56"
+                cx="60"
+                cy="60"
                 fill="#FFFFFF"
                 animate={{
-                  r: hovered ? 3.3 : 3,
+                  r: hovered ? 3.3 : 2.5,
                 }}
                 transition={{
                   duration: 0.35,
