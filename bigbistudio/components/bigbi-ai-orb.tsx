@@ -46,10 +46,10 @@ const DISTANT_POSITIONS: Position[] = [
   { x: -13, y: -13 },
   { x: 16, y: 0 },
   { x: -16, y: 0 },
-  { x: 0, y: 16 },
-  { x: 0, y: -16 },
   { x: 18, y: 0 },
   { x: -18, y: 0 },
+  { x: 0, y: 16 },
+  { x: 0, y: -16 },
 ];
 
 const GREETING = "Hey, I'm bigbi";
@@ -268,6 +268,8 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
   const [typedMessage, setTypedMessage] = useState("");
   const [visible, setVisible] = useState(false);
   const [showSparkles, setShowSparkles] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -278,6 +280,75 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
       clearTimeout(timeout);
     };
   }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    const updateDesktop = () => {
+      setIsDesktop(mediaQuery.matches);
+
+      if (!mediaQuery.matches) {
+        setShowMessage(false);
+      }
+    };
+
+    updateDesktop();
+    mediaQuery.addEventListener("change", updateDesktop);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateDesktop);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!animate || !visible || !isDesktop) {
+      setShowMessage(false);
+      return;
+    }
+
+    let showTimeout: ReturnType<typeof setTimeout>;
+    let hideTimeout: ReturnType<typeof setTimeout>;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+
+    const showMessageTemporarily = () => {
+      if (hovered) return;
+
+      setShowMessage(true);
+
+      clearTimeout(hideTimeout);
+
+      hideTimeout = setTimeout(() => {
+        setShowMessage(false);
+      }, 5000);
+    };
+
+    showTimeout = setTimeout(showMessageTemporarily, 3000);
+
+    const handleScroll = () => {
+      setShowMessage(false);
+
+      clearTimeout(showTimeout);
+      clearTimeout(hideTimeout);
+      clearTimeout(scrollTimeout);
+
+      scrollTimeout = setTimeout(() => {
+        if (hovered) return;
+
+        if (Math.random() < 0.3) {
+          showMessageTemporarily();
+        }
+      }, 1200);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(showTimeout);
+      clearTimeout(hideTimeout);
+      clearTimeout(scrollTimeout);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [animate, visible, isDesktop, hovered]);
 
   useEffect(() => {
     if (!animate || hovered || !visible) return;
@@ -301,12 +372,12 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
     const moveEye = () => {
       setEye(getNextEyePosition());
 
-      const nextDelay = 1800 + Math.random() * 4200;
+      const nextDelay = 1200 + Math.random() * 600;
 
       timeout = setTimeout(moveEye, nextDelay);
     };
 
-    timeout = setTimeout(moveEye, 1800);
+    timeout = setTimeout(moveEye, 1200);
 
     return () => {
       clearTimeout(timeout);
@@ -326,10 +397,10 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
         setShowSparkles(false);
       }, 2800);
 
-      showTimeout = setTimeout(triggerSparkles, 7000 + Math.random() * 7000);
+      showTimeout = setTimeout(triggerSparkles, 20000 + Math.random() * 15000);
     };
 
-    showTimeout = setTimeout(triggerSparkles, 3500 + Math.random() * 5000);
+    showTimeout = setTimeout(triggerSparkles, 12000 + Math.random() * 8000);
 
     return () => {
       clearTimeout(showTimeout);
@@ -394,11 +465,11 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
       <div className="pointer-events-none absolute inset-0 overflow-visible">
         {showSparkles && (
           <>
-            <Sparkle size={18} orbit={132} duration={2.8} delay={0} startAngle={-35} />
+            <Sparkle size={18} orbit={90} duration={2.8} delay={0} startAngle={-35} />
 
-            <Sparkle size={11} orbit={120} duration={2.4} delay={0.15} startAngle={105} />
+            <Sparkle size={11} orbit={82} duration={2.4} delay={0.15} startAngle={100} />
 
-            <Sparkle size={10} orbit={144} duration={2.6} delay={0.3} startAngle={215} />
+            <Sparkle size={10} orbit={88} duration={2.6} delay={0.3} startAngle={160} />
           </>
         )}
 
@@ -416,9 +487,9 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
       <motion.div
         initial={false}
         animate={{
-          opacity: hovered ? 1 : 0,
-          y: hovered ? 0 : 8,
-          scale: hovered ? 1 : 0.96,
+          opacity: hovered || showMessage ? 1 : 0,
+          y: hovered || showMessage ? 0 : 8,
+          scale: hovered || showMessage ? 1 : 0.96,
         }}
         transition={{
           duration: 0.25,
@@ -430,7 +501,7 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
           <span className="font-medium text-black">{GREETING}</span>
 
           <span className="min-h-[20px] font-medium text-black/65">
-            {typedMessage}
+            {hovered ? typedMessage : showMessage ? MESSAGE : ""}
 
             {hovered && typedMessage.length < MESSAGE.length && (
               <motion.span
