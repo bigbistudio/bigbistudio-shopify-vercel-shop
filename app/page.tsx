@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 
 import {
-  CollectionSection,
-  FeaturedProductsSection,
   HeroBannerSection,
+  CollectionSection,
+  EditoralSection,
+  FeaturedProductsSection,
 } from "@/bigbistudio/sections";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
@@ -38,6 +39,7 @@ export default async function HomePage() {
       <Sections className="gap-0">
         <HeroBannerSection />
         <CollectionSection />
+        <EditoralSection />
         <FeaturedProductsSection products={products} />
       </Sections>
     </Page>
