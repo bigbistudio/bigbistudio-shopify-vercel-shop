@@ -13,20 +13,43 @@ interface Position {
   y: number;
 }
 
-const EYE_POSITIONS: Position[] = [
+const CENTER_POSITIONS: Position[] = [
   { x: 0, y: 0 },
-  { x: 16, y: 0 },
-  { x: -16, y: 0 },
-  { x: 0, y: 16 },
-  { x: 0, y: -16 },
+  { x: 0, y: 0 },
+  { x: 0, y: 0 },
+  { x: 0, y: 0 },
+  { x: 2, y: 0 },
+  { x: -2, y: 0 },
+  { x: 0, y: 2 },
+  { x: 0, y: -2 },
+];
+
+const SMALL_POSITIONS: Position[] = [
+  { x: 5, y: 0 },
+  { x: -5, y: 0 },
+  { x: 0, y: 5 },
+  { x: 0, y: -5 },
+  { x: 4, y: 4 },
+  { x: -4, y: 4 },
+  { x: 4, y: -4 },
+  { x: -4, y: -4 },
+  { x: 7, y: 0 },
+  { x: -7, y: 0 },
+  { x: 0, y: 7 },
+  { x: 0, y: -7 },
+];
+
+const DISTANT_POSITIONS: Position[] = [
   { x: 13, y: 13 },
   { x: -13, y: 13 },
   { x: 13, y: -13 },
   { x: -13, y: -13 },
+  { x: 16, y: 0 },
+  { x: -16, y: 0 },
+  { x: 0, y: 16 },
+  { x: 0, y: -16 },
   { x: 18, y: 0 },
   { x: -18, y: 0 },
-  { x: 0, y: 18 },
-  { x: 0, y: -18 },
 ];
 
 const GREETING = "Hey, I'm bigbi";
@@ -57,17 +80,29 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
 
     let timeout: ReturnType<typeof setTimeout>;
 
+    const getNextEyePosition = (): Position => {
+      const random = Math.random();
+
+      if (random < 0.65) {
+        return CENTER_POSITIONS[Math.floor(Math.random() * CENTER_POSITIONS.length)];
+      }
+
+      if (random < 0.9) {
+        return SMALL_POSITIONS[Math.floor(Math.random() * SMALL_POSITIONS.length)];
+      }
+
+      return DISTANT_POSITIONS[Math.floor(Math.random() * DISTANT_POSITIONS.length)];
+    };
+
     const moveEye = () => {
-      const nextEye = EYE_POSITIONS[Math.floor(Math.random() * EYE_POSITIONS.length)];
+      setEye(getNextEyePosition());
 
-      setEye(nextEye);
-
-      const nextDelay = 1200 + Math.random() * 2600;
+      const nextDelay = 1800 + Math.random() * 4200;
 
       timeout = setTimeout(moveEye, nextDelay);
     };
 
-    timeout = setTimeout(moveEye, 1000);
+    timeout = setTimeout(moveEye, 1800);
 
     return () => {
       clearTimeout(timeout);
@@ -216,7 +251,7 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
               y: eye.y,
             }}
             transition={{
-              duration: hovered ? 0.55 : 0.9,
+              duration: hovered ? 0.55 : 1.1,
               ease: "easeInOut",
             }}
           >
@@ -230,7 +265,7 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
                 y: hovered ? 0 : pupilY,
               }}
               transition={{
-                duration: hovered ? 0.4 : 0.45,
+                duration: hovered ? 0.4 : 0.55,
                 ease: "easeInOut",
               }}
             >
