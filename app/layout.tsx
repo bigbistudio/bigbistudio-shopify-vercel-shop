@@ -20,6 +20,7 @@ import { shopConfig } from "@/lib/config";
 import { buildAlternates } from "@/lib/seo";
 
 import { TrustStripSection } from "@/bigbistudio/sections";
+import { BigbiAiOrb } from "@/bigbistudio/components/bigbi-ai-orb";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </main>
           <TrustStripSection />
           <Footer />
+          <BigbiAiOrb />
           <CartUI />
           <Suspense>
             <ActionBar>{shopConfig.agent.isEnabled && <AgentButton />}</ActionBar>
