@@ -267,19 +267,33 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
   const [hovered, setHovered] = useState(false);
   const [typedMessage, setTypedMessage] = useState("");
   const [visible, setVisible] = useState(false);
-  const [showSparkles, setShowSparkles] = useState(false);
+  const [showIntroSparkles, setShowIntroSparkles] = useState(false);
+  const [showScrollSparkles, setShowScrollSparkles] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setVisible(true);
+      setShowIntroSparkles(true);
     }, 500);
 
     return () => {
       clearTimeout(timeout);
     };
   }, []);
+
+  useEffect(() => {
+    if (!showIntroSparkles) return;
+
+    const timeout = setTimeout(() => {
+      setShowIntroSparkles(false);
+    }, 3200);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [showIntroSparkles]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 1024px)");
@@ -326,6 +340,7 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
 
     const handleScroll = () => {
       setShowMessage(false);
+      setShowScrollSparkles(false);
 
       clearTimeout(showTimeout);
       clearTimeout(hideTimeout);
@@ -335,7 +350,11 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
         if (hovered) return;
 
         if (Math.random() < 0.3) {
-          showMessageTemporarily();
+          setShowScrollSparkles(true);
+
+          setTimeout(() => {
+            setShowScrollSparkles(false);
+          }, 1800);
         }
       }, 1200);
     };
@@ -381,30 +400,6 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
 
     return () => {
       clearTimeout(timeout);
-    };
-  }, [animate, hovered, visible]);
-
-  useEffect(() => {
-    if (!animate || hovered || !visible) return;
-
-    let showTimeout: ReturnType<typeof setTimeout>;
-    let hideTimeout: ReturnType<typeof setTimeout>;
-
-    const triggerSparkles = () => {
-      setShowSparkles(true);
-
-      hideTimeout = setTimeout(() => {
-        setShowSparkles(false);
-      }, 2800);
-
-      showTimeout = setTimeout(triggerSparkles, 20000 + Math.random() * 15000);
-    };
-
-    showTimeout = setTimeout(triggerSparkles, 12000 + Math.random() * 8000);
-
-    return () => {
-      clearTimeout(showTimeout);
-      clearTimeout(hideTimeout);
     };
   }, [animate, hovered, visible]);
 
@@ -455,7 +450,8 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
       onMouseEnter={() => {
         setHovered(true);
         setEye({ x: 0, y: 0 });
-        setShowSparkles(false);
+        setShowIntroSparkles(false);
+        setShowScrollSparkles(false);
       }}
       onMouseLeave={() => {
         setHovered(false);
@@ -463,13 +459,23 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
       className="fixed right-4 bottom-4 z-50 sm:right-[5%] sm:bottom-[8%]"
     >
       <div className="pointer-events-none absolute inset-0 overflow-visible">
-        {showSparkles && (
+        {showIntroSparkles && (
           <>
             <Sparkle size={18} orbit={90} duration={2.8} delay={0} startAngle={-35} />
 
             <Sparkle size={11} orbit={82} duration={2.4} delay={0.15} startAngle={100} />
 
             <Sparkle size={10} orbit={88} duration={2.6} delay={0.3} startAngle={160} />
+          </>
+        )}
+
+        {showScrollSparkles && !hovered && (
+          <>
+            <HoverSparkle size={18} x={-22} y={-60} delay={0} />
+
+            <HoverSparkle size={11} x={10} y={-40} delay={0.18} />
+
+            <HoverSparkle size={10} x={24} y={-64} delay={0.36} />
           </>
         )}
 
