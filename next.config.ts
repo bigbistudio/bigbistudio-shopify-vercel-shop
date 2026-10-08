@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         hostname: "cdn.shopify.com",
         protocol: "https",
       },
+      {
+        hostname: "cdn.sanity.io",
+        protocol: "https",
+      },
     ],
     unoptimized: !!process.env.V0_CALLBACK_URL,
   },

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ArticlePage } from "@/components/blog/article-page";
+import { ArticlePage } from "@/bigbistudio/components/blog/article-page";
 import { getBlog, getBlogArticle } from "@/lib/blog/server";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 import { getShopifySitemapPage } from "@/lib/seo/server";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ArticleCard } from "@/components/blog/article-card";
+import { ArticleCard } from "@/bigbistudio/components/blog/article-card";
 import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
