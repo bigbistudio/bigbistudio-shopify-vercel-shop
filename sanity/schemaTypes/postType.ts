@@ -1,14 +1,23 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { createPortableTextField } from "@/sanity/schemaTypes/portable-text";
+
 export const postType = defineType({
   name: "post",
   title: "Blog Post",
   type: "document",
+  groups: [
+    { name: "story", title: "Story", default: true },
+    { name: "editorial", title: "Editorial content" },
+    { name: "seo", title: "SEO" },
+    { name: "previous", title: "Previous content" },
+  ],
   fields: [
     defineField({
       name: "title",
       title: "Title",
       type: "string",
+      group: "story",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -19,25 +28,30 @@ export const postType = defineType({
         source: "title",
         maxLength: 96,
       },
+      group: "story",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "excerpt",
       title: "Excerpt",
       type: "text",
+      description: "A short introduction used on the journal listing and in search results.",
       rows: 3,
+      group: "story",
     }),
     defineField({
       name: "mainImage",
-      title: "Main image",
+      title: "Cover image",
       type: "image",
+      description: "The lead image shown at the top of the article and on the journal listing.",
       options: {
         hotspot: true,
       },
+      group: "story",
       fields: [
         defineField({
           name: "alt",
-          title: "Alternative text",
+          title: "Cover image alt text",
           type: "string",
           validation: (rule) => rule.required(),
         }),
@@ -47,49 +61,45 @@ export const postType = defineType({
       name: "publishedAt",
       title: "Published at",
       type: "datetime",
+      group: "story",
     }),
     defineField({
-      name: "body",
-      title: "Body",
+      name: "author",
+      title: "Author",
+      type: "string",
+      group: "story",
+    }),
+    defineField({
+      name: "articleContent",
+      title: "Article content",
       type: "array",
+      description: "Add and reorder the sections that make up this editorial article.",
+      group: "editorial",
       of: [
-        defineArrayMember({
-          type: "block",
-          styles: [
-            { title: "Normal", value: "normal" },
-            { title: "Heading 2", value: "h2" },
-            { title: "Heading 3", value: "h3" },
-            { title: "Block quote", value: "blockquote" },
-          ],
-          lists: [
-            { title: "Bullet", value: "bullet" },
-            { title: "Numbered", value: "number" },
-          ],
-          marks: {
-            decorators: [
-              { title: "Bold", value: "strong" },
-              { title: "Italic", value: "em" },
-              { title: "Code", value: "code" },
-            ],
-            annotations: [
-              {
-                name: "link",
-                title: "Link",
-                type: "object",
-                fields: [
-                  defineField({
-                    name: "href",
-                    title: "URL",
-                    type: "url",
-                    validation: (rule) =>
-                      rule.uri({ scheme: ["http", "https", "mailto", "tel"] }).required(),
-                  }),
-                ],
-              },
-            ],
-          },
-        }),
+        defineArrayMember({ type: "richTextSection" }),
+        defineArrayMember({ type: "editorialImage" }),
+        defineArrayMember({ type: "imageTextSplit" }),
+        defineArrayMember({ type: "collectionCta" }),
       ],
+    }),
+    createPortableTextField("body", "Previously authored body", {
+      group: "previous",
+      includeCode: true,
+    }),
+    defineField({
+      name: "seoTitle",
+      title: "SEO title",
+      type: "string",
+      description: "Optional search and social title. Defaults to the article title.",
+      group: "seo",
+    }),
+    defineField({
+      name: "seoDescription",
+      title: "SEO description",
+      type: "text",
+      rows: 3,
+      description: "Optional search and social description. Defaults to the excerpt.",
+      group: "seo",
     }),
   ],
 });

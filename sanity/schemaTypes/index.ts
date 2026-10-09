@@ -1,7 +1,13 @@
-import { type SchemaTypeDefinition } from 'sanity'
+import { type SchemaTypeDefinition } from "sanity";
 
-import { postType } from './postType';
+import {
+  collectionCtaType,
+  editorialImageType,
+  imageTextSplitType,
+  richTextSectionType,
+} from "./article-blocks";
+import { postType } from "./postType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [postType],
-}
+  types: [collectionCtaType, editorialImageType, imageTextSplitType, postType, richTextSectionType],
+};

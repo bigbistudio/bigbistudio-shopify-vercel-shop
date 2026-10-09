@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { PortableText } from "next-sanity";
-import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticleContent, EditorialImage } from "@/bigbistudio/components/blog/article-content";
 import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
-import { Prose } from "@/components/ui/prose";
 import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
@@ -18,8 +17,8 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
 
   if (!post) notFound();
 
-  const title = post.title;
-  const description = post.excerpt ?? undefined;
+  const title = post.seoTitle?.trim() || post.title;
+  const description = post.seoDescription?.trim() || post.excerpt || undefined;
   const image = post.mainImage
     ? {
         alt: post.mainImage.alt || post.title,
@@ -63,44 +62,41 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
 
   return (
     <Page>
-      <Container className="max-w-4xl">
-        <Sections className="gap-10 md:gap-16">
-          <Prose className="mx-auto grid w-full max-w-4xl gap-10 md:gap-16">
-            <header className="not-prose mx-auto grid w-full max-w-3xl gap-4 text-center">
-              <p className="text-sm uppercase tracking-[0.16em] text-muted-foreground">
-                Bigbi Studio Journal
-              </p>
-              <h1 className="text-3xl tracking-tight sm:text-4xl md:text-5xl">{post.title}</h1>
-              {post.excerpt && (
-                <p className="text-base leading-7 text-muted-foreground sm:text-lg">
-                  {post.excerpt}
-                </p>
-              )}
-              {publishedAt && (
-                <time
-                  className="text-sm text-muted-foreground"
-                  dateTime={post.publishedAt ?? undefined}
-                >
-                  {publishedAt}
-                </time>
-              )}
-            </header>
-            {post.mainImage && (
-              <div className="not-prose relative aspect-3/2 overflow-hidden">
-                <Image
-                  alt={post.mainImage.alt || post.title}
-                  className="object-cover"
-                  fill
-                  priority
-                  sizes="(max-width: 896px) 100vw, 896px"
-                  src={urlFor(post.mainImage).width(1800).height(1200).fit("crop").url()}
-                />
+      <Container className="max-w-6xl">
+        <Sections className="gap-10 md:gap-20">
+          <header className="mx-auto grid w-full max-w-3xl justify-items-center gap-4 text-center">
+            <nav aria-label="Breadcrumb">
+              <ol className="flex flex-wrap justify-center gap-2 text-sm text-muted-foreground">
+                <li>
+                  <Link className="hover:text-foreground" href="/blog">
+                    Journal
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li aria-current="page">{post.title}</li>
+              </ol>
+            </nav>
+            <h1 className="text-3xl tracking-tight sm:text-4xl md:text-5xl">{post.title}</h1>
+            {post.excerpt && (
+              <p className="text-base leading-7 text-muted-foreground sm:text-lg">{post.excerpt}</p>
+            )}
+            {(post.author || publishedAt) && (
+              <div className="flex flex-wrap justify-center gap-x-2 text-sm text-muted-foreground">
+                {post.author && <span>{post.author}</span>}
+                {post.author && publishedAt && <span aria-hidden="true">·</span>}
+                {publishedAt && <time dateTime={post.publishedAt ?? undefined}>{publishedAt}</time>}
               </div>
             )}
-            <div className="mx-auto w-full max-w-2xl">
-              <PortableText value={post.body} />
-            </div>
-          </Prose>
+          </header>
+          {post.mainImage && (
+            <EditorialImage
+              alt={post.mainImage.alt || post.title}
+              className="mx-auto max-w-6xl"
+              image={post.mainImage}
+              preload
+            />
+          )}
+          <ArticleContent articleContent={post.articleContent} legacyBody={post.body} />
         </Sections>
       </Container>
     </Page>
