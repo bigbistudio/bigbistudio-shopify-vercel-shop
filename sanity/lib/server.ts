@@ -14,7 +14,11 @@ export async function getPosts(): Promise<BlogPostSummary[]> {
 export async function getPost(slug: string): Promise<BlogPost | null> {
   "use cache";
   cacheLife("days");
-  cacheTag("sanity-posts", `sanity-post-${slug}`);
 
-  return client.fetch<BlogPost | null>(postQuery, { slug });
+  const post = await client.fetch<BlogPost | null>(postQuery, { slug });
+  cacheTag(`sanity-post-${slug}`);
+
+  if (post) cacheTag(`sanity-post-id-${post["_id"]}`);
+
+  return post;
 }
