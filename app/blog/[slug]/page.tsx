@@ -119,7 +119,7 @@ async function BlogPostContent({ params }: BlogPostContentProps) {
             />
           )}
 
-          <ArticleContent articleContent={post.articleContent} legacyBody={post.body} />
+          <ArticleContent articleContent={post.articleContent} />
         </Sections>
       </Container>
     </Page>

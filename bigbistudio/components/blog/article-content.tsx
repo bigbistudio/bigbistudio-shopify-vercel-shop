@@ -36,7 +36,6 @@ const PORTABLE_TEXT_COMPONENTS = {
 
 export interface ArticleContentProps {
   articleContent: ArticleContentBlock[] | null;
-  legacyBody: RichTextSection["body"];
 }
 
 export interface EditorialImageProps {
@@ -215,20 +214,12 @@ function ArticleContentBlockView({ block }: { block: ArticleContentBlock }) {
   }
 }
 
-export function ArticleContent({ articleContent, legacyBody }: ArticleContentProps) {
-  if (articleContent?.length) {
-    return (
-      <div className="grid gap-10 md:gap-16">
-        {articleContent.map((block) => (
-          <ArticleContentBlockView block={block} key={block["_key"]} />
-        ))}
-      </div>
-    );
-  }
-
-  return legacyBody?.length ? (
-    <div className="mx-auto w-full max-w-2xl">
-      <PortableTextBody value={legacyBody} />
+export function ArticleContent({ articleContent }: ArticleContentProps) {
+  return articleContent?.length ? (
+    <div className="grid gap-10 md:gap-16">
+      {articleContent.map((block) => (
+        <ArticleContentBlockView block={block} key={block["_key"]} />
+      ))}
     </div>
   ) : null;
 }

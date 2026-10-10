@@ -63,7 +63,6 @@ export type ArticleContentBlock =
 export interface BlogPost extends BlogPostSummary {
   articleContent: ArticleContentBlock[] | null;
   author: string | null;
-  body: PortableTextBlock[] | null;
   seoDescription: string | null;
   seoTitle: string | null;
 }
@@ -96,7 +95,6 @@ export const postQuery = defineQuery(`
     mainImage {${imageProjection}},
     publishedAt,
     author,
-    body,
     seoTitle,
     seoDescription,
     articleContent[]{

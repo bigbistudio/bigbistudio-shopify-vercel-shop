@@ -1,7 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { createPortableTextField } from "@/sanity/schemaTypes/portable-text";
-
 export const postType = defineType({
   name: "post",
   title: "Blog Post",
@@ -10,7 +8,6 @@ export const postType = defineType({
     { name: "story", title: "Story", default: true },
     { name: "editorial", title: "Editorial content" },
     { name: "seo", title: "SEO" },
-    { name: "previous", title: "Previous content" },
   ],
   fields: [
     defineField({
@@ -81,10 +78,6 @@ export const postType = defineType({
         defineArrayMember({ type: "imageTextSplit" }),
         defineArrayMember({ type: "collectionCta" }),
       ],
-    }),
-    createPortableTextField("body", "Previously authored body", {
-      group: "previous",
-      includeCode: true,
     }),
     defineField({
       name: "seoTitle",
