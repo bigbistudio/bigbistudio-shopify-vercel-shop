@@ -19,7 +19,7 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import type { CarouselApi } from "@/components/ui/carousel";
 
-const SLIDE_DURATION = 6000;
+const SLIDE_DURATION = 8000;
 const PAUSE_STORAGE_KEY = "hero-banner-paused";
 
 const slides = [

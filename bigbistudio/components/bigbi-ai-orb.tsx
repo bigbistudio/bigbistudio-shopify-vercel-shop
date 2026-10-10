@@ -506,7 +506,7 @@ export function BigbiAiOrb({ size = 48, animate = true }: BigbiAiOrbProps) {
         <div className="flex flex-col gap-0.5 text-sm tracking-tight">
           <span className="font-medium text-black">{GREETING}</span>
 
-          <span className="min-h-[20px] font-medium text-black/65">
+          <span className="min-h-5 font-medium text-black/65">
             {hovered ? typedMessage : showMessage ? MESSAGE : ""}
 
             {hovered && typedMessage.length < MESSAGE.length && (
