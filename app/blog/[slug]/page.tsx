@@ -78,7 +78,7 @@ async function BlogPostContent({ params }: BlogPostContentProps) {
 
   return (
     <Page>
-      <Container className="max-w-5xl">
+      <Container className="max-w-4xl pb-20">
         <nav aria-label="Breadcrumb">
           <ol className="flex flex-wrap gap-2 text-sm text-muted-foreground pb-6">
             <li>
@@ -91,23 +91,12 @@ async function BlogPostContent({ params }: BlogPostContentProps) {
           </ol>
         </nav>
         <Sections className="gap-10 md:gap-20">
-          <div className="relative">
-            {post.mainImage && (
-              <EditorialImage
-                alt={post.mainImage.alt || post.title}
-                className="relative mx-auto aspect-video w-full overflow-hidden rounded-xl border border-border/10"
-                image={post.mainImage}
-                preload
-              />
-            )}
-
-            <header className="absolute bottom-6 left-6 right-6 z-10 flex h-fit flex-col gap-4 rounded-xl border border-white/30 bg-white/60 p-6 text-left shadow-sm backdrop-blur-md">
-              <h1 className="text-3xl tracking-tight">{post.title}</h1>
+          <div className="relative flex flex-col gap-6">
+            <header className="lg:absolute lg:bottom-6 lg:left-6 lg:right-6 z-10 flex h-fit flex-col gap-4 lg:rounded-xl lg:border lg:border-white/30 bg-white/60 lg:p-6 text-left lg:shadow-sm backdrop-blur-md">
+              <h1 className="text-2xl lg:text-3xl tracking-tight">{post.title}</h1>
 
               {post.excerpt && (
-                <p className="text-base leading-6 text-muted-foreground">
-                  {post.excerpt}
-                </p>
+                <p className="text-base leading-6 text-muted-foreground">{post.excerpt}</p>
               )}
 
               {(post.author || publishedAt) && (
@@ -122,6 +111,14 @@ async function BlogPostContent({ params }: BlogPostContentProps) {
                 </div>
               )}
             </header>
+            {post.mainImage && (
+              <EditorialImage
+                alt={post.mainImage.alt || post.title}
+                className="relative mx-auto aspect-video w-full overflow-hidden rounded-lg border border-border/10"
+                image={post.mainImage}
+                preload
+              />
+            )}
           </div>
           <ArticleContent articleContent={post.articleContent} />
         </Sections>
