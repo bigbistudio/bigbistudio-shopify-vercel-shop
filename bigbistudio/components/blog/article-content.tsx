@@ -101,11 +101,11 @@ export function EditorialImage({
   const sourceWidth = Math.min(image.assetWidth, 2400);
 
   return (
-    <figure className={cn("grid w-full gap-2.5", className)}>
+    <figure className={cn("grid w-full gap-2", className)}>
       <Image
         alt={alt}
         blurDataURL={image.assetLqip ?? undefined}
-        className="h-auto w-full"
+        className="h-auto w-full rounded-xl"
         height={image.assetHeight}
         placeholder={image.assetLqip ? "blur" : "empty"}
         preload={preload}
@@ -114,9 +114,9 @@ export function EditorialImage({
         width={image.assetWidth}
       />
       {(caption || credit) && (
-        <figcaption className="flex flex-wrap gap-x-2 text-sm leading-6 text-muted-foreground">
+        <figcaption className="flex flex-wrap justify-center w-full gap-x-2 text-[13px] leading-6 text-muted-foreground">
           {caption && <span>{caption}</span>}
-          {credit && <span>{credit}</span>}
+          {credit && <span className="italic">{credit}</span>}
         </figcaption>
       )}
     </figure>
@@ -125,7 +125,7 @@ export function EditorialImage({
 
 export function RichTextSectionContent({ block }: RichTextSectionContentProps) {
   return (
-    <section className="mx-auto grid w-full max-w-2xl gap-4">
+    <section className="grid w-full gap-4">
       {block.heading && (
         <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">{block.heading}</h2>
       )}
