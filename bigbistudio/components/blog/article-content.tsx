@@ -81,7 +81,7 @@ function PortableTextBody({ value }: { value: RichTextSection["body"] }) {
   if (!value?.length) return null;
 
   return (
-    <Prose className="max-w-none text-base leading-8 prose-p:leading-8 prose-a:text-foreground">
+    <Prose className="max-w-none text-base leading-6 prose-p:leading-6 prose-a:text-foreground">
       <PortableText components={PORTABLE_TEXT_COMPONENTS} value={value} />
     </Prose>
   );
@@ -105,7 +105,7 @@ export function EditorialImage({
       <Image
         alt={alt}
         blurDataURL={image.assetLqip ?? undefined}
-        className="h-auto w-full rounded-xl"
+        className="h-auto w-full rounded-lg"
         height={image.assetHeight}
         placeholder={image.assetLqip ? "blur" : "empty"}
         preload={preload}
@@ -125,9 +125,9 @@ export function EditorialImage({
 
 export function RichTextSectionContent({ block }: RichTextSectionContentProps) {
   return (
-    <section className="grid w-full gap-4">
+    <section className="grid w-full gap-4 lg:gap-8">
       {block.heading && (
-        <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">{block.heading}</h2>
+        <h2 className="text-xl font-medium tracking-tighter lg:text-3xl">{block.heading}</h2>
       )}
       <PortableTextBody value={block.body} />
     </section>
@@ -153,22 +153,22 @@ export function ImageTextSplitContent({ block }: ImageTextSplitContentProps) {
   return (
     <section
       className={cn(
-        "mx-auto grid w-full max-w-6xl items-center gap-5 md:gap-10",
-        hasImage && "md:grid-cols-2",
+        "mx-auto grid w-full items-center gap-10 lg:gap-14",
+        hasImage && "lg:grid-cols-2",
       )}
     >
       {hasImage && (
         <EditorialImage
           alt={block.alt ?? ""}
           caption={block.caption}
-          className={imageOnRight ? "md:order-2" : "md:order-1"}
+          className={imageOnRight ? "lg:order-2" : "lg:order-1"}
           image={block.image}
           sizes="(max-width: 767px) 100vw, (max-width: 1200px) 50vw, 576px"
         />
       )}
-      <div className={cn("grid gap-4", imageOnRight ? "md:order-1" : "md:order-2")}>
+      <div className={cn("grid gap-4 lg:gap-8", imageOnRight ? "lg:order-1" : "lg:order-2")}>
         {block.heading && (
-          <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">{block.heading}</h2>
+          <h2 className="text-xl font-medium tracking-tighter lg:text-3xl">{block.heading}</h2>
         )}
         <PortableTextBody value={block.body} />
       </div>
@@ -180,12 +180,12 @@ export function CollectionCtaContent({ block }: CollectionCtaContentProps) {
   const href = getSafeEditorialUrl(block.destination);
 
   return (
-    <aside className="mx-auto grid w-full max-w-4xl justify-items-center gap-4 border-y py-10 text-center md:py-14">
+    <aside className="mx-auto grid w-full max-w-4xl justify-items-center gap-4 border-y py-8 text-center lg:py-16">
       {block.heading && (
-        <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">{block.heading}</h2>
+        <h2 className="text-xl font-medium tracking-tight sm:text-3xl">{block.heading}</h2>
       )}
       {block.description && (
-        <p className="max-w-2xl text-base leading-7 text-muted-foreground">{block.description}</p>
+        <p className="max-w-2xl text-base leading-6 text-muted-foreground">{block.description}</p>
       )}
       {href && block.buttonLabel && (
         <Link
@@ -216,7 +216,7 @@ function ArticleContentBlockView({ block }: { block: ArticleContentBlock }) {
 
 export function ArticleContent({ articleContent }: ArticleContentProps) {
   return articleContent?.length ? (
-    <div className="grid gap-10 md:gap-16">
+    <div className="grid gap-10 lg:gap-14">
       {articleContent.map((block) => (
         <ArticleContentBlockView block={block} key={block["_key"]} />
       ))}

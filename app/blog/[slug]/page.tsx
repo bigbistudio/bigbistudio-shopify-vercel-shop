@@ -78,49 +78,38 @@ async function BlogPostContent({ params }: BlogPostContentProps) {
 
   return (
     <Page>
-      <Container className="max-w-4xl pb-20">
-        <nav aria-label="Breadcrumb">
-          <ol className="flex flex-wrap gap-2 text-sm text-muted-foreground pb-6">
-            <li>
-              <Link className="hover:text-foreground" href="/blog">
-                Journal
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li aria-current="page">{post.title}</li>
-          </ol>
-        </nav>
-        <Sections className="gap-10 md:gap-20">
-          <div className="relative flex flex-col gap-6">
-            <header className="lg:absolute lg:bottom-6 lg:left-6 lg:right-6 z-10 flex h-fit flex-col gap-4 lg:rounded-xl lg:border lg:border-white/30 bg-white/60 lg:p-6 text-left lg:shadow-sm backdrop-blur-md">
-              <h1 className="text-2xl lg:text-3xl tracking-tight">{post.title}</h1>
+      <Container className="max-w-4xl lg:py-8">
+        <Sections className="gap-8 lg:gap-12">
+          <div className="flex flex-col gap-4 border-b border-border/40 pb-4 lg:pb-6">
+            <nav aria-label="Breadcrumb">
+              <ol className="flex flex-wrap gap-2 text-sm text-muted-foreground pb-2 lg:pb-6">
+                <li>
+                  <Link className="hover:text-foreground" href="/blog">
+                    Journal
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li aria-current="page">{post.title}</li>
+              </ol>
+            </nav>
+            <h1 className="text-2xl lg:text-4xl font-normal">{post.title}</h1>
 
-              {post.excerpt && (
-                <p className="text-base leading-6 text-muted-foreground">{post.excerpt}</p>
-              )}
-
-              {(post.author || publishedAt) && (
-                <div className="flex flex-wrap gap-x-2 text-sm text-muted-foreground">
-                  {post.author && <span>{post.author}</span>}
-
-                  {post.author && publishedAt && <span aria-hidden="true">·</span>}
-
-                  {publishedAt && (
-                    <time dateTime={post.publishedAt ?? undefined}>{publishedAt}</time>
-                  )}
-                </div>
-              )}
-            </header>
-            {post.mainImage && (
-              <EditorialImage
-                alt={post.mainImage.alt || post.title}
-                className="relative mx-auto aspect-video w-full overflow-hidden rounded-lg border border-border/10"
-                image={post.mainImage}
-                preload
-              />
+            {post.excerpt && (
+              <p className="text-base leading-6 text-muted-foreground">{post.excerpt}</p>
             )}
           </div>
           <ArticleContent articleContent={post.articleContent} />
+          <div className="border-t border-border/40 pt-4 pb-20">
+            {(post.author || publishedAt) && (
+              <div className="flex flex-wrap gap-x-2 text-[13px] text-muted-foreground">
+                {post.author && <span>{post.author}</span>}
+
+                {post.author && publishedAt && <span aria-hidden="true">·</span>}
+
+                {publishedAt && <time dateTime={post.publishedAt ?? undefined}>{publishedAt}</time>}
+              </div>
+            )}
+          </div>
         </Sections>
       </Container>
     </Page>
