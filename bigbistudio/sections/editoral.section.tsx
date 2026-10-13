@@ -15,9 +15,9 @@ export function EditoralSection() {
           unoptimized
           className="object-cover"
         />
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-b lg:bg-linear-to-r from-transparent via-black/20 to-black/45" />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-b lg:bg-linear-to-l from-transparent via-black/20 to-black/45" />
 
-        <div className="absolute inset-y-0 right-0 flex w-full items-end lg:items-center lg:justify-end p-6 lg:px-10 lg:w-1/2">
+        <div className="absolute inset-y-0 left-0 flex w-full items-end lg:items-center p-6 lg:px-10 lg:w-1/2">
           <div className="text-white md:p-10 max-w-sm lg:max-w-md space-y-4 md:space-y-6">
             <p className="mb-2 text-xxs font-medium uppercase tracking-[0.16em] text-white/70">
               Editorial
