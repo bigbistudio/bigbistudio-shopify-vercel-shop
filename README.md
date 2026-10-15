@@ -1,99 +1,277 @@
-# Vercel Shop
+# bigbistudio Shopify Vercel Shop
 
-Agent-ready commerce, powered by Shopify, Next, and Eve.
+A modern Shopify storefront built with Next.js and based on [Vercel Shop](https://github.com/vercel/shop).
 
-- **Shopify owns commerce.** Catalog, cart, checkout, customer accounts, predictive search, and policies come from Shopify through the framework-agnostic Hydrogen SDK (not the Hydrogen React Router framework).
-- **Next.js owns the app.** Routing, Server Components, caching and invalidation, metadata, and the storefront's machine-readable surface for answer engines: Markdown representations, `/llms.txt`, structured data, and the sitemap.
-- **Eve owns the agent.** Shop Agent's sessions, tools, and connections; its tools call Shopify directly.
+This project is a customized and actively developed storefront foundation for bigbistudio, with a focus on clean UI, maintainable frontend architecture, performance, and real-world ecommerce development.
 
-See [vercel.shop](https://vercel.shop) for full documentation.
+> **Status:** 🚧 In active development
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fshop&project-name=shop&repository-name=shop&demo-title=Vercel+Shop&demo-url=https%3A%2F%2Fshop-template.vercel.app&env=NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN%2CNEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN%2CNEXT_PUBLIC_SHOPIFY_SHOP_ID&envDescription=Required%20Shopify%20store%20domain%2C%20Storefront%20API%20token%2C%20and%20shop%20ID&envLink=https%3A%2F%2Fvercel.shop%2Fdocs%2Freference%2Fenv-vars)
+## Overview
 
-Vercel prompts for the three required Shopify values before the first deployment.
+`bigbistudio-shopify-vercel-shop` is a personal implementation and exploration of Vercel's Shopify storefront approach.
 
-## Getting Started
+The project starts from the Vercel Shop codebase and evolves it into a more opinionated storefront architecture for bigbistudio, with the goal of building a flexible foundation for modern Shopify headless commerce projects.
 
-1. Create a new project with pnpm 12 and Node.js 24:
+The project is intentionally being developed incrementally rather than treated as a finished theme or production-ready template.
 
-```sh
-pnpm create next-app@latest my-store --example https://github.com/vercel/shop
+## Goals
+
+* Build a modern Shopify storefront with Next.js
+* Explore Vercel's approach to headless Shopify commerce
+* Establish a clean and maintainable storefront architecture
+* Separate Shopify data fetching from presentation and UI concerns
+* Build reusable ecommerce components and sections
+* Develop a flexible theme structure suitable for different Shopify stores
+* Focus on performance, accessibility, SEO, and responsive design
+* Learn and evaluate modern Shopify headless commerce patterns
+
+## Tech Stack
+
+* [Next.js](https://nextjs.org/)
+* [React](https://react.dev/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Shopify Storefront API](https://shopify.dev/docs/api/storefront)
+* [Shopify Customer Account API](https://shopify.dev/docs/api/customer)
+* [Tailwind CSS](https://tailwindcss.com/)
+* [Vercel](https://vercel.com/)
+* [pnpm](https://pnpm.io/)
+
+## Development
+
+### Requirements
+
+* Node.js
+* pnpm
+* A Shopify development store
+* Shopify Storefront API access
+
+### Install
+
+```bash
+git clone https://github.com/bigbistudio/bigbistudio-shopify-vercel-shop.git
+
+cd bigbistudio-shopify-vercel-shop
+
+pnpm install
 ```
 
-The project includes the Shop skills for your agent in `.agents/skills/`.
+### Environment
 
-2. In Shopify admin, create a storefront token in **Settings → Apps and sales channels → Headless**, enable the required Storefront API permissions, then add your Shopify credentials:
+Create a local environment file:
 
-```sh
+```bash
 cp .env.example .env.local
 ```
 
-```
-NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN=your-token
-NEXT_PUBLIC_SHOPIFY_SHOP_ID=123456789
-```
+Configure the required Shopify and application environment variables in `.env.local`.
 
-3. Start the development server:
+The exact environment variables may evolve during development as the Shopify integration and data-fetching architecture are refined.
 
-```sh
+### Sanity blog cache invalidation
+
+Individual blog posts and the blog listing are cached by Next.js. To invalidate those entries when a published post changes:
+
+1. Generate a strong webhook secret and set it as `SANITY_POST_WEBHOOK_SECRET` in `.env.local` and in the deployment environment. Keep the same value private in the Sanity webhook's **Secret** setting.
+2. In Sanity project settings, add a GROQ-powered webhook with the deployment URL `https://<your-domain>/api/webhooks/sanity` and HTTP method `POST`.
+3. Use this filter so post creation, updates, slug changes, and deletion/unpublishing are included:
+
+   ```groq
+   _type == "post" || before()._type == "post" || after()._type == "post"
+   ```
+
+4. Set this projection to send the document ID, type, and both slug values:
+
+   ```groq
+   {
+     "_id": coalesce(after()._id, before()._id),
+     "_type": coalesce(after()._type, before()._type, _type),
+     "beforeSlug": before().slug.current,
+     "afterSlug": after().slug.current
+   }
+   ```
+
+5. Enable the `create`, `update`, and `delete` triggers, leave drafts and versions disabled, and configure the webhook's **Secret** with the same value as `SANITY_POST_WEBHOOK_SECRET`. Sanity signs the raw request body; the endpoint verifies that signature and checks the project and dataset headers before invalidating caches.
+6. Publish a post, edit its title or Editorial sections, change its slug, unpublish it, and delete it to test the configured endpoint. Confirm successful deliveries in Sanity's webhook delivery history and verify the page and listing after each change. A signed request for a non-post document should be rejected.
+
+The endpoint expires the affected post cache(s) and listing cache immediately. The next request fetches fresh data from Sanity's API (not the Sanity CDN); webhook invalidation does not synchronously rebuild pages that are not requested. Unpublishing/deleting invalidates the prior slug so the next detail request resolves as not found.
+
+### Start development
+
+```bash
 pnpm dev
 ```
 
-For local HTTPS, install [Portless](https://portless.sh) globally with `pnpm add -g portless`, then run `pnpm dev:portless`.
+The storefront will be available at:
 
-See [vercel.shop/docs/getting-started](https://vercel.shop/docs/getting-started) for the full setup guide and [Storefront API Permissions](https://vercel.shop/docs/reference/storefront-api-permissions) for the complete scope reference.
-
-## Features
-
-Shopify
-
-- Product, collection, search, blog, page, and policy content from the Storefront API with validated, typed GraphQL
-- Optimistic cart with Hydrogen forms, shared cart state, and server handlers
-- Customer accounts through the Customer Account API, opt-in
-- Shopify analytics, consent, and WebMCP tool registration, opt-in
-
-Next.js
-
-- Next.js 16 App Router, React 19, React Compiler, Tailwind CSS 4, shadcn/ui
-- Partial prerendering with tagged caches invalidated by Shopify webhooks
-- Markdown representations, `/llms.txt`, Schema.org data, sitemap, and robots for answer engines
-- Single-locale storefront by default; skills add next-intl and Shopify Markets
-
-Eve
-
-- Shop Agent for product discovery, store questions, and cart updates in a side drawer, opt-in
-- Shopify catalog and policy MCP connections plus Hydrogen cart handlers
-
-Customer authentication is disabled by default. Follow the [authentication guide](https://vercel.shop/docs/anatomy/authentication) to configure Shopify credentials and callback URLs before enabling `auth.isEnabled` in `lib/config/index.ts`.
-
-Shop Agent is disabled by default. Set `agent.isEnabled` to `true` in `lib/config/index.ts` and follow the [Shop Agent guide](https://vercel.shop/docs/anatomy/agent) to configure AI Gateway access and review privacy and spending safeguards before enabling public chat.
-
-## Skills
-
-Shop skills guide agents through storefront setup and common commerce patterns. They ship in `.agents/skills/`, and Claude Code reads them through the `.claude/skills` symlink. To add them to an existing storefront, run this from its root:
-
-```sh
-pnpm dlx skills add vercel/shop --skill '*' --yes
+```text
+http://localhost:3000
 ```
 
-Use the plain skill names below. Shopify AI Toolkit is separate external tooling for authoritative Shopify documentation, API schemas, and operation validation; the Shop skills do not include it. If it is unavailable, use official Shopify documentation and validation tooling.
+## Project Structure
 
-| Skill                       | Description                                                           |
-| --------------------------- | --------------------------------------------------------------------- |
-| `init-vercel-shop`          | Scaffold a storefront and configure Shopify credentials               |
-| `build-shop`                | Build or adapt storefront routes with Vercel Shop patterns            |
-| `shopify-graphql-reference` | Add Shopify-validated GraphQL operations in the template's layout     |
-| `enable-analytics`          | Add Vercel Analytics, Speed Insights, and Google Tag Manager          |
-| `enable-i18n`               | Locale-prefixed URL routing + next-intl message catalogs (no Markets) |
-| `enable-shopify-markets`    | Multi-locale support with Shopify Markets and next-intl               |
-| `enable-shopify-menus`      | Replace hardcoded nav/footer links with Shopify-managed menus         |
-| `update-shop`               | Keep a storefront current with template changes                       |
+The project separates the original storefront foundation from custom bigbistudio components and application code.
 
-## Documentation
+```text
+.
+├── app/                  # Next.js application routes
+├── bigbistudio/          # Custom bigbistudio components and storefront UI
+├── components/           # Shared components from the storefront foundation
+├── lib/                  # Shopify and application utilities
+├── public/               # Static assets
+├── styles/               # Global styles and design tokens
+├── graphql/              # GraphQL queries and generated types
+└── ...
+```
 
-Full documentation is available at [vercel.shop](https://vercel.shop).
+### `bigbistudio/`
+
+The `bigbistudio/` directory contains **new custom components developed for this project**.
+
+It is the primary area for bigbistudio-specific UI and storefront implementation, allowing custom work to remain clearly separated from the original Vercel Shop code.
+
+As the project evolves, new storefront sections, components, and design patterns can be added here without unnecessarily modifying the underlying foundation.
+
+```text
+bigbistudio/
+├── components/
+├── sections/
+├── ...
+```
+
+The exact structure inside `bigbistudio/` may evolve as the storefront architecture develops.
+
+## Development Roadmap
+
+The project is being developed incrementally.
+
+### v0.1 — Foundation
+
+* Initialize the storefront
+* Configure Shopify Storefront API
+* Configure development environment
+* Define project architecture
+* Establish design tokens
+* Configure Tailwind CSS
+* Set up global layout and typography
+* Configure SEO and metadata
+* Clean up the original Vercel Shop foundation
+
+### v0.2 — Storefront Shell
+
+* Header
+* Navigation
+* Mobile navigation
+* Footer
+* Global container and layout
+* Storefront loading states
+
+### v0.3 — Storefront Pages
+
+* Homepage
+* Collection pages
+* Product pages
+* Cart
+* Search
+* 404 / not-found experience
+
+### v0.4 — Theme Sections
+
+* Hero
+* Promotional banners
+* Collection grids
+* Featured products
+* Product grids
+* Editorial sections
+* Newsletter
+* Additional reusable storefront sections
+
+### Future
+
+* Customer accounts
+* Advanced search and filtering
+* Cart and checkout improvements
+* Shopify Markets considerations
+* Performance optimization
+* Accessibility improvements
+* Structured data and SEO
+* Analytics
+* Production deployment
+* Additional reusable commerce patterns
+
+## Architecture
+
+The project follows a few core principles.
+
+### Shopify as the commerce backend
+
+Shopify remains responsible for commerce functionality and data, while Next.js provides the storefront experience.
+
+```text
+Shopify
+   │
+   │ Storefront API
+   ▼
+Next.js
+   │
+   ├── Data
+   ├── Routes
+   ├── Components
+   └── UI
+   │
+   ▼
+Vercel
+```
+
+### Clear data boundaries
+
+Shopify data fetching is kept separate from presentation wherever practical.
+
+This makes it easier to:
+
+* understand where data comes from
+* reuse storefront components
+* change queries without rewriting UI
+* test components independently
+* evolve the storefront architecture over time
+
+### Theme-oriented frontend
+
+The storefront is being developed with a theme-oriented mindset: reusable sections, predictable layout primitives, consistent design tokens, and components that can be adapted to different commerce experiences.
+
+## Based on Vercel Shop
+
+This project is based on [Vercel Shop](https://github.com/vercel/shop), Vercel's open-source Shopify storefront built with Next.js.
+
+The original project provides the foundation for this implementation. This repository is independently developed and is intended for experimentation, learning, customization, and building a more opinionated storefront architecture.
+
+For the original project, see:
+
+* [Vercel Shop](https://github.com/vercel/shop)
+* [Vercel Commerce](https://vercel.com/templates/next.js/nextjs-commerce)
+
+## Design Principles
+
+The storefront is being developed around:
+
+* **Clarity** — simple interfaces and predictable navigation
+* **Performance** — fast pages and efficient data access
+* **Accessibility** — usable interfaces across devices and abilities
+* **Maintainability** — clear architecture and reusable components
+* **Consistency** — shared design tokens and UI patterns
+* **Progressive enhancement** — build a solid foundation before adding complexity
+
+## Status
+
+This project is **not finished**.
+
+APIs, architecture, components, naming, and implementation details may change as development continues.
+
+It should currently be considered a **development project and learning/reference implementation**, not a production-ready Shopify theme or starter.
 
 ## License
 
-MIT
+This project follows the license of the original Vercel Shop project where applicable. See [`LICENSE`](./LICENSE) for details.
+
+---
+
+Built and maintained by [bigbistudio](https://bigbistudio.com).
