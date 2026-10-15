@@ -67,33 +67,6 @@ Configure the required Shopify and application environment variables in `.env.lo
 
 The exact environment variables may evolve during development as the Shopify integration and data-fetching architecture are refined.
 
-### Sanity blog cache invalidation
-
-Individual blog posts and the blog listing are cached by Next.js. To invalidate those entries when a published post changes:
-
-1. Generate a strong webhook secret and set it as `SANITY_POST_WEBHOOK_SECRET` in `.env.local` and in the deployment environment. Keep the same value private in the Sanity webhook's **Secret** setting.
-2. In Sanity project settings, add a GROQ-powered webhook with the deployment URL `https://<your-domain>/api/webhooks/sanity` and HTTP method `POST`.
-3. Use this filter so post creation, updates, slug changes, and deletion/unpublishing are included:
-
-   ```groq
-   _type == "post" || before()._type == "post" || after()._type == "post"
-   ```
-
-4. Set this projection to send the document ID, type, and both slug values:
-
-   ```groq
-   {
-     "_id": coalesce(after()._id, before()._id),
-     "_type": coalesce(after()._type, before()._type, _type),
-     "beforeSlug": before().slug.current,
-     "afterSlug": after().slug.current
-   }
-   ```
-
-5. Enable the `create`, `update`, and `delete` triggers, leave drafts and versions disabled, and configure the webhook's **Secret** with the same value as `SANITY_POST_WEBHOOK_SECRET`. Sanity signs the raw request body; the endpoint verifies that signature and checks the project and dataset headers before invalidating caches.
-6. Publish a post, edit its title or Editorial sections, change its slug, unpublish it, and delete it to test the configured endpoint. Confirm successful deliveries in Sanity's webhook delivery history and verify the page and listing after each change. A signed request for a non-post document should be rejected.
-
-The endpoint expires the affected post cache(s) and listing cache immediately. The next request fetches fresh data from Sanity's API (not the Sanity CDN); webhook invalidation does not synchronously rebuild pages that are not requested. Unpublishing/deleting invalidates the prior slug so the next detail request resolves as not found.
 
 ### Start development
 
@@ -139,64 +112,6 @@ bigbistudio/
 ```
 
 The exact structure inside `bigbistudio/` may evolve as the storefront architecture develops.
-
-## Development Roadmap
-
-The project is being developed incrementally.
-
-### v0.1 — Foundation
-
-* Initialize the storefront
-* Configure Shopify Storefront API
-* Configure development environment
-* Define project architecture
-* Establish design tokens
-* Configure Tailwind CSS
-* Set up global layout and typography
-* Configure SEO and metadata
-* Clean up the original Vercel Shop foundation
-
-### v0.2 — Storefront Shell
-
-* Header
-* Navigation
-* Mobile navigation
-* Footer
-* Global container and layout
-* Storefront loading states
-
-### v0.3 — Storefront Pages
-
-* Homepage
-* Collection pages
-* Product pages
-* Cart
-* Search
-* 404 / not-found experience
-
-### v0.4 — Theme Sections
-
-* Hero
-* Promotional banners
-* Collection grids
-* Featured products
-* Product grids
-* Editorial sections
-* Newsletter
-* Additional reusable storefront sections
-
-### Future
-
-* Customer accounts
-* Advanced search and filtering
-* Cart and checkout improvements
-* Shopify Markets considerations
-* Performance optimization
-* Accessibility improvements
-* Structured data and SEO
-* Analytics
-* Production deployment
-* Additional reusable commerce patterns
 
 ## Architecture
 
