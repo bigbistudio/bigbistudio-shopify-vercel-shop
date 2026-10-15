@@ -1,0 +1,65 @@
+import { createShopifyRequestContext } from "@shopify/hydrogen";
+import {
+  type AnyCustomerAccountDocument,
+  type CustomerAccountClient,
+  CustomerAccountApiError,
+  CustomerAccountAuthenticationError,
+  createCustomerAccountClient,
+} from "@shopify/hydrogen/customer-account";
+
+import { shopConfig } from "@/lib/config";
+import type { CustomerAccountFetchOptions } from "@/lib/shopify/customer-account/types";
+import { logShopifyDebug, shopifyLogger } from "@/lib/shopify/logging/server";
+import type { CustomerAccountResultOf } from "@/lib/shopify/types";
+
+const REQUEST_TIMEOUT_MS = 10_000;
+
+export function isCustomerAccountUnauthorized(error: unknown): boolean {
+  return (
+    error instanceof CustomerAccountAuthenticationError ||
+    (error instanceof CustomerAccountApiError && error.status === 401)
+  );
+}
+
+export async function customerAccountFetch<Doc extends AnyCustomerAccountDocument>({
+  accessToken,
+  document,
+  operation,
+  variables,
+}: CustomerAccountFetchOptions<Doc>): Promise<CustomerAccountResultOf<Doc>> {
+  const shopId = process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID as string;
+  const client: CustomerAccountClient = createCustomerAccountClient({
+    defaultTimeoutInMs: REQUEST_TIMEOUT_MS,
+    shopId,
+    requestContext: createShopifyRequestContext({
+      i18n: {
+        country: shopConfig.localization.country,
+        language: shopConfig.localization.language,
+      },
+      request: new Request(shopConfig.site.url),
+    }),
+  });
+  const start = performance.now();
+  try {
+    const { data, errors } = await client.graphql(document, { accessToken, variables } as never);
+
+    if (errors) {
+      if (!data) {
+        throw new Error(`GraphQL errors: ${JSON.stringify(errors)}`);
+      }
+      shopifyLogger.warn("Customer Account API returned partial errors", {
+        errors,
+        operation,
+        scope: "customer-account",
+      });
+    }
+
+    return data as CustomerAccountResultOf<Doc>;
+  } finally {
+    logShopifyDebug("Customer Account API request", {
+      durationMs: Math.round(performance.now() - start),
+      operation,
+      scope: "customer-account",
+    });
+  }
+}
