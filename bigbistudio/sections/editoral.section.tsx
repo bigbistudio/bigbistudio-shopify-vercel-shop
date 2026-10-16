@@ -12,7 +12,6 @@ export function EditoralSection() {
           alt="Woman wearing a white crochet-trim pointelle cardigan in a Mediterranean interior"
           fill
           sizes="100vw"
-          unoptimized
           className="object-cover"
         />
         <div className="pointer-events-none absolute inset-0 bg-linear-to-b lg:bg-linear-to-l from-transparent via-black/20 to-black/45" />
